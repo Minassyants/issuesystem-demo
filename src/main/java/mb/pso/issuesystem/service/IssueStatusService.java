@@ -1,5 +1,7 @@
 package mb.pso.issuesystem.service;
 
+import java.util.Optional;
+
 import mb.pso.issuesystem.entity.IssueStatus;
 
 public interface IssueStatusService {
@@ -9,7 +11,7 @@ public interface IssueStatusService {
 
     public void delete(IssueStatus issueStatus);
 
-    public IssueStatus get(String id);
+    public Optional<IssueStatus> get(String id);
 
     public Iterable<IssueStatus> getAll();
 }

@@ -1,5 +1,7 @@
 package mb.pso.issuesystem.service;
 
+import java.util.Optional;
+
 import mb.pso.issuesystem.entity.AdditionalAttribute;
 
 public interface AdditionalAttributeService {
@@ -9,7 +11,7 @@ public interface AdditionalAttributeService {
 
     public void delete(AdditionalAttribute aditionalAttribute);
 
-    public AdditionalAttribute get(String id);
+    public Optional<AdditionalAttribute> get(String id);
 
     public Iterable<AdditionalAttribute> getAll();
 }

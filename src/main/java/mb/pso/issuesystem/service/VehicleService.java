@@ -1,5 +1,6 @@
 package mb.pso.issuesystem.service;
 
+import mb.pso.issuesystem.entity.Subject;
 import mb.pso.issuesystem.entity.Vehicle;
 
 public interface VehicleService {
@@ -9,7 +10,7 @@ public interface VehicleService {
 
     public void delete(Vehicle vehicle);
 
-    public Vehicle get(String id);
+    public Subject get(String id);
 
-    public Iterable<Vehicle> getAll();
+    public Iterable<Subject> getAll();
 }

@@ -1,5 +1,7 @@
 package mb.pso.issuesystem.service;
 
+import java.util.Optional;
+
 import mb.pso.issuesystem.entity.User;
 
 public interface UserService {
@@ -9,7 +11,7 @@ public interface UserService {
 
     public void delete(User user);
 
-    public User get(String id);
+    public Optional<User> get(String id);
 
     public Iterable<User> getAll();
 }
