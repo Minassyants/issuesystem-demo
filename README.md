@@ -1,1 +1,1 @@
-<div style="width: 640px; height: 480px; margin: 10px; position: relative;"><iframe allowfullscreen frameborder="0" style="width:640px; height:480px" src="https://lucid.app/documents/embedded/f7bfbfa1-658d-44fa-98c5-383eefa2a869" id="zpLIoN4t~CYm"></iframe></div>
+![ER-диаграмма базы данных (с «вороньими лапками»)](https://github.com/Minassyants/issuesystem/assets/105652196/36818471-ad81-464e-9c42-974f580dd8fe)
