@@ -11,9 +11,7 @@ public interface IssueService {
 
     public void delete(Issue issue);
 
-    public Issue get(String id);
-
-    public Optional<Issue> findByName(String name);
+    public Optional<Issue> get(String id);
 
     public Iterable<Issue> getAll();
 }

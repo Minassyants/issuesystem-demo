@@ -11,9 +11,7 @@ public interface IssueStatusTransitionService {
 
     public void delete(IssueStatusTransition issueStatusTransition);
 
-    public IssueStatusTransition get(String id);
-
-    public Optional<IssueStatusTransition> findByName(String name);
+    public Optional<IssueStatusTransition> get(String id);
 
     public Iterable<IssueStatusTransition> getAll();
 }

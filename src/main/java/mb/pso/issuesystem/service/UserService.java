@@ -11,9 +11,7 @@ public interface UserService {
 
     public void delete(User user);
 
-    public User get(String id);
-
-    public Optional<User> findByName(String name);
+    public Optional<User> get(String id);
 
     public Iterable<User> getAll();
 }

@@ -1,8 +1,7 @@
 package mb.pso.issuesystem.service;
 
-import java.util.Optional;
-
 import mb.pso.issuesystem.entity.Good;
+import mb.pso.issuesystem.entity.Subject;
 
 public interface GoodService {
     public Good create(Good good);
@@ -11,9 +10,7 @@ public interface GoodService {
 
     public void delete(Good good);
 
-    public Good get(String id);
+    public Subject get(String id);
 
-    public Optional<Good> findByName(String name);
-
-    public Iterable<Good> getAll();
+    public Iterable<Subject> getAll();
 }

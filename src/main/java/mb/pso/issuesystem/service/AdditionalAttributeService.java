@@ -9,11 +9,9 @@ public interface AdditionalAttributeService {
 
     public AdditionalAttribute update(AdditionalAttribute additionalAttribute);
 
-    public void delete(AdditionalAttribute additionalAttribute);
+    public void delete(AdditionalAttribute aditionalAttribute);
 
-    public AdditionalAttribute get(String id);
-
-    public Optional<AdditionalAttribute> findByName(String name);
+    public Optional<AdditionalAttribute> get(String id);
 
     public Iterable<AdditionalAttribute> getAll();
 }

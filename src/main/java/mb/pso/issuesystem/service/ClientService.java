@@ -11,9 +11,7 @@ public interface ClientService {
 
     public void delete(Client client);
 
-    public Client get(String id);
-
-    public Optional<Client> findByName(String name);
+    public Optional<Client> get(String id);
 
     public Iterable<Client> getAll();
 }

@@ -11,9 +11,7 @@ public interface IssueStatusService {
 
     public void delete(IssueStatus issueStatus);
 
-    public IssueStatus get(String id);
-
-    public Optional<IssueStatus> findByName(String name);
+    public Optional<IssueStatus> get(String id);
 
     public Iterable<IssueStatus> getAll();
 }
