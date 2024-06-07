@@ -1,14 +1,14 @@
 package mb.pso.issuesystem.config;
 
-import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import com.arangodb.ArangoDB.Builder;
 import com.arangodb.springframework.annotation.EnableArangoRepositories;
 import com.arangodb.springframework.config.ArangoConfiguration;
 
-@Configuration
+@SpringJUnitConfig
 @EnableArangoRepositories(basePackages = { "mb.pso.issuesystem.repository" })
-public class ArangoConfig implements ArangoConfiguration {
+public class ArangoTestConfig implements ArangoConfiguration {
 
     @Override
     public Builder arango() {
@@ -19,7 +19,7 @@ public class ArangoConfig implements ArangoConfiguration {
     @Override
     public String database() {
 
-        return "issuesystem";
+        return "issuesystemtest";
     }
 
 }

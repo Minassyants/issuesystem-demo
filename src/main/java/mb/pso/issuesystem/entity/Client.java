@@ -1,5 +1,7 @@
 package mb.pso.issuesystem.entity;
 
+import java.util.Objects;
+
 import org.springframework.data.annotation.Id;
 
 import com.arangodb.springframework.annotation.ArangoId;
@@ -16,7 +18,22 @@ public class Client {
     private String name;
     private String address;
     private String phoneNumber;
+    @PersistentIndexed(deduplicate = true, unique = true)
     private String email;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        final Client other = (Client) obj;
+        if (Objects.equals(this.name, other.name) & (Objects.equals(this.email, other.email)))
+            return true;
+        return false;
+    }
 
     @Override
     public String toString() {

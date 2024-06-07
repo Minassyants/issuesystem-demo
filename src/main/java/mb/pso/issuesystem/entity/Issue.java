@@ -7,7 +7,6 @@ import org.springframework.data.annotation.Id;
 
 import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Document;
-import com.arangodb.springframework.annotation.Ref;
 
 @Document("issue")
 public class Issue {
@@ -15,18 +14,15 @@ public class Issue {
     private String id;
     @ArangoId
     private String arangoId;
-
     private IssueStatus status;
     private String docNumber;
     private Date docDate;
-    @Ref
     private Client client;
     private IssueType type;
     private Subject subject;
     private List<IssueAttribute> issueAttributes;
     private String issueDescription;
     private List<String> relatedDocFromSigma;
-    @Ref
     private Department issuedDepartment;
     private String issuedEmployee;
     private String issuedDemands;

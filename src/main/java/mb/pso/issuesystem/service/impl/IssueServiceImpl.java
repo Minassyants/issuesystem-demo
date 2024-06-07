@@ -2,11 +2,15 @@ package mb.pso.issuesystem.service.impl;
 
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.repository.IssueRepository;
 import mb.pso.issuesystem.service.IssueService;
 
+@Service
 public class IssueServiceImpl implements IssueService {
+
     private final IssueRepository issueRepository;
 
     public IssueServiceImpl(IssueRepository issueRepository) {
@@ -22,7 +26,6 @@ public class IssueServiceImpl implements IssueService {
     @Override
     public void delete(Issue issue) {
         issueRepository.delete(issue);
-
     }
 
     @Override
