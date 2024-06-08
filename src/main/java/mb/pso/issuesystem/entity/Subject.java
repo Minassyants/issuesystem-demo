@@ -4,8 +4,16 @@ import org.springframework.data.annotation.Id;
 
 import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Document;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 
 @Document("subject")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = As.PROPERTY, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Vehicle.class, name = "vehicle"),
+        @JsonSubTypes.Type(value = Good.class, name = "good")
+})
 public abstract class Subject {
     @Id
     private String id;

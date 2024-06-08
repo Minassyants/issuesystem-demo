@@ -1,0 +1,13 @@
+spring:
+    application:
+        name: issuesystem
+    rabbitmq:
+        host: kz-alm-bsk-ws01.ukravto.loc
+        port: 5672
+        username: rmuser
+        password: rmpassword
+management:
+    endpoints:
+        web:
+            exposure:
+                include: [ "prometheus" ]

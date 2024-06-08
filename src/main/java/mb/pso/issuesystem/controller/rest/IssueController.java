@@ -21,6 +21,7 @@ public class IssueController {
     @PostMapping
     public ResponseEntity<Issue> create(@RequestBody Issue issue) {
         Issue i = issueServiceImpl.create(issue);
+        
         return ResponseEntity.ok(i);
     }
 }

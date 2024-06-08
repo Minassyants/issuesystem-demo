@@ -1,0 +1,96 @@
+package mb.pso.issuesystem.service.webclient.impl;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import mb.pso.issuesystem.controller.rabbitmq.RmProducer;
+import mb.pso.issuesystem.entity.AdditionalAttribute;
+import mb.pso.issuesystem.entity.AdditionalAttributeType;
+import mb.pso.issuesystem.entity.Client;
+import mb.pso.issuesystem.entity.Issue;
+import mb.pso.issuesystem.entity.IssueAttribute;
+import mb.pso.issuesystem.entity.Subject;
+import mb.pso.issuesystem.repository.AdditionalAttributeTypeRepository;
+import mb.pso.issuesystem.repository.ClientRepository;
+import mb.pso.issuesystem.repository.IssueAttributeRepository;
+import mb.pso.issuesystem.repository.IssueRepository;
+import mb.pso.issuesystem.repository.SubjectRepository;
+import mb.pso.issuesystem.service.webclient.WebClientService;
+
+@Service
+public class WebClientServiceImpl implements WebClientService {
+
+    private final ClientRepository clientRepository;
+    private final IssueRepository issueRepository;
+    private final SubjectRepository subjectRepository;
+    private final AdditionalAttributeTypeRepository additionalAttributeTypeRepository;
+    private final IssueAttributeRepository issueAttributeRepository;
+    private final RmProducer rmProducer;
+
+    public WebClientServiceImpl(ClientRepository clientRepository, IssueRepository issueRepository,
+            SubjectRepository subjectRepository, AdditionalAttributeTypeRepository additionalAttributeTypeRepository,
+            RmProducer rmProducer, IssueAttributeRepository issueAttributeRepository) {
+        this.clientRepository = clientRepository;
+        this.issueRepository = issueRepository;
+        this.subjectRepository = subjectRepository;
+        this.additionalAttributeTypeRepository = additionalAttributeTypeRepository;
+        this.issueAttributeRepository = issueAttributeRepository;
+        this.rmProducer = rmProducer;
+    }
+
+    @Override
+    public Issue registerNewIssue(Issue issue) {
+        Client client = issue.getClient();
+        Optional<Client> c = clientRepository.findOne(Example.of(client));
+        if (c.isPresent())
+            issue.setClient(c.get());
+        else
+            issue.setClient(clientRepository.save(client));
+
+        List<IssueAttribute> issueAttributes = issue.getIssueAttributes();
+        if (issueAttributes != null)
+            for (IssueAttribute issueAttribute : issueAttributes) {
+                Optional<IssueAttribute> i = issueAttributeRepository.findOne(Example.of(issueAttribute));
+                if (i.isPresent())
+                    issueAttribute = i.get();
+                else
+                    issueAttribute = issueAttributeRepository.save(issueAttribute);
+            }
+
+        Subject subject = issue.getSubject();
+        Optional<Subject> s = subjectRepository.findOne(Example.of(subject));
+        if (s.isPresent())
+            issue.setSubject(s.get());
+        else
+            issue.setSubject(subjectRepository.save(subject));
+
+        List<AdditionalAttribute> additionalAttributes = issue.getAdditionalAttributes();
+        if (additionalAttributes != null)
+            for (AdditionalAttribute additionalAttribute : additionalAttributes) {
+                AdditionalAttributeType additionalAttributeType = additionalAttribute.getType();
+                Optional<AdditionalAttributeType> a = additionalAttributeTypeRepository
+                        .findOne(Example.of(additionalAttributeType));
+                if (a.isPresent())
+                    additionalAttribute.setType(a.get());
+                else
+                    additionalAttribute.setType(additionalAttributeTypeRepository.save(additionalAttributeType));
+            }
+
+        Issue createdIssue = issueRepository.save(issue);
+        try {
+            String json = new ObjectMapper().writeValueAsString(createdIssue);
+            rmProducer.write("pso.newIssue", json);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return createdIssue;
+    }
+
+}
