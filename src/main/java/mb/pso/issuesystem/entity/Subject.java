@@ -21,6 +21,11 @@ public abstract class Subject {
     private String arangoId;
     private String description;
 
+    
+
+    public Subject() {
+    }
+
     public Subject(String description) {
         this.description = description;
     }

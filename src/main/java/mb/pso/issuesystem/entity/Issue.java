@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
-
 import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.Ref;
@@ -25,6 +24,7 @@ public class Issue {
     private IssueType type;
     @Ref
     private Subject subject;
+
     @Ref
     private List<IssueAttribute> issueAttributes;
     private String issueDescription;

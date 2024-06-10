@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,6 +17,7 @@ import mb.pso.issuesystem.entity.Client;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.IssueAttribute;
 import mb.pso.issuesystem.entity.Subject;
+import mb.pso.issuesystem.repository.AdditionalAttributeRepository;
 import mb.pso.issuesystem.repository.AdditionalAttributeTypeRepository;
 import mb.pso.issuesystem.repository.ClientRepository;
 import mb.pso.issuesystem.repository.IssueAttributeRepository;
@@ -31,16 +33,19 @@ public class WebClientServiceImpl implements WebClientService {
     private final SubjectRepository subjectRepository;
     private final AdditionalAttributeTypeRepository additionalAttributeTypeRepository;
     private final IssueAttributeRepository issueAttributeRepository;
+    private final AdditionalAttributeRepository additionalAttributeRepository;
     private final RmProducer rmProducer;
 
     public WebClientServiceImpl(ClientRepository clientRepository, IssueRepository issueRepository,
             SubjectRepository subjectRepository, AdditionalAttributeTypeRepository additionalAttributeTypeRepository,
-            RmProducer rmProducer, IssueAttributeRepository issueAttributeRepository) {
+            RmProducer rmProducer, IssueAttributeRepository issueAttributeRepository,
+            AdditionalAttributeRepository additionalAttributeRepository) {
         this.clientRepository = clientRepository;
         this.issueRepository = issueRepository;
         this.subjectRepository = subjectRepository;
         this.additionalAttributeTypeRepository = additionalAttributeTypeRepository;
         this.issueAttributeRepository = issueAttributeRepository;
+        this.additionalAttributeRepository = additionalAttributeRepository;
         this.rmProducer = rmProducer;
     }
 
@@ -57,9 +62,11 @@ public class WebClientServiceImpl implements WebClientService {
         if (issueAttributes != null)
             for (IssueAttribute issueAttribute : issueAttributes) {
                 Optional<IssueAttribute> i = issueAttributeRepository.findOne(Example.of(issueAttribute));
-                if (i.isPresent())
-                    issueAttribute = i.get();
-                else
+                if (i.isPresent()) {
+                    issueAttribute.setId(i.get().getId());
+                    issueAttribute.setArangoId(i.get().getArangoId());
+                    issueAttribute.setName(i.get().getName());
+                } else
                     issueAttribute = issueAttributeRepository.save(issueAttribute);
             }
 
@@ -81,8 +88,18 @@ public class WebClientServiceImpl implements WebClientService {
                 else
                     additionalAttribute.setType(additionalAttributeTypeRepository.save(additionalAttributeType));
             }
+        Issue exampleIssue = new Issue();
+        exampleIssue.setClient(issue.getClient());
+        exampleIssue.setSubject(issue.getSubject());
+        exampleIssue.setIssueDescription(issue.getIssueDescription());
+        Example<Issue> example = Example.of(exampleIssue);
+        Optional<Issue> cI = issueRepository.findOne(example);
+        Issue createdIssue;
+        if (cI.isPresent())
+            createdIssue = cI.get();
+        else
+            createdIssue = issueRepository.save(issue);
 
-        Issue createdIssue = issueRepository.save(issue);
         try {
             String json = new ObjectMapper().writeValueAsString(createdIssue);
             rmProducer.write("pso.newIssue", json);
@@ -90,7 +107,7 @@ public class WebClientServiceImpl implements WebClientService {
             e.printStackTrace();
         }
 
-        return createdIssue;
+        return issue;
     }
 
 }
