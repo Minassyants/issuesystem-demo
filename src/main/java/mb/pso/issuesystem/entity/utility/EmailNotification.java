@@ -3,38 +3,49 @@ package mb.pso.issuesystem.entity.utility;
 import java.util.Arrays;
 
 public class EmailNotification {
-    String[] to;
+    String[] _to;
     String subject;
     String body;
-    public EmailNotification(String[] to, String subject, String body) {
-        this.to = to;
+    String to;
+
+    public EmailNotification(String[] _to, String subject, String body) {
+
+        this._to = _to;
         this.subject = subject;
         this.body = body;
+        this.to = Arrays.toString(_to);
     }
+
     public EmailNotification() {
     }
-    public String[] getTo() {
-        return to;
-    }
-    public void setTo(String[] to) {
-        this.to = to;
-    }
+
     public String getSubject() {
         return subject;
     }
+
     public void setSubject(String subject) {
         this.subject = subject;
     }
+
     public String getBody() {
         return body;
     }
+
     public void setBody(String body) {
         this.body = body;
     }
-    @Override
-    public String toString() {
-        return "EmailNotification [to=" + Arrays.toString(to) + ", subject=" + subject + ", body=" + body + "]";
+
+    public String[] get_to() {
+        return _to;
     }
 
-    
+    public void set_to(String[] _to) {
+        this._to = _to;
+        this.to = Arrays.toString(_to);
+    }
+
+    public String getTo() {
+        return to;
+    }
+
 }

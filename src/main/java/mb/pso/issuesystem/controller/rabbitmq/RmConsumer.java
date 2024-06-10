@@ -1,7 +1,5 @@
 package mb.pso.issuesystem.controller.rabbitmq;
 
-import java.util.ArrayList;
-
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
@@ -25,11 +23,11 @@ public class RmConsumer {
         this.emailNotificationServiceImpl = emailNotificationServiceImpl;
     }
 
-    @RabbitListener(bindings = @QueueBinding(value = @Queue(name = "Pso.EmailNotifications"), exchange = @Exchange(value = "default", type = "topic"), key = "*.NewIssue"))
+    @RabbitListener(bindings = @QueueBinding(value = @Queue(name = "Pso.EmailNotifications"), exchange = @Exchange(value = "default", type = "topic"), key = "*.newIssue"))
     public void sendEmailNotification(String message) {
         try {
             Issue issue = objectMapper.readValue(message, Issue.class);
-            EmailNotification emailNotification = new EmailNotification(new String[] { issue.getClient().getEmail() },
+            EmailNotification emailNotification = new EmailNotification(new String[] { "\"" + issue.getClient().getEmail() + "\"" },
                     "123", "123");
             emailNotificationServiceImpl.sendEmail(emailNotification);
         } catch (Exception e) {

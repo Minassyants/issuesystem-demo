@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,7 +16,6 @@ import mb.pso.issuesystem.entity.Client;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.IssueAttribute;
 import mb.pso.issuesystem.entity.Subject;
-import mb.pso.issuesystem.repository.AdditionalAttributeRepository;
 import mb.pso.issuesystem.repository.AdditionalAttributeTypeRepository;
 import mb.pso.issuesystem.repository.ClientRepository;
 import mb.pso.issuesystem.repository.IssueAttributeRepository;
@@ -33,19 +31,16 @@ public class WebClientServiceImpl implements WebClientService {
     private final SubjectRepository subjectRepository;
     private final AdditionalAttributeTypeRepository additionalAttributeTypeRepository;
     private final IssueAttributeRepository issueAttributeRepository;
-    private final AdditionalAttributeRepository additionalAttributeRepository;
     private final RmProducer rmProducer;
 
     public WebClientServiceImpl(ClientRepository clientRepository, IssueRepository issueRepository,
             SubjectRepository subjectRepository, AdditionalAttributeTypeRepository additionalAttributeTypeRepository,
-            RmProducer rmProducer, IssueAttributeRepository issueAttributeRepository,
-            AdditionalAttributeRepository additionalAttributeRepository) {
+            RmProducer rmProducer, IssueAttributeRepository issueAttributeRepository) {
         this.clientRepository = clientRepository;
         this.issueRepository = issueRepository;
         this.subjectRepository = subjectRepository;
         this.additionalAttributeTypeRepository = additionalAttributeTypeRepository;
         this.issueAttributeRepository = issueAttributeRepository;
-        this.additionalAttributeRepository = additionalAttributeRepository;
         this.rmProducer = rmProducer;
     }
 
