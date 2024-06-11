@@ -13,7 +13,7 @@ import mb.pso.issuesystem.entity.utility.EmailNotification;
 
 import mb.pso.issuesystem.service.notifications.impl.EmailNotificationServiceImpl;
 
-@Component
+//@Component
 public class RmConsumer {
     private final ObjectMapper objectMapper;
     private final EmailNotificationServiceImpl emailNotificationServiceImpl;
@@ -25,13 +25,13 @@ public class RmConsumer {
 
     @RabbitListener(bindings = @QueueBinding(value = @Queue(name = "Pso.EmailNotifications"), exchange = @Exchange(value = "default", type = "topic"), key = "*.newIssue"))
     public void sendEmailNotification(String message) {
-        try {
-            Issue issue = objectMapper.readValue(message, Issue.class);
-            EmailNotification emailNotification = new EmailNotification(new String[] { "\"" + issue.getClient().getEmail() + "\"" },
-                    "123", "123");
-            emailNotificationServiceImpl.sendEmail(emailNotification);
-        } catch (Exception e) {
-            System.out.println("Error :" + e.getMessage());
-        }
+        // try {
+        //     Issue issue = objectMapper.readValue(message, Issue.class);
+        //     EmailNotification emailNotification = new EmailNotification(new String[] { "\"" + issue.getClient().getEmail() + "\"" },
+        //             "123", "123");
+        //     emailNotificationServiceImpl.sendEmail(emailNotification);
+        // } catch (Exception e) {
+        //     System.out.println("Error :" + e.getMessage());
+        // }
     }
 }

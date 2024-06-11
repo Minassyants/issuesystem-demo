@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.vertx.core.json.JsonObject;
 import mb.pso.issuesystem.controller.rabbitmq.RmProducer;
 import mb.pso.issuesystem.entity.AdditionalAttribute;
 import mb.pso.issuesystem.entity.AdditionalAttributeType;
@@ -16,11 +17,13 @@ import mb.pso.issuesystem.entity.Client;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.IssueAttribute;
 import mb.pso.issuesystem.entity.Subject;
+import mb.pso.issuesystem.entity.utility.EmailNotification;
 import mb.pso.issuesystem.repository.AdditionalAttributeTypeRepository;
 import mb.pso.issuesystem.repository.ClientRepository;
 import mb.pso.issuesystem.repository.IssueAttributeRepository;
 import mb.pso.issuesystem.repository.IssueRepository;
 import mb.pso.issuesystem.repository.SubjectRepository;
+import mb.pso.issuesystem.service.notifications.impl.EmailNotificationServiceImpl;
 import mb.pso.issuesystem.service.webclient.WebClientService;
 
 @Service
@@ -31,17 +34,19 @@ public class WebClientServiceImpl implements WebClientService {
     private final SubjectRepository subjectRepository;
     private final AdditionalAttributeTypeRepository additionalAttributeTypeRepository;
     private final IssueAttributeRepository issueAttributeRepository;
-    private final RmProducer rmProducer;
+    private final EmailNotificationServiceImpl emailNotificationServiceImpl;
 
     public WebClientServiceImpl(ClientRepository clientRepository, IssueRepository issueRepository,
             SubjectRepository subjectRepository, AdditionalAttributeTypeRepository additionalAttributeTypeRepository,
-            RmProducer rmProducer, IssueAttributeRepository issueAttributeRepository) {
+            IssueAttributeRepository issueAttributeRepository,
+            EmailNotificationServiceImpl emailNotificationServiceImpl) {
         this.clientRepository = clientRepository;
         this.issueRepository = issueRepository;
         this.subjectRepository = subjectRepository;
         this.additionalAttributeTypeRepository = additionalAttributeTypeRepository;
         this.issueAttributeRepository = issueAttributeRepository;
-        this.rmProducer = rmProducer;
+        this.emailNotificationServiceImpl = emailNotificationServiceImpl;
+
     }
 
     @Override
@@ -95,14 +100,14 @@ public class WebClientServiceImpl implements WebClientService {
         else
             createdIssue = issueRepository.save(issue);
 
-        try {
-            String json = new ObjectMapper().writeValueAsString(createdIssue);
-            rmProducer.write("pso.newIssue", json);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        EmailNotification emailNotification = new EmailNotification("bsk1c",createdIssue.getClient().getEmail(),"issueRegisteredForClient","Регистрация обращения");
+        JsonObject body = new JsonObject();
+        body.put("name", createdIssue.getClient().getName());
+        emailNotification.setBody(body);
+        emailNotificationServiceImpl.sendEmail(emailNotification);
 
-        return issue;
+
+        return createdIssue;
     }
 
 }

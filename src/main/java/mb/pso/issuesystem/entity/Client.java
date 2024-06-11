@@ -14,7 +14,6 @@ public class Client {
     private String id;
     @ArangoId
     private String arangoId;
-    @PersistentIndexed(deduplicate = true, unique = true)
     private String name;
     private String address;
     private String phoneNumber;

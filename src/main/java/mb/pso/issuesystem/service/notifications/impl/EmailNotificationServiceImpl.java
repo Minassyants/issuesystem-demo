@@ -12,21 +12,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class EmailNotificationServiceImpl implements EmailNotificationService {
     private final WebClient webClient;
-    private final ObjectMapper objectMapper;
 
-    public EmailNotificationServiceImpl(ObjectMapper objectMapper) {
-        this.webClient = WebClient.create("http://kz-alm-bsk-ws01.ukravto.loc:7000");
-        this.objectMapper = objectMapper;
+    public EmailNotificationServiceImpl() {
+        this.webClient = WebClient.create("http://kz-alm-bsk-ws01.ukravto.loc:7008");
+
     }
 
     @Override
     public void sendEmail(EmailNotification emailNotification) {
         try {
-            String body = objectMapper.writeValueAsString(emailNotification);
-            webClient.post().uri("/items/Email")
+
+            webClient.post()
+                    .uri(builder -> builder.path("/api/mail/send").queryParam("prefix", emailNotification.getPrefix())
+                            .queryParam("to", emailNotification.getTo())
+                            .queryParam("subject", emailNotification.getSubject())
+                            .queryParam("templateName", emailNotification.getTemplateName()).build())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .header("Authorization", "Bearer MgRvN6ErScXnUsAEMYzLpxozVwyW-Y7w")
-                    .bodyValue(body).retrieve().bodyToMono(EmailNotification.class)
+
+                    .bodyValue(emailNotification.getBody().toString()).retrieve().bodyToMono(EmailNotification.class)
                     .doOnSuccess(System.out::println)
                     .doOnError(System.out::println).subscribe();
         } catch (Exception e) {

@@ -1,22 +1,55 @@
 package mb.pso.issuesystem.entity.utility;
 
-import java.util.Arrays;
+import io.vertx.core.json.JsonObject;
 
 public class EmailNotification {
-    String[] _to;
-    String subject;
-    String body;
-    String to;
 
-    public EmailNotification(String[] _to, String subject, String body) {
-
-        this._to = _to;
-        this.subject = subject;
-        this.body = body;
-        this.to = Arrays.toString(_to);
-    }
+    private String prefix;
+    private String to;
+    private String templateName;
+    private String subject;
+    private JsonObject body;
 
     public EmailNotification() {
+    }
+
+    public EmailNotification(String prefix, String to, String templateName, String subject) {
+        this.prefix = prefix;
+        this.to = to;
+        this.templateName = templateName;
+        this.subject = subject;
+    }
+
+    public EmailNotification(String prefix, String to, String templateName, String subject, JsonObject body) {
+        this.prefix = prefix;
+        this.to = to;
+        this.templateName = templateName;
+        this.subject = subject;
+        this.body = body;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
     }
 
     public String getSubject() {
@@ -27,25 +60,18 @@ public class EmailNotification {
         this.subject = subject;
     }
 
-    public String getBody() {
+    public JsonObject getBody() {
         return body;
     }
 
-    public void setBody(String body) {
+    public void setBody(JsonObject body) {
         this.body = body;
     }
 
-    public String[] get_to() {
-        return _to;
-    }
-
-    public void set_to(String[] _to) {
-        this._to = _to;
-        this.to = Arrays.toString(_to);
-    }
-
-    public String getTo() {
-        return to;
+    @Override
+    public String toString() {
+        return "EmailNotification [prefix=" + prefix + ", to=" + to + ", templateName=" + templateName + ", subject="
+                + subject + ", body=" + body + "]";
     }
 
 }
