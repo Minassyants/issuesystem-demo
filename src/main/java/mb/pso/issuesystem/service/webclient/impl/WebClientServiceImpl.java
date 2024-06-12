@@ -4,13 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.vertx.core.json.JsonObject;
-import mb.pso.issuesystem.controller.rabbitmq.RmProducer;
 import mb.pso.issuesystem.entity.AdditionalAttribute;
 import mb.pso.issuesystem.entity.AdditionalAttributeType;
 import mb.pso.issuesystem.entity.Client;
@@ -100,14 +98,32 @@ public class WebClientServiceImpl implements WebClientService {
         else
             createdIssue = issueRepository.save(issue);
 
-        EmailNotification emailNotification = new EmailNotification("bsk1c",createdIssue.getClient().getEmail(),"issueRegisteredForClient","Регистрация обращения");
+        EmailNotification emailNotification = new EmailNotification("bsk1c", createdIssue.getClient().getEmail(),
+                "issueRegisteredForClient", "Регистрация обращения");
         JsonObject body = new JsonObject();
         body.put("name", createdIssue.getClient().getName());
         emailNotification.setBody(body);
         emailNotificationServiceImpl.sendEmail(emailNotification);
 
-
         return createdIssue;
+    }
+
+    @Override
+    public List<Issue> getAllIssues() {
+        List<Issue> issues = (List<Issue>) issueRepository.findAll();
+        return issues;
+    }
+
+    @Override
+    public Page<Issue> getAllIssues(Pageable pageable) {
+        Page<Issue> issues = issueRepository.findAll(pageable);
+        return issues;
+    }
+
+    @Override
+    public Optional<Issue> getIssueById(String id) {
+        Optional<Issue> issue = issueRepository.findById(id);
+        return issue;
     }
 
 }
