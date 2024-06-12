@@ -8,13 +8,15 @@ import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.Ref;
 
+import mb.pso.issuesystem.entity.enums.IssueStatus;
+
 @Document("issue")
 public class Issue {
     @Id
     private String id;
     @ArangoId
     private String arangoId;
-    @Ref
+
     private IssueStatus status;
     private String docNumber;
     private Date docDate;

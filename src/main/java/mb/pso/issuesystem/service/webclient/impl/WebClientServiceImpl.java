@@ -15,6 +15,7 @@ import mb.pso.issuesystem.entity.Client;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.IssueAttribute;
 import mb.pso.issuesystem.entity.Subject;
+import mb.pso.issuesystem.entity.enums.IssueStatus;
 import mb.pso.issuesystem.entity.utility.EmailNotification;
 import mb.pso.issuesystem.repository.AdditionalAttributeTypeRepository;
 import mb.pso.issuesystem.repository.ClientRepository;
@@ -68,6 +69,8 @@ public class WebClientServiceImpl implements WebClientService {
                     issueAttribute = issueAttributeRepository.save(issueAttribute);
             }
 
+        issue.setStatus(IssueStatus.NEW);
+
         Subject subject = issue.getSubject();
         Optional<Subject> s = subjectRepository.findOne(Example.of(subject));
         if (s.isPresent())
@@ -95,15 +98,16 @@ public class WebClientServiceImpl implements WebClientService {
         Issue createdIssue;
         if (cI.isPresent())
             createdIssue = cI.get();
-        else
+        else {
             createdIssue = issueRepository.save(issue);
 
-        EmailNotification emailNotification = new EmailNotification("bsk1c", createdIssue.getClient().getEmail(),
-                "issueRegisteredForClient", "Регистрация обращения");
-        JsonObject body = new JsonObject();
-        body.put("name", createdIssue.getClient().getName());
-        emailNotification.setBody(body);
-        emailNotificationServiceImpl.sendEmail(emailNotification);
+            EmailNotification emailNotification = new EmailNotification("bsk1c", createdIssue.getClient().getEmail(),
+                    "issueRegisteredForClient", "Регистрация обращения");
+            JsonObject body = new JsonObject();
+            body.put("name", createdIssue.getClient().getName());
+            emailNotification.setBody(body);
+            emailNotificationServiceImpl.sendEmail(emailNotification);
+        }
 
         return createdIssue;
     }
