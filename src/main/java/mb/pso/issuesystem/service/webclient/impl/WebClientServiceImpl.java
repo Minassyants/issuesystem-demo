@@ -1,5 +1,6 @@
 package mb.pso.issuesystem.service.webclient.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,6 +71,7 @@ public class WebClientServiceImpl implements WebClientService {
             }
 
         issue.setStatus(IssueStatus.NEW);
+        issue.setDocDate(new Date());
 
         Subject subject = issue.getSubject();
         Optional<Subject> s = subjectRepository.findOne(Example.of(subject));
