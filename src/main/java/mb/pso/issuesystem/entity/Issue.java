@@ -36,6 +36,7 @@ public class Issue {
     private String issuedEmployee;
     private String issuedDemands;
     private List<AdditionalAttribute> additionalAttributes;
+    private String departmentFeedback;
     private String issueResult;
 
     @Override
@@ -45,7 +46,8 @@ public class Issue {
                 + ", issueAttributes=" + issueAttributes + ", issueDescription=" + issueDescription
                 + ", relatedDocFromSigma=" + relatedDocFromSigma + ", issuedDepartment=" + issuedDepartment
                 + ", issuedEmployee=" + issuedEmployee + ", issuedDemands=" + issuedDemands + ", additionalAttributes="
-                + additionalAttributes + ", issueResult=" + issueResult + "]";
+                + additionalAttributes + ", departmentFeedback=" + departmentFeedback + ", issueResult=" + issueResult
+                + "]";
     }
 
     public Issue() {
@@ -177,6 +179,18 @@ public class Issue {
 
     public void setIssueResult(String issueResult) {
         this.issueResult = issueResult;
+    }
+
+    public boolean hasDepartment() {
+        return this.issuedDepartment != null && !this.issuedDepartment.isEmpty();
+    }
+
+    public String getDepartmentFeedback() {
+        return departmentFeedback;
+    }
+
+    public void setDepartmentFeedback(String departmentFeedback) {
+        this.departmentFeedback = departmentFeedback;
     }
 
 }

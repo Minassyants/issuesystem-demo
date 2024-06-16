@@ -13,6 +13,7 @@ import io.vertx.core.json.JsonObject;
 import mb.pso.issuesystem.entity.AdditionalAttribute;
 import mb.pso.issuesystem.entity.AdditionalAttributeType;
 import mb.pso.issuesystem.entity.Client;
+import mb.pso.issuesystem.entity.Department;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.IssueAttribute;
 import mb.pso.issuesystem.entity.Subject;
@@ -20,6 +21,7 @@ import mb.pso.issuesystem.entity.enums.IssueStatus;
 import mb.pso.issuesystem.entity.utility.EmailNotification;
 import mb.pso.issuesystem.repository.AdditionalAttributeTypeRepository;
 import mb.pso.issuesystem.repository.ClientRepository;
+import mb.pso.issuesystem.repository.DepartmentRepository;
 import mb.pso.issuesystem.repository.IssueAttributeRepository;
 import mb.pso.issuesystem.repository.IssueRepository;
 import mb.pso.issuesystem.repository.SubjectRepository;
@@ -34,17 +36,19 @@ public class WebClientServiceImpl implements WebClientService {
     private final SubjectRepository subjectRepository;
     private final AdditionalAttributeTypeRepository additionalAttributeTypeRepository;
     private final IssueAttributeRepository issueAttributeRepository;
+    private final DepartmentRepository departmentRepository;
     private final EmailNotificationServiceImpl emailNotificationServiceImpl;
 
     public WebClientServiceImpl(ClientRepository clientRepository, IssueRepository issueRepository,
             SubjectRepository subjectRepository, AdditionalAttributeTypeRepository additionalAttributeTypeRepository,
             IssueAttributeRepository issueAttributeRepository,
-            EmailNotificationServiceImpl emailNotificationServiceImpl) {
+            EmailNotificationServiceImpl emailNotificationServiceImpl, DepartmentRepository departmentRepository) {
         this.clientRepository = clientRepository;
         this.issueRepository = issueRepository;
         this.subjectRepository = subjectRepository;
         this.additionalAttributeTypeRepository = additionalAttributeTypeRepository;
         this.issueAttributeRepository = issueAttributeRepository;
+        this.departmentRepository = departmentRepository;
         this.emailNotificationServiceImpl = emailNotificationServiceImpl;
 
     }
@@ -129,6 +133,66 @@ public class WebClientServiceImpl implements WebClientService {
     @Override
     public Optional<Issue> getIssueById(String id) {
         Optional<Issue> issue = issueRepository.findById(id);
+        return issue;
+    }
+
+    public Issue updateInternalInfo(Issue issue) {
+        Optional<Issue> _oldIssue = issueRepository.findById(issue.getId());
+        if (!_oldIssue.isPresent())
+            return null;
+
+        Issue oldIssue = _oldIssue.get();
+        Department department = issue.getIssuedDepartment();
+        Optional<Department> c = departmentRepository.findOne(Example.of(department));
+        if (c.isPresent())
+            oldIssue.setIssuedDepartment(c.get());
+        else
+            oldIssue.setIssuedDepartment(departmentRepository.save(department));
+
+        oldIssue.setIssuedEmployee(issue.getIssuedEmployee());
+
+        issue = issueRepository.save(oldIssue);
+        return issue;
+
+    }
+
+    public Issue setInProgress(Issue issue) {
+        Optional<Issue> _oldIssue = issueRepository.findById(issue.getId());
+        if (!_oldIssue.isPresent())
+            return null;
+
+        Issue oldIssue = _oldIssue.get();
+        if (oldIssue.getStatus() != IssueStatus.NEW | !oldIssue.hasDepartment()
+                | oldIssue.getIssuedEmployee() == null | oldIssue.getIssuedEmployee().isEmpty())
+            return null;
+        oldIssue.setStatus(IssueStatus.INPROGRESS);
+        issue = issueRepository.save(oldIssue);
+        return issue;
+
+    }
+
+    public Issue updateDepartmentFeedback(Issue issue) {
+        Optional<Issue> _oldIssue = issueRepository.findById(issue.getId());
+        if (!_oldIssue.isPresent())
+            return null;
+
+        Issue oldIssue = _oldIssue.get();
+        oldIssue.setDepartmentFeedback(issue.getDepartmentFeedback());
+        issue = issueRepository.save(oldIssue);
+        return issue;
+    }
+
+    public Issue setPending(Issue issue) {
+        Optional<Issue> _oldIssue = issueRepository.findById(issue.getId());
+        if (!_oldIssue.isPresent())
+            return null;
+
+        Issue oldIssue = _oldIssue.get();
+        if (oldIssue.getStatus() != IssueStatus.INPROGRESS |
+                oldIssue.getDepartmentFeedback() == null | oldIssue.getDepartmentFeedback().isEmpty())
+            return null;
+        oldIssue.setStatus(IssueStatus.PENDINGRESULT);
+        issue = issueRepository.save(oldIssue);
         return issue;
     }
 
