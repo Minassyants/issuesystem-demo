@@ -51,4 +51,8 @@ public class Department {
         this.name = name;
     }
 
+    public boolean isEmpty()
+    {
+        return this.id == null || this.id.isEmpty();
+    }
 }

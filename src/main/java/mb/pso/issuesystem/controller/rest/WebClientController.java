@@ -25,6 +25,55 @@ public class WebClientController {
         this.webClientServiceImpl = webClientServiceImpl;
     }
 
+    @PostMapping("/setClosed")
+    public ResponseEntity<Issue> setClosed(@RequestBody Issue issue) {
+        Issue updatedIssue = webClientServiceImpl.setClosed(issue);
+        if (updatedIssue == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(updatedIssue);
+    }
+
+    @PostMapping("/updateIssueResult")
+    public ResponseEntity<Issue> updateIssueResult(@RequestBody Issue issue) {
+        Issue updatedIssue = webClientServiceImpl.updateIssueResult(issue);
+        if (updatedIssue == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(updatedIssue);
+    }
+
+    @PostMapping("/updateDepartmentFeedback")
+    public ResponseEntity<Issue> updateDepartmentFeedback(@RequestBody Issue issue) {
+        Issue updatedIssue = webClientServiceImpl.updateDepartmentFeedback(issue);
+        if (updatedIssue == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(updatedIssue);
+
+    }
+
+    @PostMapping("/setPendingResult")
+    public ResponseEntity<Issue> setPendingResult(@RequestBody Issue issue) {
+        Issue updatedIssue = webClientServiceImpl.setPending(issue);
+        if (updatedIssue == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(updatedIssue);
+    }
+
+    @PostMapping("/setInProgress")
+    public ResponseEntity<Issue> setInProgress(@RequestBody Issue issue) {
+        Issue updatedIssue = webClientServiceImpl.setInProgress(issue);
+        if (updatedIssue == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(updatedIssue);
+    }
+
+    @PostMapping("/updateInternalInfo")
+    public ResponseEntity<Issue> updateInternalInfo(@RequestBody Issue issue) {
+        Issue updatedIssue = webClientServiceImpl.updateInternalInfo(issue);
+        if (updatedIssue == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(updatedIssue);
+    }
+
     @PostMapping("/registerNewIssue")
     public ResponseEntity<Issue> registerNewIssue(@RequestBody Issue issue) {
         Issue createdIssue = webClientServiceImpl.registerNewIssue(issue);
