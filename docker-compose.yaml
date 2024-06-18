@@ -1,13 +1,13 @@
 version: '3.7'
 services:
   issuesystem:
-    container_name: issuesystem_gzk
+    container_name: issuesystem
     image: killka1997/issuesystem
     build:
       context: .
     environment:
       - SERVER_PORT=80
-      - ARANGODB_HOST=issuesystem_gzk_arangodb
+      - ARANGODB_HOST=issuesystem_arangodb
       - ARANGODB_PORT=8529
     expose:
       - 80
@@ -17,7 +17,7 @@ services:
       - traefiknetwork
     restart: always
   arangodb:
-    container_name: issuesystem_gzk_arangodb
+    container_name: issuesystem_arangodb
     image: arangodb
     expose:
       - 8529
