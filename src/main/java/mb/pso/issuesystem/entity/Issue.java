@@ -8,13 +8,15 @@ import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.Ref;
 
+import mb.pso.issuesystem.entity.enums.IssueStatus;
+
 @Document("issue")
 public class Issue {
     @Id
     private String id;
     @ArangoId
     private String arangoId;
-    @Ref
+
     private IssueStatus status;
     private String docNumber;
     private Date docDate;
@@ -34,6 +36,7 @@ public class Issue {
     private String issuedEmployee;
     private String issuedDemands;
     private List<AdditionalAttribute> additionalAttributes;
+    private String departmentFeedback;
     private String issueResult;
 
     @Override
@@ -43,7 +46,8 @@ public class Issue {
                 + ", issueAttributes=" + issueAttributes + ", issueDescription=" + issueDescription
                 + ", relatedDocFromSigma=" + relatedDocFromSigma + ", issuedDepartment=" + issuedDepartment
                 + ", issuedEmployee=" + issuedEmployee + ", issuedDemands=" + issuedDemands + ", additionalAttributes="
-                + additionalAttributes + ", issueResult=" + issueResult + "]";
+                + additionalAttributes + ", departmentFeedback=" + departmentFeedback + ", issueResult=" + issueResult
+                + "]";
     }
 
     public Issue() {
@@ -175,6 +179,18 @@ public class Issue {
 
     public void setIssueResult(String issueResult) {
         this.issueResult = issueResult;
+    }
+
+    public boolean hasDepartment() {
+        return this.issuedDepartment != null && !this.issuedDepartment.isEmpty();
+    }
+
+    public String getDepartmentFeedback() {
+        return departmentFeedback;
+    }
+
+    public void setDepartmentFeedback(String departmentFeedback) {
+        this.departmentFeedback = departmentFeedback;
     }
 
 }

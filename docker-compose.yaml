@@ -1,8 +1,32 @@
 version: '3.7'
 services:
+  issuesystem:
+    container_name: issuesystem_gzk
+    image: killka1997/issuesystem
+    build:
+      context: .
+    environment:
+      - SERVER_PORT=80
+      - ARANGODB_HOST=issuesystem_gzk_arangodb
+      - ARANGODB_PORT=8529
+    expose:
+      - 80
+    depends_on:
+      - arangodb
+    networks:
+      - traefiknetwork
+    restart: always
   arangodb:
+    container_name: issuesystem_gzk_arangodb
     image: arangodb
-    ports:
-      - "8529:8529"
+    expose:
+      - 8529
     environment:
       - ARANGO_NO_AUTH=1
+    networks:
+      - traefiknetwork
+
+networks:
+  traefiknetwork:
+    name: traefiknetwork
+    driver: bridge
