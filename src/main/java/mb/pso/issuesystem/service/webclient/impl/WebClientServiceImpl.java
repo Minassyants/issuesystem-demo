@@ -196,4 +196,29 @@ public class WebClientServiceImpl implements WebClientService {
         return issue;
     }
 
+    public Issue updateIssueResult(Issue issue) {
+        Optional<Issue> _oldIssue = issueRepository.findById(issue.getId());
+        if (!_oldIssue.isPresent())
+            return null;
+
+        Issue oldIssue = _oldIssue.get();
+        oldIssue.setIssueResult(issue.getIssueResult());
+        issue = issueRepository.save(oldIssue);
+        return issue;
+    }
+
+    public Issue setClosed(Issue issue) {
+        Optional<Issue> _oldIssue = issueRepository.findById(issue.getId());
+        if (!_oldIssue.isPresent())
+            return null;
+
+        Issue oldIssue = _oldIssue.get();
+        if (oldIssue.getStatus() != IssueStatus.PENDINGRESULT |
+                oldIssue.getIssueResult() == null | oldIssue.getIssueResult().isEmpty())
+            return null;
+        oldIssue.setStatus(IssueStatus.CLOSED);
+        issue = issueRepository.save(oldIssue);
+        return issue;
+    }
+
 }

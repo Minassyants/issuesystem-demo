@@ -25,6 +25,22 @@ public class WebClientController {
         this.webClientServiceImpl = webClientServiceImpl;
     }
 
+    @PostMapping("/setClosed")
+    public ResponseEntity<Issue> setClosed(@RequestBody Issue issue) {
+        Issue updatedIssue = webClientServiceImpl.setClosed(issue);
+        if (updatedIssue == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(updatedIssue);
+    }
+
+    @PostMapping("/updateIssueResult")
+    public ResponseEntity<Issue> updateIssueResult(@RequestBody Issue issue) {
+        Issue updatedIssue = webClientServiceImpl.updateIssueResult(issue);
+        if (updatedIssue == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(updatedIssue);
+    }
+
     @PostMapping("/updateDepartmentFeedback")
     public ResponseEntity<Issue> updateDepartmentFeedback(@RequestBody Issue issue) {
         Issue updatedIssue = webClientServiceImpl.updateDepartmentFeedback(issue);
