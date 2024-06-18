@@ -6,8 +6,12 @@ spring:
         port: 5672
         username: rmuser
         password: rmpassword
+server:
+        port: 8080
 management:
     endpoints:
         web:
             exposure:
                 include: [ "prometheus" ]
+arangodb_host: localhost
+arangodb_port: 8529
