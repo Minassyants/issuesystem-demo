@@ -8,7 +8,7 @@ import com.arangodb.springframework.annotation.PersistentIndexed;
 import com.arangodb.springframework.annotation.Ref;
 
 @Document("user")
-public class User {
+public class Users {
     @Id
     private String id;
     @ArangoId
@@ -16,23 +16,23 @@ public class User {
     @PersistentIndexed(unique = true)
     private String email;
     @PersistentIndexed(unique = true)
-    private String login;
+    private String username;
     private String password;
     @Ref
     private Department department;
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", arangoId=" + arangoId + ", email=" + email + ", login=" + login + ", password="
+        return "User [id=" + id + ", arangoId=" + arangoId + ", email=" + email + ", username=" + username + ", password="
                 + password + ", department=" + department + "]";
     }
 
-    public User() {
+    public Users() {
     }
 
-    public User(String email, String login, String password, Department department) {
+    public Users(String email, String username, String password, Department department) {
         this.email = email;
-        this.login = login;
+        this.username = username;
         this.password = password;
         this.department = department;
     }
@@ -61,12 +61,12 @@ public class User {
         this.email = email;
     }
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String login) {
+        this.username = login;
     }
 
     public String getPassword() {

@@ -8,5 +8,4 @@ import mb.pso.issuesystem.entity.Subject;
 
 @Repository
 public interface SubjectRepository extends ArangoRepository<Subject, String> {
-
 }

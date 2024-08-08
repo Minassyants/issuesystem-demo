@@ -4,9 +4,9 @@ import org.springframework.stereotype.Repository;
 
 import com.arangodb.springframework.repository.ArangoRepository;
 
-import mb.pso.issuesystem.entity.User;
+import mb.pso.issuesystem.entity.Users;
 
 @Repository
-public interface UserRepository extends ArangoRepository<User, String> {
+public interface UserRepository extends ArangoRepository<Users, String> {
 
 }
