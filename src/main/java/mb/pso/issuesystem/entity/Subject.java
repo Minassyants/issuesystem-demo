@@ -1,14 +1,15 @@
 package mb.pso.issuesystem.entity;
 
-import org.springframework.data.annotation.Id;
 
-import com.arangodb.springframework.annotation.ArangoId;
-import com.arangodb.springframework.annotation.Document;
+
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 
-@Document("subject")
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = As.PROPERTY, property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Vehicle.class, name = "vehicle"),
@@ -17,11 +18,13 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 public abstract class Subject {
     @Id
     private String id;
-    @ArangoId
-    private String arangoId;
+
     private String description;
 
-    
+    @Override
+    public String toString() {
+        return "Subject [id=" + id + ", description=" + description + "]";
+    }
 
     public Subject() {
     }
@@ -30,25 +33,12 @@ public abstract class Subject {
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return "Subject [id=" + id + ", arangoId=" + arangoId + ", description=" + description + "]";
-    }
-
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getArangoId() {
-        return arangoId;
-    }
-
-    public void setArangoId(String arangoId) {
-        this.arangoId = arangoId;
     }
 
     public String getDescription() {

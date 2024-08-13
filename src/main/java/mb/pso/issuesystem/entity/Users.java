@@ -1,30 +1,30 @@
 package mb.pso.issuesystem.entity;
 
-import org.springframework.data.annotation.Id;
 
-import com.arangodb.springframework.annotation.ArangoId;
-import com.arangodb.springframework.annotation.Document;
-import com.arangodb.springframework.annotation.PersistentIndexed;
-import com.arangodb.springframework.annotation.Ref;
 
-@Document("user")
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(indexes = @Index(columnList = "email, username", unique = true))
 public class Users {
     @Id
     private String id;
-    @ArangoId
-    private String arangoId;
-    @PersistentIndexed(unique = true)
+
     private String email;
-    @PersistentIndexed(unique = true)
+
     private String username;
     private String password;
-    @Ref
+    @ManyToOne
     private Department department;
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", arangoId=" + arangoId + ", email=" + email + ", username=" + username + ", password="
-                + password + ", department=" + department + "]";
+        return "Users [id=" + id + ", email=" + email + ", username=" + username + ", password=" + password
+                + ", department=" + department + "]";
     }
 
     public Users() {
@@ -43,14 +43,6 @@ public class Users {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getArangoId() {
-        return arangoId;
-    }
-
-    public void setArangoId(String arangoId) {
-        this.arangoId = arangoId;
     }
 
     public String getEmail() {

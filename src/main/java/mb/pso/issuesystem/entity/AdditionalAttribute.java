@@ -1,24 +1,22 @@
 package mb.pso.issuesystem.entity;
 
-import org.springframework.data.annotation.Id;
 
-import com.arangodb.springframework.annotation.ArangoId;
-import com.arangodb.springframework.annotation.Document;
-import com.arangodb.springframework.annotation.Ref;
 
-@Document("additionalAttribute")
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class AdditionalAttribute {
     @Id
     private String id;
-    @ArangoId
-    private String arangoId;
-    @Ref
+    @ManyToOne
     private AdditionalAttributeType type;
     private String value;
 
     @Override
     public String toString() {
-        return "AdditionalAttribute [id=" + id + ", arangoId=" + arangoId + ", type=" + type + ", value=" + value + "]";
+        return "AdditionalAttribute [id=" + id + ", type=" + type + ", value=" + value + "]";
     }
 
     public AdditionalAttribute() {
@@ -35,14 +33,6 @@ public class AdditionalAttribute {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getArangoId() {
-        return arangoId;
-    }
-
-    public void setArangoId(String arangoId) {
-        this.arangoId = arangoId;
     }
 
     public AdditionalAttributeType getType() {

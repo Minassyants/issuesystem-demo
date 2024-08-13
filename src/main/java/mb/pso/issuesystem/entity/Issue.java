@@ -3,51 +3,49 @@ package mb.pso.issuesystem.entity;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
-import com.arangodb.springframework.annotation.ArangoId;
-import com.arangodb.springframework.annotation.Document;
-import com.arangodb.springframework.annotation.Ref;
-
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 
-@Document("issue")
+@Entity
 public class Issue {
     @Id
     private String id;
-    @ArangoId
-    private String arangoId;
 
     private IssueStatus status;
     private String docNumber;
     private Date docDate;
-    @Ref
+    @ManyToOne(cascade = CascadeType.ALL)
     private Client client;
-    @Ref
+    @ManyToOne(cascade = CascadeType.ALL)
     private IssueType type;
-    @Ref
+    @ManyToOne(cascade = CascadeType.ALL)
     private Subject subject;
 
-    @Ref
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<IssueAttribute> issueAttributes;
     private String issueDescription;
     private List<String> relatedDocFromSigma;
-    @Ref
+    @ManyToOne(cascade = CascadeType.ALL)
     private Department issuedDepartment;
     private String issuedEmployee;
     private String issuedDemands;
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<AdditionalAttribute> additionalAttributes;
     private String departmentFeedback;
     private String issueResult;
 
     @Override
     public String toString() {
-        return "Issue [id=" + id + ", arangoId=" + arangoId + ", status=" + status + ", docNumber=" + docNumber
-                + ", docDate=" + docDate + ", client=" + client + ", type=" + type + ", subject=" + subject
-                + ", issueAttributes=" + issueAttributes + ", issueDescription=" + issueDescription
-                + ", relatedDocFromSigma=" + relatedDocFromSigma + ", issuedDepartment=" + issuedDepartment
-                + ", issuedEmployee=" + issuedEmployee + ", issuedDemands=" + issuedDemands + ", additionalAttributes="
-                + additionalAttributes + ", departmentFeedback=" + departmentFeedback + ", issueResult=" + issueResult
-                + "]";
+        return "Issue [id=" + id + ", status=" + status + ", docNumber=" + docNumber + ", docDate=" + docDate
+                + ", client=" + client + ", type=" + type + ", subject=" + subject + ", issueAttributes="
+                + issueAttributes + ", issueDescription=" + issueDescription + ", relatedDocFromSigma="
+                + relatedDocFromSigma + ", issuedDepartment=" + issuedDepartment + ", issuedEmployee=" + issuedEmployee
+                + ", issuedDemands=" + issuedDemands + ", additionalAttributes=" + additionalAttributes
+                + ", departmentFeedback=" + departmentFeedback + ", issueResult=" + issueResult + "]";
     }
 
     public Issue() {
@@ -59,14 +57,6 @@ public class Issue {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getArangoId() {
-        return arangoId;
-    }
-
-    public void setArangoId(String arangoId) {
-        this.arangoId = arangoId;
     }
 
     public IssueStatus getStatus() {

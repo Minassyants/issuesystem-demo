@@ -1,23 +1,23 @@
 package mb.pso.issuesystem.entity;
 
-import org.springframework.data.annotation.Id;
 
-import com.arangodb.springframework.annotation.ArangoId;
-import com.arangodb.springframework.annotation.Document;
-import com.arangodb.springframework.annotation.PersistentIndexed;
 
-@Document("issueType")
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(indexes = @Index(columnList = "name", unique = true))
 public class IssueType {
     @Id
     private String id;
-    @ArangoId
-    private String arangoId;
-    @PersistentIndexed(deduplicate = true, unique = true)
+
     private String name;
 
     @Override
     public String toString() {
-        return "IssueType [id=" + id + ", arangoId=" + arangoId + ", name=" + name + "]";
+        return "IssueType [id=" + id + ", name=" + name + "]";
     }
 
     public IssueType() {
@@ -33,14 +33,6 @@ public class IssueType {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getArangoId() {
-        return arangoId;
-    }
-
-    public void setArangoId(String arangoId) {
-        this.arangoId = arangoId;
     }
 
     public String getName() {

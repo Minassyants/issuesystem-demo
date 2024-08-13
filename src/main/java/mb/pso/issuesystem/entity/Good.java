@@ -13,7 +13,7 @@ public class Good extends Subject {
 
     @Override
     public String toString() {
-        return "Good [getId()=" + getId() + ", getArangoId()=" + getArangoId()
+        return "Good [getId()=" + getId()
                 + ", getDescription()=" + getDescription() + "]";
     }
 

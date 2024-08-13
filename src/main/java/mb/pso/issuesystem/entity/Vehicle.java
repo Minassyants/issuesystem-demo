@@ -1,6 +1,5 @@
 package mb.pso.issuesystem.entity;
 
-
 public class Vehicle extends Subject {
     private String vin;
 
@@ -11,7 +10,7 @@ public class Vehicle extends Subject {
 
     @Override
     public String toString() {
-        return "Vehicle [vin=" + vin + ", getId()=" + getId() + ", getArangoId()=" + getArangoId()
+        return "Vehicle [vin=" + vin + ", getId()=" + getId()
                 + ", getDescription()=" + getDescription() + "]";
     }
 

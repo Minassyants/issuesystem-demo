@@ -6,6 +6,21 @@ spring:
         port: 5672
         username: rmuser
         password: rmpassword
+    datasource:
+        url: jdbc:h2:file:./database/sample
+    flyway:
+        enabled: true
+    jpa:
+        hibernate:
+            ddl-auto: validate
+        properties:
+            jakarta:
+                persistence:
+                    schema-generation:
+                        create-source: metadata
+                        scripts:
+                            action: update
+                            create-target: V1_0_1_script.sql
 server:
         port: 8080
 management:
@@ -13,5 +28,3 @@ management:
         web:
             exposure:
                 include: [ "prometheus" ]
-arangodb_host: localhost
-arangodb_port: 8529

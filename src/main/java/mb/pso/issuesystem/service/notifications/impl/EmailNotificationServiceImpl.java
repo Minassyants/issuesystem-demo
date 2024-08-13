@@ -7,8 +7,6 @@ import mb.pso.issuesystem.entity.utility.EmailNotification;
 import mb.pso.issuesystem.service.notifications.EmailNotificationService;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 @Service
 public class EmailNotificationServiceImpl implements EmailNotificationService {
     private final WebClient webClient;
