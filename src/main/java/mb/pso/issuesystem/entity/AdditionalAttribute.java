@@ -16,11 +16,11 @@ public class AdditionalAttribute {
     private String id;
     @ManyToOne(cascade = CascadeType.ALL)
     private AdditionalAttributeType type;
-    private String value;
+    private String stringValue;
 
     @Override
     public String toString() {
-        return "AdditionalAttribute [id=" + id + ", type=" + type + ", value=" + value + "]";
+        return "AdditionalAttribute [id=" + id + ", type=" + type + ", value=" + stringValue + "]";
     }
 
     public AdditionalAttribute() {
@@ -28,7 +28,7 @@ public class AdditionalAttribute {
 
     public AdditionalAttribute(AdditionalAttributeType type, String value) {
         this.type = type;
-        this.value = value;
+        this.stringValue = value;
     }
 
     public String getId() {
@@ -47,12 +47,12 @@ public class AdditionalAttribute {
         this.type = type;
     }
 
-    public String getValue() {
-        return value;
+    public String getStringValue() {
+        return stringValue;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setStringValue(String value) {
+        this.stringValue = value;
     }
 
 }

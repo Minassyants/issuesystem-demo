@@ -1,10 +1,11 @@
+create sequence additional_attribute_seq start with 1 increment by 50;
 create sequence department_seq start with 1 increment by 50;
 create sequence issue_attribute_seq start with 1 increment by 50;
 create sequence issue_seq start with 1 increment by 50;
 create sequence issue_type_seq start with 1 increment by 50;
 create sequence subject_seq start with 1 increment by 50;
 create sequence users_seq start with 1 increment by 50;
-create table additional_attribute (id varchar(255) not null, type_id varchar(255), value varchar(255), primary key (id));
+create table additional_attribute (id varchar(255) not null, string_value varchar(255), type_id varchar(255), primary key (id));
 create table additional_attribute_type (id varchar(255) not null, name varchar(255), primary key (id), unique (name));
 create table client (address varchar(255), email varchar(255), id varchar(255) not null, name varchar(255), phone_number varchar(255), primary key (id), unique (email));
 create table department (id varchar(255) not null, name varchar(255), primary key (id), unique (name));
