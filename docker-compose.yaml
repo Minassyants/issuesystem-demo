@@ -17,7 +17,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.issuesystem.rule=Host(`kz-alm-bsk-ws01.ukravto.loc`)
-      - traefik.http.services.issuesystem.loadbalancer.server.port=80
+      - traefik.http.services.issuesystem.loadbalancer.server.port=8080
       - traefik.http.routers.issuesystem.entrypoints=issuesystem
 
 networks:
