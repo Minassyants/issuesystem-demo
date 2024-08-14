@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import mb.pso.issuesystem.entity.Issue;
+import mb.pso.issuesystem.entity.Users;
+import mb.pso.issuesystem.service.impl.UserServiceImpl;
 import mb.pso.issuesystem.service.webclient.impl.WebClientServiceImpl;
 
 @RestController
@@ -20,9 +22,19 @@ import mb.pso.issuesystem.service.webclient.impl.WebClientServiceImpl;
 public class WebClientController {
 
     private final WebClientServiceImpl webClientServiceImpl;
+    private final UserServiceImpl userServiceImpl;
 
-    public WebClientController(WebClientServiceImpl webClientServiceImpl) {
+    public WebClientController(WebClientServiceImpl webClientServiceImpl, UserServiceImpl userServiceImpl) {
         this.webClientServiceImpl = webClientServiceImpl;
+        this.userServiceImpl = userServiceImpl;
+    }
+
+    // TODO: Это полная ...
+    @GetMapping("/auth")
+    public ResponseEntity<Users> auth(@RequestParam String username) {
+        Optional<Users> user = userServiceImpl.getByName(username);
+        assert user.isPresent();
+        return ResponseEntity.ok(user.get());
     }
 
     @PostMapping("/setClosed")

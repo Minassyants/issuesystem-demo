@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
@@ -17,6 +19,7 @@ import jakarta.persistence.Id;
 })
 public abstract class Subject {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
 
     private String description;

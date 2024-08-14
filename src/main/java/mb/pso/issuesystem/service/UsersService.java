@@ -15,5 +15,7 @@ public interface UsersService {
 
     public Optional<Users> get(String id);
 
+    public Optional<Users> getByName(String name);
+
     public Iterable<Users> getAll();
 }

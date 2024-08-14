@@ -37,6 +37,12 @@ public class UserServiceImpl implements UsersService {
     }
 
     @Override
+    public Optional<Users> getByName(String name) {
+        
+        return Optional.of(userRepository.findByUsername(name).get(0));
+    }
+
+    @Override
     public Optional<Users> get(String id) {
         return userRepository.findById(id);
     }

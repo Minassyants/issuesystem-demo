@@ -2,7 +2,10 @@ package mb.pso.issuesystem.entity;
 
 
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.ManyToOne;
@@ -12,13 +15,14 @@ import jakarta.persistence.Table;
 @Table(indexes = @Index(columnList = "email, username", unique = true))
 public class Users {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
 
     private String email;
 
     private String username;
     private String password;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Department department;
 
     @Override
