@@ -1,4 +1,7 @@
 spring:
+    h2:
+        console:
+            enabled: true
     application:
         name: issuesystem
     rabbitmq:
@@ -9,11 +12,20 @@ spring:
     datasource:
         url: jdbc:h2:file:./database/sample
     flyway:
+        user: ""
+        url: jdbc:h2:file:./database/sample
         enabled: true
     jpa:
         hibernate:
             ddl-auto: validate
+            
+        
         properties:
+            hibernate:
+                hbm2ddl:
+                    schema-generation:
+                        script:
+                            append: false
             jakarta:
                 persistence:
                     schema-generation:
@@ -21,6 +33,7 @@ spring:
                         scripts:
                             action: update
                             create-target: ./src/main/resources/db/migration/V2__script.sql
+                        
 server:
         port: 8080
 management:

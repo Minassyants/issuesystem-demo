@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 @Table(indexes = @Index(columnList = "name", unique = true))
 public class IssueType {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     private String name;

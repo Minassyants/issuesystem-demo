@@ -10,17 +10,3 @@ alter table if exists issue_type drop constraint if exists UKff22b26a31m6rkn70y5
 alter table if exists issue_type add constraint UKff22b26a31m6rkn70y5h208ju unique (name);
 alter table if exists users drop constraint if exists UKfnranlqhubvw04boopn028e6;
 alter table if exists users add constraint UKfnranlqhubvw04boopn028e6 unique (email, username);
-alter table if exists additional_attribute_type drop constraint if exists UKgwbhi3act83kxlbf6guuwfydc;
-alter table if exists additional_attribute_type add constraint UKgwbhi3act83kxlbf6guuwfydc unique (name);
-alter table if exists client drop constraint if exists UKbfgjs3fem0hmjhvih80158x29;
-alter table if exists client add constraint UKbfgjs3fem0hmjhvih80158x29 unique (email);
-alter table if exists department drop constraint if exists UK1t68827l97cwyxo9r1u6t4p7d;
-alter table if exists department add constraint UK1t68827l97cwyxo9r1u6t4p7d unique (name);
-alter table if exists issue_attribute drop constraint if exists UKdm64v2dc8y67hy80pu4ppykpy;
-alter table if exists issue_attribute add constraint UKdm64v2dc8y67hy80pu4ppykpy unique (name);
-alter table if exists issue_type drop constraint if exists UKff22b26a31m6rkn70y5h208ju;
-alter table if exists issue_type add constraint UKff22b26a31m6rkn70y5h208ju unique (name);
-alter table if exists users drop constraint if exists UKfnranlqhubvw04boopn028e6;
-alter table if exists users add constraint UKfnranlqhubvw04boopn028e6 unique (email, username);
-create sequence additional_attribute_type_seq start with 1 increment by 50;
-create sequence client_seq start with 1 increment by 50;

@@ -15,7 +15,7 @@ import mb.pso.issuesystem.entity.enums.IssueStatus;
 @Entity
 public class Issue {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     private IssueStatus status;
@@ -26,7 +26,7 @@ public class Issue {
     @ManyToOne(cascade = CascadeType.ALL)
     private IssueType type;
     @ManyToOne(cascade = CascadeType.ALL)
-    private Subject subject;
+    private Subject subject = null;
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<IssueAttribute> issueAttributes;

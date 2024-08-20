@@ -1,5 +1,6 @@
 package mb.pso.issuesystem.service.webclient.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -113,6 +114,8 @@ public class WebClientServiceImpl implements WebClientService {
         if (cI.isPresent())
             createdIssue = cI.get();
         else {
+            issue.setStatus(IssueStatus.NEW);
+            issue.setDocDate(new Date());
             createdIssue = issueRepository.save(issue);
 
             EmailNotification emailNotification = new EmailNotification("bsk1c", createdIssue.getClient().getEmail(),

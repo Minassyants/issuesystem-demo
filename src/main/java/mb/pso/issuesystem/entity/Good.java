@@ -1,5 +1,8 @@
 package mb.pso.issuesystem.entity;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class Good extends Subject {
 
     public Good() {

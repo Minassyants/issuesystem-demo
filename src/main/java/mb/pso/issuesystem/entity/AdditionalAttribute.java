@@ -12,7 +12,7 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class AdditionalAttribute {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     @ManyToOne(cascade = CascadeType.ALL)
     private AdditionalAttributeType type;

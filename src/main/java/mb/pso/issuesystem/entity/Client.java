@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 @Table(indexes = @Index(columnList = "email", unique = true))
 public class Client {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String name;
     private String address;
