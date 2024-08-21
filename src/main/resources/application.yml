@@ -1,6 +1,6 @@
 spring:
     profiles:
-        active: @profileACtive@
+        active: ${profileActive}
     application:
         name: issuesystem
     rabbitmq:
