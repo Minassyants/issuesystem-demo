@@ -16,7 +16,7 @@ spring:
     flyway:
         user: issuesystem
         password: issuesystem
-        url: jdbc:postgresql://issuesystem_postgersql:5432/issuesystem
+        url: jdbc:postgresql://localhost:5432/issuesystem
         baseline-on-migrate: true
 
         enabled: true

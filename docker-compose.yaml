@@ -31,6 +31,7 @@ services:
     environment:
       - POSTGRES_USER=issuesystem
       - POSTGRES_PASSWORD=issuesystem
+      - POSTGRES_DB=issuesystem
     volumes:
       - postgresql:/var/lib/postgresql
       - postgresql_data:/var/lib/postgresql/data
