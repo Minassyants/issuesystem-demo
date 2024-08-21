@@ -13,7 +13,7 @@ services:
       - traefiknetwork
     restart: always
     depends_on:
-      - postgresql
+      - issuesystem_postgresql
     volumes:
       - light_kassa_service_data:/database:rw
     labels:
