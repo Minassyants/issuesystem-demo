@@ -10,20 +10,17 @@ services:
       - 80
     networks:
       - traefiknetwork
-   
+
     restart: always
     depends_on:
-      - issuesystem_postgresql
-    volumes:
-      - light_kassa_service_data:/database:rw
+      - db
     labels:
       - traefik.enable=true
       - traefik.http.routers.issuesystem.rule=Host(`kz-alm-bsk-ws01.ukravto.loc`)
       - traefik.http.services.issuesystem.loadbalancer.server.port=80
       - traefik.http.routers.issuesystem.entrypoints=issuesystem
-  issuesystem_postgresql:
+  db:
     image: postgres:16
-    container_name: issuesystem_postgresql
     restart: always
     expose:
       - 5432
@@ -34,13 +31,15 @@ services:
     volumes:
       - postgresql:/var/lib/postgresql
       - postgresql_data:/var/lib/postgresql/data
-   
+    networks:
+      - traefiknetwork
 
 networks:
   traefiknetwork:
     name: traefiknetwork
     driver: bridge
-  
+    
+
 volumes:
   light_kassa_service_data:
     driver: local

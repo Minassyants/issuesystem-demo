@@ -12,19 +12,18 @@ spring:
         url: jdbc:postgresql://localhost:5432/issuesystem
         username: issuesystem
         password: issuesystem
-        
+        driver-class-name: org.postgresql.Driver
+    
     flyway:
         user: issuesystem
         password: issuesystem
         url: jdbc:postgresql://localhost:5432/issuesystem
-        
-        
-
-        enabled: true
+        enabled: false
         locations: classpath:db/migration
     jpa:
+        database: POSTGRESQL
         hibernate:
-            ddl-auto: create-drop
+            ddl-auto: validate
         properties:
             hibernate:
                 hbm2ddl:
@@ -40,7 +39,7 @@ spring:
                             create-target: ./src/main/resources/db/buffered_migration/V__script.sql
                         
 server:
-        port: 8080
+        port: 80
 management:
     endpoints:
         web:
