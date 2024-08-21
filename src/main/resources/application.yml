@@ -1,4 +1,6 @@
 spring:
+    profiles:
+        active: @profileACtive@
     application:
         name: issuesystem
     rabbitmq:
