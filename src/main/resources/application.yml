@@ -17,7 +17,7 @@ spring:
         user: issuesystem
         password: issuesystem
         url: jdbc:postgresql://localhost:5432/issuesystem
-        baseline-on-migrate: true
+        
         
 
         enabled: true
