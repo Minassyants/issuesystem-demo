@@ -46,4 +46,3 @@ management:
         web:
             exposure:
                 include: [ "prometheus" ]
-debug: true
