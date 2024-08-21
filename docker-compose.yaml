@@ -21,7 +21,7 @@ services:
       - traefik.http.routers.issuesystem.rule=Host(`kz-alm-bsk-ws01.ukravto.loc`)
       - traefik.http.services.issuesystem.loadbalancer.server.port=80
       - traefik.http.routers.issuesystem.entrypoints=issuesystem
-  postgresql:
+  issuesystem_postgresql:
     image: postgres:16
     container_name: issuesystem_postgresql
     restart: always
