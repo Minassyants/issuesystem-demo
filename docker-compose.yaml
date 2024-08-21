@@ -2,7 +2,6 @@ version: '3.7'
 services:
   issuesystem:
     container_name: issuesystem
-    image: killka1997/issuesystem
     build:
       context: .
     environment:
