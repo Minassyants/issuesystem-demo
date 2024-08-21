@@ -37,7 +37,7 @@ spring:
                         create-source: metadata
                         scripts:
                             action: update
-                            create-target: ./src/main/resources/db/migration/V__script.sql
+                            create-target: ./src/main/resources/db/buffered_migration/V__script.sql
                         
 server:
         port: 8080
@@ -46,3 +46,7 @@ management:
         web:
             exposure:
                 include: [ "prometheus" ]
+logging:
+    level:
+        org:
+            flywaydb: debug
