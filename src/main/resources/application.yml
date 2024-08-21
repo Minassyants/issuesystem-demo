@@ -18,7 +18,7 @@ spring:
         user: issuesystem
         password: issuesystem
         url: jdbc:postgresql://localhost:5432/issuesystem
-        enabled: false
+        enabled: true
         locations: classpath:db/migration
     jpa:
         database: POSTGRESQL
