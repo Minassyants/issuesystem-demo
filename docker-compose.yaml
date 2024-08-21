@@ -11,7 +11,7 @@ services:
       - 80
     networks:
       - traefiknetwork
-      - issuesystem_internal
+   
     restart: always
     depends_on:
       - issuesystem_postgresql
@@ -35,14 +35,12 @@ services:
     volumes:
       - postgresql:/var/lib/postgresql
       - postgresql_data:/var/lib/postgresql/data
-    networks:
-      - issuesystem_internal
+   
 
 networks:
   traefiknetwork:
     name: traefiknetwork
     driver: bridge
-  issuesystem_internal:
   
 volumes:
   light_kassa_service_data:
