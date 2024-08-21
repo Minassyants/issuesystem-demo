@@ -11,7 +11,7 @@ public interface AdditionalAttributeService {
 
     public void delete(AdditionalAttribute aditionalAttribute);
 
-    public Optional<AdditionalAttribute> get(String id);
+    public Optional<AdditionalAttribute> get(Integer id);
 
     public Iterable<AdditionalAttribute> getAll();
 }

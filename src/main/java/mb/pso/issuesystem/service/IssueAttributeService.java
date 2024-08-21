@@ -11,7 +11,7 @@ public interface IssueAttributeService {
 
     public void delete(IssueAttribute issueAttribute);
 
-    public Optional<IssueAttribute> get(String id);
+    public Optional<IssueAttribute> get(Integer id);
 
     public Iterable<IssueAttribute> getAll();
 }

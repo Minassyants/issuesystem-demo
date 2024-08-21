@@ -11,7 +11,7 @@ public interface DepartmentService {
 
     public void delete(Department department);
 
-    public Optional<Department> get(String id);
+    public Optional<Department> get(Integer id);
 
     public Iterable<Department> getAll();
 }

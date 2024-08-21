@@ -26,7 +26,7 @@ public class IssueAttributeServiceImpl implements IssueAttributeService {
     }
 
     @Override
-    public Optional<IssueAttribute> get(String id) {
+    public Optional<IssueAttribute> get(Integer id) {
         
         return issueAttributeRepository.findById(id);
     }

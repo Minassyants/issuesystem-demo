@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import mb.pso.issuesystem.entity.Client;
 
 @Repository
-public interface ClientRepository extends JpaRepository<Client, String> {
+public interface ClientRepository extends JpaRepository<Client, Integer> {
 
 }

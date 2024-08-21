@@ -16,7 +16,6 @@ import mb.pso.issuesystem.entity.enums.IssueStatus;
 import mb.pso.issuesystem.entity.utility.EmailNotification;
 import mb.pso.issuesystem.repository.DepartmentRepository;
 import mb.pso.issuesystem.repository.IssueRepository;
-import mb.pso.issuesystem.repository.UserRepository;
 import mb.pso.issuesystem.service.notifications.impl.EmailNotificationServiceImpl;
 import mb.pso.issuesystem.service.webclient.WebClientService;
 
@@ -141,7 +140,7 @@ public class WebClientServiceImpl implements WebClientService {
     }
 
     @Override
-    public Optional<Issue> getIssueById(String id) {
+    public Optional<Issue> getIssueById(Integer id) {
         Optional<Issue> issue = issueRepository.findById(id);
         return issue;
     }

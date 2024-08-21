@@ -15,8 +15,8 @@ import mb.pso.issuesystem.entity.enums.IssueStatus;
 @Entity
 public class Issue {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
     private IssueStatus status;
     private String docNumber;
@@ -52,14 +52,6 @@ public class Issue {
     }
 
     public Issue() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public IssueStatus getStatus() {
@@ -184,6 +176,14 @@ public class Issue {
 
     public void setDepartmentFeedback(String departmentFeedback) {
         this.departmentFeedback = departmentFeedback;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
 }

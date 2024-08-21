@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import mb.pso.issuesystem.entity.AdditionalAttribute;
 
 @Repository
-public interface AdditionalAttributeRepository extends JpaRepository<AdditionalAttribute, String> {
+public interface AdditionalAttributeRepository extends JpaRepository<AdditionalAttribute, Integer> {
 
 }

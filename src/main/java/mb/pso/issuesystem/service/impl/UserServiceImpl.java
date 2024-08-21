@@ -1,10 +1,6 @@
 package mb.pso.issuesystem.service.impl;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-
-import org.springframework.data.domain.Example;
 
 import org.springframework.stereotype.Service;
 
@@ -32,7 +28,7 @@ public class UserServiceImpl implements UsersService {
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(Integer id) {
         userRepository.deleteById(id);
     }
 
@@ -43,7 +39,7 @@ public class UserServiceImpl implements UsersService {
     }
 
     @Override
-    public Optional<Users> get(String id) {
+    public Optional<Users> get(Integer id) {
         return userRepository.findById(id);
     }
 

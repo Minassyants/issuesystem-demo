@@ -26,7 +26,7 @@ public class IssueTypeServiceImpl implements IssueTypeService {
     }
 
     @Override
-    public Optional<IssueType> get(String id) {
+    public Optional<IssueType> get(Integer id) {
 
         return issueTypeRepository.findById(id);
     }

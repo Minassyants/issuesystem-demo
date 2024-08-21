@@ -30,7 +30,7 @@ public class SubjectServiceImpl implements VehicleService, GoodService {
     }
 
     @Override
-    public Subject get(String id) {
+    public Subject get(Integer id) {
 
         return null;
     }

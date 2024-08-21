@@ -11,7 +11,7 @@ public interface AdiitionalAttributeTypeService {
 
     public void delete(AdditionalAttributeType additionalAttributeType);
 
-    public AdditionalAttributeType get(String id);
+    public AdditionalAttributeType get(Integer id);
 
     public Optional<AdditionalAttributeType> findByName(String name);
 

@@ -16,5 +16,5 @@ public interface WebClientService {
 
     public Page<Issue> getAllIssues(Pageable pageable);
 
-    public Optional<Issue> getIssueById(String id);
+    public Optional<Issue> getIssueById(Integer id);
 }

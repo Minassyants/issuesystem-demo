@@ -99,7 +99,7 @@ public class WebClientController {
     }
 
     @GetMapping("/issues/{id}")
-    public ResponseEntity<Issue> getIssueById(@PathVariable String id) {
+    public ResponseEntity<Issue> getIssueById(@PathVariable Integer id) {
         Optional<Issue> issue = webClientServiceImpl.getIssueById(id);
         if (issue.isPresent())
             return ResponseEntity.ok(issue.get());

@@ -1,7 +1,5 @@
 package mb.pso.issuesystem.entity;
 
-
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,8 +10,8 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class AdditionalAttribute {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
     @ManyToOne(cascade = CascadeType.ALL)
     private AdditionalAttributeType type;
     private String stringValue;
@@ -31,14 +29,6 @@ public class AdditionalAttribute {
         this.stringValue = value;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public AdditionalAttributeType getType() {
         return type;
     }
@@ -53,6 +43,14 @@ public class AdditionalAttribute {
 
     public void setStringValue(String value) {
         this.stringValue = value;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
 }

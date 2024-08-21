@@ -27,7 +27,7 @@ public class AdditionalAttributeServiceImpl implements AdditionalAttributeServic
     }
 
     @Override
-    public Optional<AdditionalAttribute> get(String id) {
+    public Optional<AdditionalAttribute> get(Integer id) {
 
         return additionalAttributeRepository.findById(id);
     }

@@ -11,7 +11,7 @@ public interface IssueService {
 
     public void delete(Issue issue);
 
-    public Optional<Issue> get(String id);
+    public Optional<Issue> get(Integer id);
 
     public Iterable<Issue> getAll();
 }

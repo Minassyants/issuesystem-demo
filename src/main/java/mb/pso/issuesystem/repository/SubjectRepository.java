@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import mb.pso.issuesystem.entity.Subject;
 
 @Repository
-public interface SubjectRepository extends JpaRepository<Subject, String> {
+public interface SubjectRepository extends JpaRepository<Subject, Integer> {
 }

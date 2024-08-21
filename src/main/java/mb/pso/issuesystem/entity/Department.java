@@ -1,21 +1,17 @@
 package mb.pso.issuesystem.entity;
 
-
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(indexes = @Index(columnList = "name", unique = true))
 public class Department {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    @Column(unique = true)
     private String name;
 
     @Override
@@ -30,16 +26,8 @@ public class Department {
         this.name = name;
     }
 
-    public String getId() {
-        return id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public void setName(String name) {
@@ -47,6 +35,14 @@ public class Department {
     }
 
     public boolean isEmpty() {
-        return this.id == null || this.id.isEmpty();
+        return this.id == null;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

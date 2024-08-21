@@ -11,9 +11,9 @@ public interface UsersService {
 
     public void delete(Users user);
 
-    public void deleteById(String id);
+    public void deleteById(Integer id);
 
-    public Optional<Users> get(String id);
+    public Optional<Users> get(Integer id);
 
     public Optional<Users> getByName(String name);
 

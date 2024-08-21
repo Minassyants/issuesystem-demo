@@ -10,7 +10,7 @@ public interface VehicleService {
 
     public void delete(Vehicle vehicle);
 
-    public Subject get(String id);
+    public Subject get(Integer id);
 
     public Iterable<Subject> getAll();
 }

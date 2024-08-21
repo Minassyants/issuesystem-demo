@@ -19,6 +19,20 @@ services:
       - traefik.http.routers.issuesystem.rule=Host(`kz-alm-bsk-ws01.ukravto.loc`)
       - traefik.http.services.issuesystem.loadbalancer.server.port=80
       - traefik.http.routers.issuesystem.entrypoints=issuesystem
+  postgresql:
+    image: postgres:16
+    container_name: postgresql
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=issuesystem
+      - POSTGRES_PASSWORD=issuesystem
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+    networks:
+      - traefiknetwork
 
 networks:
   traefiknetwork:
@@ -27,3 +41,5 @@ networks:
 volumes:
   light_kassa_service_data:
     driver: local
+  postgresql:
+  postgresql_data:

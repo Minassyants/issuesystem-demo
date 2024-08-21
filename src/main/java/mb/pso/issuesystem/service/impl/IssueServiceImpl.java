@@ -29,7 +29,7 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    public Optional<Issue> get(String id) {
+    public Optional<Issue> get(Integer id) {
 
         return issueRepository.findById(id);
     }

@@ -30,7 +30,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Optional<Department> get(String id) {
+    public Optional<Department> get(Integer id) {
         Optional<Department> d = departmentRepository.findById(id);
         return d;
     }

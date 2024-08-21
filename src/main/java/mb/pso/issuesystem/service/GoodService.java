@@ -10,7 +10,7 @@ public interface GoodService {
 
     public void delete(Good good);
 
-    public Subject get(String id);
+    public Subject get(Integer id);
 
     public Iterable<Subject> getAll();
 }

@@ -1,22 +1,21 @@
 package mb.pso.issuesystem.entity;
 
-
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(indexes = @Index(columnList = "email, username", unique = true))
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "email", "username" }) })
 public class Users {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
     private String email;
 
@@ -39,14 +38,6 @@ public class Users {
         this.username = username;
         this.password = password;
         this.department = department;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getEmail() {
@@ -79,6 +70,14 @@ public class Users {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
 }
