@@ -41,7 +41,5 @@ networks:
     
 
 volumes:
-  light_kassa_service_data:
-    driver: local
   postgresql:
   postgresql_data:

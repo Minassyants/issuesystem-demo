@@ -7,3 +7,5 @@ spring:
         user: issuesystem
         password: issuesystem
         url: jdbc:postgresql://db:5432/issuesystem
+server:
+        port: 80

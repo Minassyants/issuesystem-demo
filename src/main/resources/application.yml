@@ -39,7 +39,7 @@ spring:
                             create-target: ./src/main/resources/db/buffered_migration/V__script.sql
                         
 server:
-        port: 80
+        port: 8080
 management:
     endpoints:
         web:
