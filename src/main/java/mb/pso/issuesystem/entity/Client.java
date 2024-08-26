@@ -15,8 +15,8 @@ public class Client {
     private Integer id;
     private String name;
     private String address;
-    private String phoneNumber;
     @Column(unique = true)
+    private String phoneNumber;
     private String email;
 
     @Override

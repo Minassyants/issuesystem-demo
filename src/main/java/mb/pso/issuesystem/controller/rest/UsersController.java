@@ -1,6 +1,7 @@
 package mb.pso.issuesystem.controller.rest;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import mb.pso.issuesystem.service.impl.UserServiceImpl;
 
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin(origins = "*")
 public class UsersController {
     private final UserServiceImpl userServiceImpl;
 
