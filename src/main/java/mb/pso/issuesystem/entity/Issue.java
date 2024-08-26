@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,15 +31,19 @@ public class Issue {
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<IssueAttribute> issueAttributes;
+    @Column(length = 2000)
     private String issueDescription;
     private List<String> relatedDocFromSigma;
     @ManyToOne(cascade = CascadeType.ALL)
     private Department issuedDepartment;
     private String issuedEmployee;
+    @Column(length = 2000)
     private String issuedDemands;
     @ManyToMany(cascade = CascadeType.ALL)
     private List<AdditionalAttribute> additionalAttributes;
+    @Column(length = 2000)
     private String departmentFeedback;
+    @Column(length = 2000)
     private String issueResult;
 
     @Override

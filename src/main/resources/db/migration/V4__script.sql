@@ -1,0 +1,2 @@
+ALTER TABLE good ALTER COLUMN description TYPE TEXT;
+ALTER TABLE vehicle ALTER COLUMN description TYPE TEXT;
