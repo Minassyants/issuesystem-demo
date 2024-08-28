@@ -1,2 +1,2 @@
-ALTER TABLE if exists good ALTER COLUMN if exists description TYPE TEXT;
-ALTER TABLE if exists vehicle ALTER COLUMN if exists description TYPE TEXT;
+ALTER TABLE good ALTER COLUMN description TYPE TEXT;
+ALTER TABLE vehicle ALTER COLUMN description TYPE TEXT;
