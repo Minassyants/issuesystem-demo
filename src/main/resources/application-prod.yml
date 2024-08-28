@@ -7,6 +7,6 @@ spring:
         user: issuesystem
         password: issuesystem
         url: jdbc:postgresql://db:5432/issuesystem
-        baseline-version: 5
+        baseline-version: "V5__script"
 server:
         port: 80
