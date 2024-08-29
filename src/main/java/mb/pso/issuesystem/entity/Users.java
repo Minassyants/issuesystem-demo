@@ -1,5 +1,13 @@
 package mb.pso.issuesystem.entity;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import mb.pso.issuesystem.entity.enums.Roles;
 
 @Entity
 @Table(uniqueConstraints = {
@@ -23,6 +32,15 @@ public class Users {
     private String password;
     @ManyToOne(cascade = CascadeType.ALL)
     private Department department;
+    private List<Roles> roles;
+
+    public List<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Roles> roles) {
+        this.roles = roles;
+    }
 
     @Override
     public String toString() {
@@ -30,7 +48,15 @@ public class Users {
                 + ", department=" + department + "]";
     }
 
+    public Collection<GrantedAuthority> getAuthorities() {
+        HashSet<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority("ADMIN"));
+
+        return authorities;
+    }
+
     public Users() {
+
     }
 
     public Users(String email, String username, String password, Department department) {

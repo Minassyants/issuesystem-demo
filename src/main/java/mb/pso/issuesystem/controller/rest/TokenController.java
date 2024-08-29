@@ -9,12 +9,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import mb.pso.issuesystem.dto.AuthInfo;
 
 @RestController
+@CrossOrigin("*")
 public class TokenController {
 	private final JwtEncoder encoder;
 

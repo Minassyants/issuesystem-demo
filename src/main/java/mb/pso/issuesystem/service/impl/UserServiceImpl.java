@@ -34,11 +34,12 @@ public class UserServiceImpl implements UserDetailsService, UsersService {
             throw new UsernameNotFoundException("User not found");
         }
         Users user = _user.get();
-        List<SimpleGrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("user"));
+        List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
+                .map(arg0 -> new SimpleGrantedAuthority(arg0.name().toLowerCase())).toList();
         return new User(user.getUsername(), user.getPassword(), authorities);
     }
 
-        @Override
+    @Override
     public Users create(Users user) {
         return userRepository.save(user);
     }
@@ -56,7 +57,7 @@ public class UserServiceImpl implements UserDetailsService, UsersService {
 
     @Override
     public Optional<Users> getByName(String name) {
-        
+
         return Optional.of(userRepository.findByUsername(name).get(0));
     }
 

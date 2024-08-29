@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,6 +66,7 @@ public class WebClientController {
 
     @PostMapping("/setPendingResult")
     public ResponseEntity<Issue> setPendingResult(@RequestBody Issue issue) {
+
         Issue updatedIssue = webClientServiceImpl.setPending(issue);
         if (updatedIssue == null)
             return ResponseEntity.badRequest().build();
@@ -94,7 +96,8 @@ public class WebClientController {
     }
 
     @GetMapping("/issues")
-    public ResponseEntity<Page<Issue>> getAllIssuesPageable(@RequestParam int page, @RequestParam int size) {
+    public ResponseEntity<Page<Issue>> getAllIssuesPageable(Authentication authentication,@RequestParam int page, @RequestParam int size) {
+        System.out.println(authentication.getAuthorities().toString());
         Page<Issue> issues = webClientServiceImpl.getAllIssues(PageRequest.of(page, size));
         return ResponseEntity.ok(issues);
     }
