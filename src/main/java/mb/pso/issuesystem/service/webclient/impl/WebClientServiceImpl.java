@@ -74,7 +74,8 @@ public class WebClientServiceImpl implements WebClientService {
             createdIssue = cI.get();
         else {
             issue.setStatus(IssueStatus.NEW);
-            issue.setDocDate(new Date());
+            if (issue.getDocDate() == null)
+                issue.setDocDate(new Date());
 
             // Ищем клиента по номеру телефона
             Client exampleClient = new Client();
