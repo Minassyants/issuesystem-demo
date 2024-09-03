@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -31,6 +33,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 
@@ -51,14 +54,19 @@ public class SecurityConfiguration {
     public SecurityConfiguration(UserServiceImpl userServiceImpl) {
         this.userServiceImpl = userServiceImpl;
     }
-//TODO Добавить исключение для клиентской формы принятия жалоб
+
+    // TODO Добавить исключение для клиентской формы принятия жалоб
     @Bean
     @Order(1)
-    SecurityFilterChain BasicfilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain BasicfilterChain(HttpSecurity http,
+            ActiveDirectoryLdapAuthenticationProvider activeDirectoryLdapAuthenticationProvider,
+            DaoAuthenticationProvider daoAuthenticationProvider) throws Exception {
         http.securityMatcher("/token")
                 .authorizeHttpRequests(t -> t.requestMatchers("/token").permitAll())
                 .csrf(t -> t.disable())
                 .httpBasic(withDefaults())
+                .authenticationManager(new ProviderManager(
+                        List.of(daoAuthenticationProvider, activeDirectoryLdapAuthenticationProvider)))
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
 
@@ -96,17 +104,27 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    ActiveDirectoryLdapAuthenticationProvider authenticationProvider() {
+        ActiveDirectoryLdapAuthenticationProvider ad = new ActiveDirectoryLdapAuthenticationProvider("ukravto.loc",
+                "ldap://192.168.50.5:389","OU=Kazakhstan,OU=Remote Users,DC=ukravto,DC=loc");
+        ad.setConvertSubErrorCodesToExceptions(true);
+        
+        // ad.setUseAuthenticationRequestCredentials(true);
+        return ad;
+    }
+
     // @Bean
     // UserDetailsService users() {
     // return userServiceImpl;
     // }
 
-    // @Bean
-    // AuthenticationProvider authenticationProvider() {
-    // DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-    // provider.setUserDetailsService(userServiceImpl);
-    // provider.setPasswordEncoder(passwordEncoder());
-    // return provider;
-    // }
+    @Bean
+    DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userServiceImpl);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
 
 }

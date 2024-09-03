@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -98,7 +100,7 @@ public class WebClientController {
     @GetMapping("/issues")
     public ResponseEntity<Page<Issue>> getAllIssuesPageable(Authentication authentication,@RequestParam int page, @RequestParam int size) {
         System.out.println(authentication.getAuthorities().toString());
-        Page<Issue> issues = webClientServiceImpl.getAllIssues(PageRequest.of(page, size));
+        Page<Issue> issues = webClientServiceImpl.getAllIssues(PageRequest.of(page, size,Sort.by(Direction.DESC,"id")));
         return ResponseEntity.ok(issues);
     }
 
