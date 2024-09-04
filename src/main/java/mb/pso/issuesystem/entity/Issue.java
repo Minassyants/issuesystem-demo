@@ -36,7 +36,8 @@ public class Issue {
     private List<String> relatedDocFromSigma;
     @ManyToOne(cascade = CascadeType.ALL)
     private Department issuedDepartment;
-    private String issuedEmployee;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Employee issuedEmployee;
     @Column(length = 2000)
     private String issuedDemands;
     @ManyToMany(cascade = CascadeType.ALL)
@@ -139,14 +140,6 @@ public class Issue {
         this.issuedDepartment = issuedDepartment;
     }
 
-    public String getIssuedEmployee() {
-        return issuedEmployee;
-    }
-
-    public void setIssuedEmployee(String issuedEmployee) {
-        this.issuedEmployee = issuedEmployee;
-    }
-
     public String getIssuedDemands() {
         return issuedDemands;
     }
@@ -175,6 +168,11 @@ public class Issue {
         return this.issuedDepartment != null && !this.issuedDepartment.isEmpty();
     }
 
+    public boolean hasEmployee()
+    {
+        return this.issuedEmployee != null && !this.issuedEmployee.isEmpty();
+    }
+
     public String getDepartmentFeedback() {
         return departmentFeedback;
     }
@@ -189,6 +187,14 @@ public class Issue {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Employee getIssuedEmployee() {
+        return issuedEmployee;
+    }
+
+    public void setIssuedEmployee(Employee issuedEmployee) {
+        this.issuedEmployee = issuedEmployee;
     }
 
 }

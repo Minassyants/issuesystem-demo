@@ -3,14 +3,11 @@ package mb.pso.issuesystem.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
@@ -106,18 +103,13 @@ public class SecurityConfiguration {
 
     @Bean
     ActiveDirectoryLdapAuthenticationProvider authenticationProvider() {
-        ActiveDirectoryLdapAuthenticationProvider ad = new ActiveDirectoryLdapAuthenticationProvider("ukravto.loc",
-                "ldap://192.168.50.5:389","OU=Kazakhstan,OU=Remote Users,DC=ukravto,DC=loc");
+        ActiveDirectoryLdapAuthenticationProvider ad = new ActiveDirectoryLdapAuthenticationProvider("ukravto.ua",
+                "ldap://192.168.50.5:389", "OU=Kazakhstan,OU=Remote Users,DC=ukravto,DC=loc");
         ad.setConvertSubErrorCodesToExceptions(true);
-        
+
         // ad.setUseAuthenticationRequestCredentials(true);
         return ad;
     }
-
-    // @Bean
-    // UserDetailsService users() {
-    // return userServiceImpl;
-    // }
 
     @Bean
     DaoAuthenticationProvider daoAuthenticationProvider() {

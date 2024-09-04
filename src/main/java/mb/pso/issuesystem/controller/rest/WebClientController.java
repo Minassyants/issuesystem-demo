@@ -1,5 +1,6 @@
 package mb.pso.issuesystem.controller.rest;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import mb.pso.issuesystem.entity.AdUser;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.Users;
 import mb.pso.issuesystem.service.impl.UserServiceImpl;
@@ -98,9 +100,11 @@ public class WebClientController {
     }
 
     @GetMapping("/issues")
-    public ResponseEntity<Page<Issue>> getAllIssuesPageable(Authentication authentication,@RequestParam int page, @RequestParam int size) {
+    public ResponseEntity<Page<Issue>> getAllIssuesPageable(Authentication authentication, @RequestParam int page,
+            @RequestParam int size) {
         System.out.println(authentication.getAuthorities().toString());
-        Page<Issue> issues = webClientServiceImpl.getAllIssues(PageRequest.of(page, size,Sort.by(Direction.DESC,"id")));
+        Page<Issue> issues = webClientServiceImpl
+                .getAllIssues(PageRequest.of(page, size, Sort.by(Direction.DESC, "id")));
         return ResponseEntity.ok(issues);
     }
 
@@ -110,6 +114,11 @@ public class WebClientController {
         if (issue.isPresent())
             return ResponseEntity.ok(issue.get());
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/employee")
+    public ResponseEntity<Iterable<AdUser>> getAllEmployees(@RequestParam String q) {
+        return ResponseEntity.ok(webClientServiceImpl.findEmployeesByGivenNameSn(q));
     }
 
 }
