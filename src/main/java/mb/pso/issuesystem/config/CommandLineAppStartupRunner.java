@@ -60,27 +60,33 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         // List<Issue> a = new ArrayList<Issue>();
 
         // for (int i = 0; i < 50; i++) {
-        // Issue issue1 = new Issue();
+        //     Issue issue1 = new Issue();
 
-        // issue1.setStatus(IssueStatus.NEW);
-        // issue1.setDocNumber("DOC001");
-        // issue1.setDocDate(new Date());
-        // issue1.setClient(new Client(UUID.randomUUID().toString(),
-        // UUID.randomUUID().toString(), UUID.randomUUID().toString(),
-        // UUID.randomUUID().toString()));
+        //     issue1.setStatus(IssueStatus.NEW);
+        //     if (i > 35)
+        //         issue1.setStatus(IssueStatus.CLOSED);
+        //     if (i > 40)
+        //         issue1.setStatus(IssueStatus.INPROGRESS);
+        //     if (i > 45)
+        //         issue1.setStatus(IssueStatus.PENDINGRESULT);
+        //     issue1.setDocNumber("DOC001");
+        //     issue1.setDocDate(new Date());
+        //     issue1.setClient(new Client(UUID.randomUUID().toString(),
+        //             UUID.randomUUID().toString(), UUID.randomUUID().toString(),
+        //             UUID.randomUUID().toString()));
 
-        // issue1.setSubject(new Vehicle(UUID.randomUUID().toString(),
-        // UUID.randomUUID().toString()));
+        //     issue1.setSubject(new Vehicle(UUID.randomUUID().toString(),
+        //             UUID.randomUUID().toString()));
 
-        // issue1.setIssueDescription(UUID.randomUUID().toString());
+        //     issue1.setIssueDescription(UUID.randomUUID().toString());
 
-        // // issue1.setIssuedDepartment(new Department(UUID.randomUUID().toString()));
-        // // issue1.setIssuedEmployee(UUID.randomUUID().toString());
-        // // issue1.setIssuedDemands(UUID.randomUUID().toString());
+        //     // issue1.setIssuedDepartment(new Department(UUID.randomUUID().toString()));
+        //     // issue1.setIssuedEmployee(UUID.randomUUID().toString());
+        //     // issue1.setIssuedDemands(UUID.randomUUID().toString());
 
-        // // issue1.setDepartmentFeedback(UUID.randomUUID().toString());
-        // // issue1.setIssueResult("Result pending");
-        // a.add(issue1);
+        //     // issue1.setDepartmentFeedback(UUID.randomUUID().toString());
+        //     // issue1.setIssueResult("Result pending");
+        //     a.add(issue1);
         // }
         // issueRepository.saveAll(a);
 

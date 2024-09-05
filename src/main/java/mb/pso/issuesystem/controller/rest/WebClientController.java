@@ -1,5 +1,6 @@
 package mb.pso.issuesystem.controller.rest;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -119,6 +120,11 @@ public class WebClientController {
     @GetMapping("/employee")
     public ResponseEntity<Iterable<AdUser>> getAllEmployees(@RequestParam String q) {
         return ResponseEntity.ok(webClientServiceImpl.findEmployeesByGivenNameSn(q));
+    }
+
+    @GetMapping("/report")
+    public int getReport(@RequestParam Date start, @RequestParam Date end){
+        return 1;
     }
 
 }

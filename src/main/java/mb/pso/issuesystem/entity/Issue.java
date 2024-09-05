@@ -6,6 +6,8 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,7 +20,7 @@ public class Issue {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-
+    @Enumerated(EnumType.STRING)
     private IssueStatus status;
     private String docNumber;
     private Date docDate;
@@ -168,8 +170,7 @@ public class Issue {
         return this.issuedDepartment != null && !this.issuedDepartment.isEmpty();
     }
 
-    public boolean hasEmployee()
-    {
+    public boolean hasEmployee() {
         return this.issuedEmployee != null && !this.issuedEmployee.isEmpty();
     }
 

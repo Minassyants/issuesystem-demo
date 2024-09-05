@@ -278,4 +278,8 @@ public class WebClientServiceImpl implements WebClientService {
 
     }
 
+    public int getReport(Date start, Date end){
+        return 1;
+    }
+
 }
