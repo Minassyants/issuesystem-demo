@@ -211,7 +211,7 @@ public class WebClientServiceImpl implements WebClientService {
             return null;
 
         Issue oldIssue = _oldIssue.get();
-        if (oldIssue.getStatus() != IssueStatus.NEW | !oldIssue.hasDepartment()
+        if (oldIssue.getStatus() == IssueStatus.NEW | !oldIssue.hasDepartment()
                 | !oldIssue.hasEmployee())
             return null;
         oldIssue.setStatus(IssueStatus.INPROGRESS);
@@ -237,7 +237,7 @@ public class WebClientServiceImpl implements WebClientService {
             return null;
 
         Issue oldIssue = _oldIssue.get();
-        if (oldIssue.getStatus() != IssueStatus.INPROGRESS |
+        if (oldIssue.getStatus() == IssueStatus.INPROGRESS |
                 oldIssue.getDepartmentFeedback() == null | oldIssue.getDepartmentFeedback().isEmpty())
             return null;
         oldIssue.setStatus(IssueStatus.PENDINGRESULT);
@@ -262,7 +262,7 @@ public class WebClientServiceImpl implements WebClientService {
             return null;
 
         Issue oldIssue = _oldIssue.get();
-        if (oldIssue.getStatus() != IssueStatus.PENDINGRESULT |
+        if (oldIssue.getStatus() == IssueStatus.PENDINGRESULT |
                 oldIssue.getIssueResult() == null | oldIssue.getIssueResult().isEmpty())
             return null;
         oldIssue.setStatus(IssueStatus.CLOSED);
