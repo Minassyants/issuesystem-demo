@@ -275,6 +275,7 @@ public class WebClientServiceImpl implements WebClientService {
         Predicate predicate = adUser.givenName.like("*".concat(queryString).concat("*"))
                 .or(adUser.sn.like("*".concat(queryString).concat("*"))).and(adUser.mail.isNotNull());
         return adUserRepository.findAll(predicate);
+
     }
 
 }

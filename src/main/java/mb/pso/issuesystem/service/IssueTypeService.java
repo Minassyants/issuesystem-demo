@@ -9,7 +9,7 @@ public interface IssueTypeService {
 
     public IssueType update(IssueType issueType);
 
-    public void delete(IssueType issueType);
+    public void deleteById(Integer id);
 
     public Optional<IssueType> get(Integer id);
 

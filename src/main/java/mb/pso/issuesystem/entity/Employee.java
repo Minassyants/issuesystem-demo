@@ -17,13 +17,7 @@ public class Employee {
     @Column(unique = true)
     private String mail;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+   
 
     public String getGivenName() {
         return givenName;
@@ -54,6 +48,14 @@ public class Employee {
 
     public boolean isEmpty() {
         return this.id == null;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
 }
