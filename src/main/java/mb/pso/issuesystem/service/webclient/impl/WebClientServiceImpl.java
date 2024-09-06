@@ -2,6 +2,8 @@ package mb.pso.issuesystem.service.webclient.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -15,6 +17,7 @@ import com.querydsl.core.types.Predicate;
 import jakarta.persistence.EntityManager;
 
 import mb.pso.issuesystem.entity.AdditionalAttribute;
+import mb.pso.issuesystem.entity.BasicReportRow;
 import mb.pso.issuesystem.entity.Client;
 import mb.pso.issuesystem.entity.Department;
 import mb.pso.issuesystem.entity.Employee;
@@ -278,8 +281,9 @@ public class WebClientServiceImpl implements WebClientService {
 
     }
 
-    public int getReport(Date start, Date end){
-        return 1;
+    public Iterable<BasicReportRow> getReport(LocalDate start, LocalDate end) {
+        end = end.plusDays(1);
+        return issueRepository.fetchReport(start, end);
     }
 
 }

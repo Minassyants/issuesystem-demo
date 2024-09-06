@@ -1,5 +1,7 @@
 package mb.pso.issuesystem.controller.rest;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import mb.pso.issuesystem.entity.AdUser;
+import mb.pso.issuesystem.entity.BasicReportRow;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.Users;
 import mb.pso.issuesystem.service.impl.UserServiceImpl;
@@ -123,8 +127,12 @@ public class WebClientController {
     }
 
     @GetMapping("/report")
-    public int getReport(@RequestParam Date start, @RequestParam Date end){
-        return 1;
+    public ResponseEntity<Iterable<BasicReportRow>> getReport(
+            @RequestParam  Timestamp start,
+            @RequestParam  Timestamp end) {
+
+        return ResponseEntity.ok(webClientServiceImpl.getReport(start.toLocalDateTime().toLocalDate(),
+                end.toLocalDateTime().toLocalDate()));
     }
 
 }
