@@ -2,10 +2,15 @@ package mb.pso.issuesystem.service.impl;
 
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
+import com.querydsl.core.types.Predicate;
+
 import mb.pso.issuesystem.entity.IssueType;
 import mb.pso.issuesystem.repository.IssueTypeRepository;
 import mb.pso.issuesystem.service.IssueTypeService;
 
+@Service
 public class IssueTypeServiceImpl implements IssueTypeService {
     private final IssueTypeRepository issueTypeRepository;
 
@@ -20,8 +25,8 @@ public class IssueTypeServiceImpl implements IssueTypeService {
     }
 
     @Override
-    public void delete(IssueType issueType) {
-        issueTypeRepository.delete(issueType);
+    public void deleteById(Integer id) {
+        issueTypeRepository.deleteById(id);
 
     }
 
@@ -35,6 +40,11 @@ public class IssueTypeServiceImpl implements IssueTypeService {
     public Iterable<IssueType> getAll() {
 
         return issueTypeRepository.findAll();
+    }
+
+    public Iterable<IssueType> getAll(Predicate predicate) {
+
+        return issueTypeRepository.findAll(predicate);
     }
 
     @Override

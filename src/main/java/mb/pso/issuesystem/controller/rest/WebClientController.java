@@ -1,10 +1,18 @@
 package mb.pso.issuesystem.controller.rest;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import mb.pso.issuesystem.entity.AdUser;
+import mb.pso.issuesystem.entity.BasicReportRow;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.Users;
 import mb.pso.issuesystem.service.impl.UserServiceImpl;
@@ -65,6 +75,7 @@ public class WebClientController {
 
     @PostMapping("/setPendingResult")
     public ResponseEntity<Issue> setPendingResult(@RequestBody Issue issue) {
+
         Issue updatedIssue = webClientServiceImpl.setPending(issue);
         if (updatedIssue == null)
             return ResponseEntity.badRequest().build();
@@ -94,8 +105,11 @@ public class WebClientController {
     }
 
     @GetMapping("/issues")
-    public ResponseEntity<Page<Issue>> getAllIssuesPageable(@RequestParam int page, @RequestParam int size) {
-        Page<Issue> issues = webClientServiceImpl.getAllIssues(PageRequest.of(page, size));
+    public ResponseEntity<Page<Issue>> getAllIssuesPageable(Authentication authentication, @RequestParam int page,
+            @RequestParam int size) {
+        System.out.println(authentication.getAuthorities().toString());
+        Page<Issue> issues = webClientServiceImpl
+                .getAllIssues(PageRequest.of(page, size, Sort.by(Direction.DESC, "id")));
         return ResponseEntity.ok(issues);
     }
 
@@ -105,6 +119,20 @@ public class WebClientController {
         if (issue.isPresent())
             return ResponseEntity.ok(issue.get());
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/employee")
+    public ResponseEntity<Iterable<AdUser>> getAllEmployees(@RequestParam String q) {
+        return ResponseEntity.ok(webClientServiceImpl.findEmployeesByGivenNameSn(q));
+    }
+
+    @GetMapping("/report")
+    public ResponseEntity<Iterable<BasicReportRow>> getReport(
+            @RequestParam  Timestamp start,
+            @RequestParam  Timestamp end) {
+
+        return ResponseEntity.ok(webClientServiceImpl.getReport(start.toLocalDateTime().toLocalDate(),
+                end.toLocalDateTime().toLocalDate()));
     }
 
 }

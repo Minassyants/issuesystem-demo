@@ -2,6 +2,8 @@ package mb.pso.issuesystem.service.webclient.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -10,24 +12,31 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import io.vertx.core.json.JsonObject;
+import com.querydsl.core.types.Predicate;
+
 import jakarta.persistence.EntityManager;
+
 import mb.pso.issuesystem.entity.AdditionalAttribute;
+import mb.pso.issuesystem.entity.BasicReportRow;
 import mb.pso.issuesystem.entity.Client;
 import mb.pso.issuesystem.entity.Department;
+import mb.pso.issuesystem.entity.Employee;
+import mb.pso.issuesystem.entity.AdUser;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.IssueAttribute;
 import mb.pso.issuesystem.entity.IssueType;
+import mb.pso.issuesystem.entity.QAdUser;
 import mb.pso.issuesystem.entity.Subject;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
-import mb.pso.issuesystem.entity.utility.EmailNotification;
 import mb.pso.issuesystem.repository.AdditionalAttributeRepository;
 import mb.pso.issuesystem.repository.ClientRepository;
 import mb.pso.issuesystem.repository.DepartmentRepository;
+import mb.pso.issuesystem.repository.EmployeeRepository;
 import mb.pso.issuesystem.repository.IssueAttributeRepository;
 import mb.pso.issuesystem.repository.IssueRepository;
 import mb.pso.issuesystem.repository.IssueTypeRepository;
 import mb.pso.issuesystem.repository.SubjectRepository;
+import mb.pso.issuesystem.repository.ldap.AdUserRepository;
 import mb.pso.issuesystem.service.notifications.impl.EmailNotificationServiceImpl;
 import mb.pso.issuesystem.service.webclient.WebClientService;
 
@@ -41,13 +50,16 @@ public class WebClientServiceImpl implements WebClientService {
     private final IssueTypeRepository issueTypeRepository;
     private final SubjectRepository subjectRepository;
     private final AdditionalAttributeRepository additionalAttributeRepository;
+    private final EmployeeRepository employeeRepository;
+    private final AdUserRepository adUserRepository;
     private final EmailNotificationServiceImpl emailNotificationServiceImpl;
 
     public WebClientServiceImpl(IssueRepository issueRepository, DepartmentRepository departmentRepository,
             EmailNotificationServiceImpl emailNotificationServiceImpl,
             IssueAttributeRepository issueAttributeRepository, ClientRepository clientRepository,
             IssueTypeRepository issueTypeRepository, SubjectRepository subjectRepository,
-            AdditionalAttributeRepository additionalAttributeRepository) {
+            AdditionalAttributeRepository additionalAttributeRepository, EmployeeRepository employeeRepository,
+            AdUserRepository adUserRepository) {
         this.issueRepository = issueRepository;
         this.issueAttributeRepository = issueAttributeRepository;
         this.departmentRepository = departmentRepository;
@@ -55,7 +67,10 @@ public class WebClientServiceImpl implements WebClientService {
         this.issueTypeRepository = issueTypeRepository;
         this.subjectRepository = subjectRepository;
         this.additionalAttributeRepository = additionalAttributeRepository;
+        this.employeeRepository = employeeRepository;
+        this.adUserRepository = adUserRepository;
         this.emailNotificationServiceImpl = emailNotificationServiceImpl;
+
     }
 
     @Override
@@ -74,7 +89,8 @@ public class WebClientServiceImpl implements WebClientService {
             createdIssue = cI.get();
         else {
             issue.setStatus(IssueStatus.NEW);
-            issue.setDocDate(new Date());
+            if (issue.getDocDate() == null)
+                issue.setDocDate(new Date());
 
             // Ищем клиента по номеру телефона
             Client exampleClient = new Client();
@@ -114,6 +130,13 @@ public class WebClientServiceImpl implements WebClientService {
                 if (iDepartment.isPresent())
                     issue.setIssuedDepartment(iDepartment.get());
             }
+
+            if (issue.getIssuedEmployee() != null) {
+                Optional<Employee> iEmployee = employeeRepository.findOne(Example.of(issue.getIssuedEmployee()));
+                if (iEmployee.isPresent())
+                    issue.setIssuedEmployee(iEmployee.get());
+            }
+
             // Ищем AdditionalAttribute
             if (issue.getAdditionalAttributes() != null) {
                 List<AdditionalAttribute> l = new ArrayList<AdditionalAttribute>();
@@ -173,7 +196,12 @@ public class WebClientServiceImpl implements WebClientService {
         else
             oldIssue.setIssuedDepartment(departmentRepository.save(department));
 
-        oldIssue.setIssuedEmployee(issue.getIssuedEmployee());
+        Employee employee = issue.getIssuedEmployee();
+        Optional<Employee> e = employeeRepository.findOne(Example.of(employee));
+        if (e.isPresent())
+            oldIssue.setIssuedEmployee(e.get());
+        else
+            oldIssue.setIssuedEmployee(employeeRepository.save(employee));
 
         issue = issueRepository.save(oldIssue);
         return issue;
@@ -186,8 +214,8 @@ public class WebClientServiceImpl implements WebClientService {
             return null;
 
         Issue oldIssue = _oldIssue.get();
-        if (oldIssue.getStatus() != IssueStatus.NEW | !oldIssue.hasDepartment()
-                | oldIssue.getIssuedEmployee() == null | oldIssue.getIssuedEmployee().isEmpty())
+        if (oldIssue.getStatus() == IssueStatus.NEW | !oldIssue.hasDepartment()
+                | !oldIssue.hasEmployee())
             return null;
         oldIssue.setStatus(IssueStatus.INPROGRESS);
         issue = issueRepository.save(oldIssue);
@@ -212,7 +240,7 @@ public class WebClientServiceImpl implements WebClientService {
             return null;
 
         Issue oldIssue = _oldIssue.get();
-        if (oldIssue.getStatus() != IssueStatus.INPROGRESS |
+        if (oldIssue.getStatus() == IssueStatus.INPROGRESS |
                 oldIssue.getDepartmentFeedback() == null | oldIssue.getDepartmentFeedback().isEmpty())
             return null;
         oldIssue.setStatus(IssueStatus.PENDINGRESULT);
@@ -237,12 +265,25 @@ public class WebClientServiceImpl implements WebClientService {
             return null;
 
         Issue oldIssue = _oldIssue.get();
-        if (oldIssue.getStatus() != IssueStatus.PENDINGRESULT |
+        if (oldIssue.getStatus() == IssueStatus.PENDINGRESULT |
                 oldIssue.getIssueResult() == null | oldIssue.getIssueResult().isEmpty())
             return null;
         oldIssue.setStatus(IssueStatus.CLOSED);
         issue = issueRepository.save(oldIssue);
         return issue;
+    }
+
+    public Iterable<AdUser> findEmployeesByGivenNameSn(String queryString) {
+        QAdUser adUser = QAdUser.adUser;
+        Predicate predicate = adUser.givenName.like("*".concat(queryString).concat("*"))
+                .or(adUser.sn.like("*".concat(queryString).concat("*"))).and(adUser.mail.isNotNull());
+        return adUserRepository.findAll(predicate);
+
+    }
+
+    public Iterable<BasicReportRow> getReport(LocalDate start, LocalDate end) {
+        end = end.plusDays(1);
+        return issueRepository.fetchReport(start, end);
     }
 
 }
