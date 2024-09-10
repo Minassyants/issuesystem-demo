@@ -60,9 +60,10 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
             IssueType issueType = new IssueType(string);
             Optional<IssueType> i = issueTypeRepository.findOne(Example.of(issueType));
             if (i.isEmpty())
-                {issueTypeRepository.save(issueType);
+                {
+                    issueTypeRepository.save(issueType);
                     System.out.println("IssueType craeted!");
-            }
+            }else {
 
                     System.out.println("IssueType already exists!");
                 }
