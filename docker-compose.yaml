@@ -22,10 +22,10 @@ services:
   db:
     image: postgres:16
     restart: always
-    ports:
-      - "5432:5432"
-    # expose:
-    #   - 5432
+    # ports:
+    # - "5432:5432"
+    expose:
+      - 5432
     environment:
       - POSTGRES_USER=issuesystem
       - POSTGRES_PASSWORD=issuesystem
@@ -40,7 +40,6 @@ networks:
   traefiknetwork:
     name: traefiknetwork
     driver: bridge
-    
 
 volumes:
   postgresql:
