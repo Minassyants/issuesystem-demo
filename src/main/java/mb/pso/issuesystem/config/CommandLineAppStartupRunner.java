@@ -44,8 +44,14 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         roles.add(Roles.ADMIN);
         roles.add(Roles.USER);
         user.setRoles(roles);
-        if (userRepository.findOne(Example.of(new Users(null, "admin", null, null))).isEmpty())
+        if (userRepository.findOne(Example.of(new Users(null, "admin", null, null))).isEmpty()) {
             userRepository.save(user);
+
+        }
+        else
+        {
+            System.out.println("User already exists!");
+        }
 
         List<String> issueTypeStrings = List.of("Личное обращение", "По городскому телефону", "Почтовый клиент",
                 "На сайте компании", "2Gis", "WhatsApp", "Журнал отзывов и предложений", "Ящик жалоб и предложений",
@@ -54,38 +60,43 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
             IssueType issueType = new IssueType(string);
             Optional<IssueType> i = issueTypeRepository.findOne(Example.of(issueType));
             if (i.isEmpty())
-                issueTypeRepository.save(issueType);
-        }
+                {issueTypeRepository.save(issueType);
+                    System.out.println("IssueType craeted!");
+            }
 
-        // List<Issue> a = new ArrayList<Issue>();
+                    System.out.println("IssueType already exists!");
+                }
+        } 
 
-        // for (int i = 0; i < 50; i++) {
+        // <Issue> a = new ArrayList<Issue>();
+
+        //  i = 0; i < 50; i++) {
         //     Issue issue1 = new Issue();
+ 
+        // issue1.setStatus(IssueStatus.NEW);
+        // i > 35)
+        // etStatus(IssueStatus.CLOSED);
 
-        //     issue1.setStatus(IssueStatus.NEW);
-        //     if (i > 35)
-        //         issue1.setStatus(IssueStatus.CLOSED);
-        //     if (i > 40)
-        //         issue1.setStatus(IssueStatus.INPROGRESS);
-        //     if (i > 45)
-        //         issue1.setStatus(IssueStatus.PENDINGRESULT);
-        //     issue1.setDocNumber("DOC001");
-        //     issue1.setDocDate(new Date());
-        //     issue1.setClient(new Client(UUID.randomUUID().toString(),
-        //             UUID.randomUUID().toString(), UUID.randomUUID().toString(),
+        //     issue1.setStatus(IssueStatus.INPROGRESS);
+        // 
+
+        // e1.setDocNumber("DOC001");
+
+        // etClient(new Client(UUID.randomUUID().toString(),
+        // UUID.randomUUID().toString(), UUID.randomUUID().toString(),
+        //         UUID.randomUUID().toString()));
+
+        // etSubject(new Vehicle(UUID.randomUUID().toString(),
         //             UUID.randomUUID().toString()));
-
-        //     issue1.setSubject(new Vehicle(UUID.randomUUID().toString(),
-        //             UUID.randomUUID().toString()));
-
+  
         //     issue1.setIssueDescription(UUID.randomUUID().toString());
-
-        //     // issue1.setIssuedDepartment(new Department(UUID.randomUUID().toString()));
-        //     // issue1.setIssuedEmployee(UUID.randomUUID().toString());
+ 
+        // // issue1.setIssuedDepartment(new Department(UUID.randomUUID().toString()));
+        // // issue1.setIssuedEmployee(UUID.randomUUID().toString());
         //     // issue1.setIssuedDemands(UUID.randomUUID().toString());
-
-        //     // issue1.setDepartmentFeedback(UUID.randomUUID().toString());
-        //     // issue1.setIssueResult("Result pending");
+ 
+        // // issue1.setDepartmentFeedback(UUID.randomUUID().toString());
+        // // issue1.setIssueResult("Result pending");
         //     a.add(issue1);
         // }
         // issueRepository.saveAll(a);
