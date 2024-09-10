@@ -29,7 +29,7 @@ import mb.pso.issuesystem.service.impl.UserServiceImpl;
 import mb.pso.issuesystem.service.webclient.impl.WebClientServiceImpl;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 public class WebClientController {
 
     private final WebClientServiceImpl webClientServiceImpl;
