@@ -275,8 +275,12 @@ public class WebClientServiceImpl implements WebClientService {
 
     public Iterable<AdUser> findEmployeesByGivenNameSn(String queryString) {
         QAdUser adUser = QAdUser.adUser;
-        Predicate predicate = adUser.givenName.like("*".concat(queryString).concat("*"))
-                .or(adUser.sn.like("*".concat(queryString).concat("*"))).and(adUser.mail.isNotNull());
+        queryString = queryString.replace(" ", "*");
+        Predicate predicate = adUser.displayName.like("*".concat(queryString).concat("*"));
+
+        // Predicate predicate =
+        // adUser.givenName.like("*".concat(queryString).concat("*"))
+        // .or(adUser.sn.like("*".concat(queryString).concat("*"))).and(adUser.mail.isNotNull());
         return adUserRepository.findAll(predicate);
 
     }

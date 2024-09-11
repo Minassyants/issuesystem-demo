@@ -108,6 +108,8 @@ public class WebClientController {
     public ResponseEntity<Page<Issue>> getAllIssuesPageable(Authentication authentication, @RequestParam int page,
             @RequestParam int size) {
         System.out.println(authentication.getAuthorities().toString());
+        System.out.println(authentication.getName());
+        System.out.println(authentication.getDetails().toString());
         Page<Issue> issues = webClientServiceImpl
                 .getAllIssues(PageRequest.of(page, size, Sort.by(Direction.DESC, "id")));
         return ResponseEntity.ok(issues);
@@ -128,8 +130,8 @@ public class WebClientController {
 
     @GetMapping("/report")
     public ResponseEntity<Iterable<BasicReportRow>> getReport(
-            @RequestParam  Timestamp start,
-            @RequestParam  Timestamp end) {
+            @RequestParam Timestamp start,
+            @RequestParam Timestamp end) {
 
         return ResponseEntity.ok(webClientServiceImpl.getReport(start.toLocalDateTime().toLocalDate(),
                 end.toLocalDateTime().toLocalDate()));
