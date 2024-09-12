@@ -2,9 +2,7 @@ package mb.pso.issuesystem.service.webclient.impl;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.time.LocalDate;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -18,8 +16,6 @@ import org.springframework.stereotype.Service;
 import com.querydsl.core.types.Predicate;
 
 import io.vertx.core.json.JsonObject;
-import jakarta.persistence.EntityManager;
-
 import mb.pso.issuesystem.entity.AdditionalAttribute;
 import mb.pso.issuesystem.entity.BasicReportRow;
 import mb.pso.issuesystem.entity.Client;

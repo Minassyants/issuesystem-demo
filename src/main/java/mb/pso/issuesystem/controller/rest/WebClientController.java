@@ -1,19 +1,15 @@
 package mb.pso.issuesystem.controller.rest;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -100,13 +96,13 @@ public class WebClientController {
     }
 
     @PostMapping("/registerNewIssue")
+    @PreAuthorize("hasAuthority('SCOPE_admin')")
     public ResponseEntity<Issue> registerNewIssue(@RequestBody Issue issue) {
         Issue createdIssue = webClientServiceImpl.registerNewIssue(issue);
         return ResponseEntity.ok(createdIssue);
     }
 
     @GetMapping("/issues")
-
     public ResponseEntity<Page<Issue>> getAllIssuesPageable(Authentication authentication, @RequestParam int page,
             @RequestParam int size) {
         Page<Issue> issues = webClientServiceImpl
@@ -128,6 +124,7 @@ public class WebClientController {
     }
 
     @GetMapping("/report")
+    @PreAuthorize("hasAuthority('SCOPE_admin')")
     public ResponseEntity<Iterable<BasicReportRow>> getReport(
             @RequestParam Timestamp start,
             @RequestParam Timestamp end) {
