@@ -2,6 +2,7 @@ package mb.pso.issuesystem.service.webclient.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.time.LocalDate;
 import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
@@ -10,10 +11,13 @@ import java.util.Optional;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import com.querydsl.core.types.Predicate;
 
+import io.vertx.core.json.JsonObject;
 import jakarta.persistence.EntityManager;
 
 import mb.pso.issuesystem.entity.AdditionalAttribute;
@@ -26,8 +30,10 @@ import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.IssueAttribute;
 import mb.pso.issuesystem.entity.IssueType;
 import mb.pso.issuesystem.entity.QAdUser;
+import mb.pso.issuesystem.entity.QIssue;
 import mb.pso.issuesystem.entity.Subject;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
+import mb.pso.issuesystem.entity.utility.EmailNotification;
 import mb.pso.issuesystem.repository.AdditionalAttributeRepository;
 import mb.pso.issuesystem.repository.ClientRepository;
 import mb.pso.issuesystem.repository.DepartmentRepository;
@@ -172,7 +178,16 @@ public class WebClientServiceImpl implements WebClientService {
     }
 
     @Override
-    public Page<Issue> getAllIssues(Pageable pageable) {
+    public Page<Issue> getAllIssues(Pageable pageable, Authentication authentication) {
+        Jwt jwt = (Jwt) authentication.getPrincipal();
+        String roles = jwt.getClaimAsString("scope");
+        if (roles.contains("employee")) {
+            QIssue issue = QIssue.issue;
+            Predicate predicate = issue.issuedEmployee.mail.eq(jwt.getClaimAsString("email"))
+                    .and(issue.status.eq(IssueStatus.INPROGRESS));
+            Page<Issue> issues = issueRepository.findAll(predicate, pageable);
+            return issues;
+        }
         Page<Issue> issues = issueRepository.findAll(pageable);
         return issues;
     }
@@ -214,11 +229,24 @@ public class WebClientServiceImpl implements WebClientService {
             return null;
 
         Issue oldIssue = _oldIssue.get();
-        if (oldIssue.getStatus() == IssueStatus.NEW | !oldIssue.hasDepartment()
+        if (oldIssue.getStatus() != IssueStatus.NEW | !oldIssue.hasDepartment()
                 | !oldIssue.hasEmployee())
             return null;
         oldIssue.setStatus(IssueStatus.INPROGRESS);
         issue = issueRepository.save(oldIssue);
+
+        EmailNotification emailNotification = new EmailNotification("bsk1c",
+                issue.getIssuedEmployee().getMail(),
+                "issueRegisteredForEmployee", "Новая рекламация");
+        JsonObject body = new JsonObject();
+        body.put("name",
+                issue.getIssuedEmployee().getGivenName().concat(" ").concat(issue.getIssuedEmployee().getSn()));
+        body.put("login",
+                issue.getIssuedEmployee().getGivenName().substring(0, 1).concat(".")
+                        .concat(issue.getIssuedEmployee().getSn()));
+        emailNotification.setBody(body);
+        emailNotificationServiceImpl.sendEmail(emailNotification);
+
         return issue;
 
     }
@@ -240,7 +268,7 @@ public class WebClientServiceImpl implements WebClientService {
             return null;
 
         Issue oldIssue = _oldIssue.get();
-        if (oldIssue.getStatus() == IssueStatus.INPROGRESS |
+        if (oldIssue.getStatus() != IssueStatus.INPROGRESS |
                 oldIssue.getDepartmentFeedback() == null | oldIssue.getDepartmentFeedback().isEmpty())
             return null;
         oldIssue.setStatus(IssueStatus.PENDINGRESULT);
@@ -265,7 +293,7 @@ public class WebClientServiceImpl implements WebClientService {
             return null;
 
         Issue oldIssue = _oldIssue.get();
-        if (oldIssue.getStatus() == IssueStatus.PENDINGRESULT |
+        if (oldIssue.getStatus() != IssueStatus.PENDINGRESULT |
                 oldIssue.getIssueResult() == null | oldIssue.getIssueResult().isEmpty())
             return null;
         oldIssue.setStatus(IssueStatus.CLOSED);

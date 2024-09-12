@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 
 import mb.pso.issuesystem.entity.Issue;
 
@@ -14,7 +15,7 @@ public interface WebClientService {
 
     public List<Issue> getAllIssues();
 
-    public Page<Issue> getAllIssues(Pageable pageable);
+    public Page<Issue> getAllIssues(Pageable pageable, Authentication authentication);
 
     public Optional<Issue> getIssueById(Integer id);
 }

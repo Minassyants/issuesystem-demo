@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import mb.pso.issuesystem.dto.AuthInfo;
+import mb.pso.issuesystem.entity.AdUserDetails;
 
 @RestController
 @CrossOrigin("*")
@@ -32,12 +33,14 @@ public class TokenController {
 		String scope = authentication.getAuthorities().stream()
 				.map(GrantedAuthority::getAuthority)
 				.collect(Collectors.joining(" "));
+		String email = ((AdUserDetails) authentication.getPrincipal()).getEmail();
 		JwtClaimsSet claims = JwtClaimsSet.builder()
 				.issuer("self")
 				.issuedAt(now)
 				// .expiresAt(now.plusSeconds(expiry))
 				.subject(authentication.getName())
 				.claim("scope", scope)
+				.claim("email", email)
 				.build();
 		// @formatter:on
 		AuthInfo authInfo = new AuthInfo();

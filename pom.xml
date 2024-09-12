@@ -96,7 +96,7 @@
 		<dependency>
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
-			
+			<classifier>jakarta</classifier>
 			<version>5.1.0</version>
 		</dependency>
 	</dependencies>
@@ -143,7 +143,7 @@
 					<dependency>
 						<groupId>com.querydsl</groupId>
 						<artifactId>querydsl-jpa</artifactId>
-						
+						<classifier>jakarta</classifier>
 						<version>5.1.0</version>
 					</dependency>
 				</dependencies>

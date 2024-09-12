@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import mb.pso.issuesystem.entity.AdUserDetails;
 import mb.pso.issuesystem.entity.Users;
 import mb.pso.issuesystem.repository.UserRepository;
 import mb.pso.issuesystem.service.UsersService;
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserDetailsService, UsersService {
         Users user = _user.get();
         List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
                 .map(arg0 -> new SimpleGrantedAuthority(arg0.name().toLowerCase())).toList();
-        return new User(user.getUsername(), user.getPassword(), authorities);
+        return new AdUserDetails(user.getUsername(), user.getPassword(), authorities, user.getEmail());
     }
 
     @Override

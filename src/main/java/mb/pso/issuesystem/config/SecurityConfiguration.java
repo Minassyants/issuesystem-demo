@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
@@ -36,6 +37,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import mb.pso.issuesystem.service.impl.AdUserDetailsContextMapper;
 import mb.pso.issuesystem.service.impl.UserServiceImpl;
 
 @Configuration
@@ -104,13 +106,14 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    ActiveDirectoryLdapAuthenticationProvider authenticationProvider() {
+    ActiveDirectoryLdapAuthenticationProvider authenticationProvider(
+            AdUserDetailsContextMapper adUserDetailsContextMapper) {
         ActiveDirectoryLdapAuthenticationProvider ad = new ActiveDirectoryLdapAuthenticationProvider("ukravto.ua",
                 "ldap://192.168.50.5:389", "OU=Kazakhstan,OU=Remote Users,DC=ukravto,DC=loc");
         ad.setConvertSubErrorCodesToExceptions(true);
-        ad.setAuthoritiesPopulator((userData, username) -> AuthorityUtils.NO_AUTHORITIES);
-        // ad.setUserDetailsContextMapper(LdapUserDetailsMapper);
-
+        ad.setAuthoritiesPopulator((userData, username) -> List.of(new SimpleGrantedAuthority("employee")));
+        ad.setUserDetailsContextMapper(adUserDetailsContextMapper);
+        // DefaultActiveDirectoryAuthoritiesPopulator
         // ad.setUseAuthenticationRequestCredentials(true);
         return ad;
     }

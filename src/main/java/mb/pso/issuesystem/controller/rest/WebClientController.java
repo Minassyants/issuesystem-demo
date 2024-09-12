@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -105,13 +106,11 @@ public class WebClientController {
     }
 
     @GetMapping("/issues")
+
     public ResponseEntity<Page<Issue>> getAllIssuesPageable(Authentication authentication, @RequestParam int page,
             @RequestParam int size) {
-        System.out.println(authentication.getAuthorities().toString());
-        System.out.println(authentication.getName());
-        System.out.println(authentication.getDetails().toString());
         Page<Issue> issues = webClientServiceImpl
-                .getAllIssues(PageRequest.of(page, size, Sort.by(Direction.DESC, "id")));
+                .getAllIssues(PageRequest.of(page, size, Sort.by(Direction.DESC, "id")), authentication);
         return ResponseEntity.ok(issues);
     }
 
