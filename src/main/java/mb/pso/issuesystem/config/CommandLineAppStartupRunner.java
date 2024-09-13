@@ -19,21 +19,25 @@ import mb.pso.issuesystem.entity.Users;
 import mb.pso.issuesystem.entity.Vehicle;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 import mb.pso.issuesystem.entity.enums.Roles;
+import mb.pso.issuesystem.entity.es.ob;
 import mb.pso.issuesystem.repository.IssueRepository;
 import mb.pso.issuesystem.repository.IssueTypeRepository;
 import mb.pso.issuesystem.repository.UserRepository;
+import mb.pso.issuesystem.repository.es.ObRepository;
 
 @Component
 public class CommandLineAppStartupRunner implements CommandLineRunner {
     private final UserRepository userRepository;
     private final IssueRepository issueRepository;
     private final IssueTypeRepository issueTypeRepository;
+    private final ObRepository obRepository;
 
     public CommandLineAppStartupRunner(UserRepository userRepository, IssueRepository issueRepository,
-            IssueTypeRepository issueTypeRepository) {
+            IssueTypeRepository issueTypeRepository, ObRepository obRepository) {
         this.userRepository = userRepository;
         this.issueRepository = issueRepository;
         this.issueTypeRepository = issueTypeRepository;
+        this.obRepository = obRepository;
     }
 
     @Override
@@ -47,9 +51,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         if (userRepository.findOne(Example.of(new Users(null, "admin", null, null))).isEmpty()) {
             userRepository.save(user);
 
-        }
-        else
-        {
+        } else {
             System.out.println("User already exists!");
         }
 
@@ -59,48 +61,53 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         for (String string : issueTypeStrings) {
             IssueType issueType = new IssueType(string);
             Optional<IssueType> i = issueTypeRepository.findOne(Example.of(issueType));
-            if (i.isEmpty())
-                {
-                    issueTypeRepository.save(issueType);
-                    System.out.println("IssueType craeted!");
-            }else {
+            if (i.isEmpty()) {
+                issueTypeRepository.save(issueType);
+                System.out.println("IssueType craeted!");
+            } else {
 
-                    System.out.println("IssueType already exists!");
-                }
-        } 
+                System.out.println("IssueType already exists!");
+            }
+        }
 
         // <Issue> a = new ArrayList<Issue>();
 
-        //  i = 0; i < 50; i++) {
-        //     Issue issue1 = new Issue();
- 
+        // i = 0; i < 50; i++) {
+        // Issue issue1 = new Issue();
+
         // issue1.setStatus(IssueStatus.NEW);
         // i > 35)
         // etStatus(IssueStatus.CLOSED);
 
-        //     issue1.setStatus(IssueStatus.INPROGRESS);
-        // 
+        // issue1.setStatus(IssueStatus.INPROGRESS);
+        //
 
         // e1.setDocNumber("DOC001");
 
         // etClient(new Client(UUID.randomUUID().toString(),
         // UUID.randomUUID().toString(), UUID.randomUUID().toString(),
-        //         UUID.randomUUID().toString()));
+        // UUID.randomUUID().toString()));
 
         // etSubject(new Vehicle(UUID.randomUUID().toString(),
-        //             UUID.randomUUID().toString()));
-  
-        //     issue1.setIssueDescription(UUID.randomUUID().toString());
- 
+        // UUID.randomUUID().toString()));
+
+        // issue1.setIssueDescription(UUID.randomUUID().toString());
+
         // // issue1.setIssuedDepartment(new Department(UUID.randomUUID().toString()));
         // // issue1.setIssuedEmployee(UUID.randomUUID().toString());
-        //     // issue1.setIssuedDemands(UUID.randomUUID().toString());
- 
+        // // issue1.setIssuedDemands(UUID.randomUUID().toString());
+
         // // issue1.setDepartmentFeedback(UUID.randomUUID().toString());
         // // issue1.setIssueResult("Result pending");
-        //     a.add(issue1);
+        // a.add(issue1);
         // }
         // issueRepository.saveAll(a);
+        ob t = new ob();
+        t.setTestBool(true);
+        t.setTestInteger(1);
+        t.setTestString("123");
+        t.setDepartment(new Department("testDep"));
+        obRepository.save(t);
 
     }
 }
