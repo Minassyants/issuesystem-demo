@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -15,8 +16,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
+import mb.pso.issuesystem.listeners.IssueEntityListener;
 
 @Entity
+@EntityListeners(IssueEntityListener.class)
 public class Issue {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

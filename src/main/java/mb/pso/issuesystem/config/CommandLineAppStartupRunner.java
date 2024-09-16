@@ -23,21 +23,21 @@ import mb.pso.issuesystem.entity.Users;
 import mb.pso.issuesystem.entity.Vehicle;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 import mb.pso.issuesystem.entity.enums.Roles;
-import mb.pso.issuesystem.entity.es.ob;
+import mb.pso.issuesystem.entity.es.IssueDocument;
 import mb.pso.issuesystem.repository.IssueRepository;
 import mb.pso.issuesystem.repository.IssueTypeRepository;
 import mb.pso.issuesystem.repository.UserRepository;
-import mb.pso.issuesystem.repository.es.ObRepository;
+import mb.pso.issuesystem.repository.es.IssueDocumentRepository;
 
 @Component
 public class CommandLineAppStartupRunner implements CommandLineRunner {
     private final UserRepository userRepository;
     private final IssueRepository issueRepository;
     private final IssueTypeRepository issueTypeRepository;
-    private final ObRepository obRepository;
+    private final IssueDocumentRepository obRepository;
 
     public CommandLineAppStartupRunner(UserRepository userRepository, IssueRepository issueRepository,
-            IssueTypeRepository issueTypeRepository, ObRepository obRepository) {
+            IssueTypeRepository issueTypeRepository, IssueDocumentRepository obRepository) {
         this.userRepository = userRepository;
         this.issueRepository = issueRepository;
         this.issueTypeRepository = issueTypeRepository;
@@ -106,16 +106,16 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         // a.add(issue1);
         // }
         // issueRepository.saveAll(a);
-        ob t = new ob();
-        t.setTestBool(true);
-        t.setTestInteger(1);
-        t.setTestString("123");
-        t.setDepartment(new Department("testDep"));
-        t.setTestDate(Date.from(Instant.now()));
-        t.setTestDateTime(DateTime.of(Instant.now()));
-        t.setTestLocalDateTime(LocalDateTime.now());
+        // IssueDocument t = new IssueDocument();
+        // t.setTestBool(true);
+        // t.setTestInteger(1);
+        // t.setTestString("123");
+        // t.setDepartment(new Department("testDep"));
+        // t.setTestDate(Date.from(Instant.now()));
+        // t.setTestDateTime(DateTime.of(Instant.now()));
+        // t.setTestLocalDateTime(LocalDateTime.now());
         
-        obRepository.save(t);
+        // obRepository.save(t);
 
     }
 }
