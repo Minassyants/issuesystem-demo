@@ -1,5 +1,8 @@
 package mb.pso.issuesystem.config;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -11,6 +14,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 
+import co.elastic.clients.util.DateTime;
 import mb.pso.issuesystem.entity.Client;
 import mb.pso.issuesystem.entity.Department;
 import mb.pso.issuesystem.entity.Issue;
@@ -107,6 +111,10 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         t.setTestInteger(1);
         t.setTestString("123");
         t.setDepartment(new Department("testDep"));
+        t.setTestDate(Date.from(Instant.now()));
+        t.setTestDateTime(DateTime.of(Instant.now()));
+        t.setTestLocalDateTime(LocalDateTime.now());
+        
         obRepository.save(t);
 
     }
