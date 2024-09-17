@@ -9,12 +9,17 @@ import java.util.Optional;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.client.elc.NativeQuery;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import io.vertx.core.json.JsonObject;
 import mb.pso.issuesystem.entity.AdditionalAttribute;
 import mb.pso.issuesystem.entity.BasicReportRow;
@@ -29,6 +34,7 @@ import mb.pso.issuesystem.entity.QAdUser;
 import mb.pso.issuesystem.entity.QIssue;
 import mb.pso.issuesystem.entity.Subject;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
+import mb.pso.issuesystem.entity.es.IssueDocument;
 import mb.pso.issuesystem.entity.utility.EmailNotification;
 import mb.pso.issuesystem.repository.AdditionalAttributeRepository;
 import mb.pso.issuesystem.repository.ClientRepository;
@@ -55,13 +61,14 @@ public class WebClientServiceImpl implements WebClientService {
     private final EmployeeRepository employeeRepository;
     private final AdUserRepository adUserRepository;
     private final EmailNotificationServiceImpl emailNotificationServiceImpl;
+    private final ElasticsearchOperations elasticsearchOperations;
 
     public WebClientServiceImpl(IssueRepository issueRepository, DepartmentRepository departmentRepository,
             EmailNotificationServiceImpl emailNotificationServiceImpl,
             IssueAttributeRepository issueAttributeRepository, ClientRepository clientRepository,
             IssueTypeRepository issueTypeRepository, SubjectRepository subjectRepository,
             AdditionalAttributeRepository additionalAttributeRepository, EmployeeRepository employeeRepository,
-            AdUserRepository adUserRepository) {
+            AdUserRepository adUserRepository, ElasticsearchOperations elasticsearchOperations) {
         this.issueRepository = issueRepository;
         this.issueAttributeRepository = issueAttributeRepository;
         this.departmentRepository = departmentRepository;
@@ -72,6 +79,7 @@ public class WebClientServiceImpl implements WebClientService {
         this.employeeRepository = employeeRepository;
         this.adUserRepository = adUserRepository;
         this.emailNotificationServiceImpl = emailNotificationServiceImpl;
+        this.elasticsearchOperations = elasticsearchOperations;
 
     }
 
@@ -174,17 +182,27 @@ public class WebClientServiceImpl implements WebClientService {
     }
 
     @Override
-    public Page<Issue> getAllIssues(Pageable pageable, Authentication authentication) {
+    public Page<Issue> getAllIssues(Pageable pageable, Authentication authentication, Optional<String> q) {
         Jwt jwt = (Jwt) authentication.getPrincipal();
         String roles = jwt.getClaimAsString("scope");
-        if (roles.contains("employee")) {
-            QIssue issue = QIssue.issue;
-            Predicate predicate = issue.issuedEmployee.mail.eq(jwt.getClaimAsString("email"))
-                    .and(issue.status.eq(IssueStatus.INPROGRESS));
-            Page<Issue> issues = issueRepository.findAll(predicate, pageable);
-            return issues;
+        QIssue issue = QIssue.issue;
+        BooleanBuilder where = new BooleanBuilder();
+
+        if (q.isPresent()) {
+            NativeQuery query = NativeQuery.builder().withQuery(arg0 -> arg0.multiMatch(arg1 -> arg1.fields(
+                    List.of(IssueDocument.class.getDeclaredFields()).stream().map(arg2 -> arg2.getName()).toList())
+                    .query(q.get()))).build();
+            SearchHits<IssueDocument> a = elasticsearchOperations.search(query, IssueDocument.class);
+            List<Integer> w = a.map(arg0 -> arg0.getContent().getId()).toList();
+            where.and(issue.id.in(w));
         }
-        Page<Issue> issues = issueRepository.findAll(pageable);
+
+        if (roles.contains("employee")) {
+            where.and(issue.issuedEmployee.mail.eq(jwt.getClaimAsString("email"))
+                    .and(issue.status.eq(IssueStatus.INPROGRESS)));
+        }
+        
+        Page<Issue> issues = issueRepository.findAll(where, pageable);
         return issues;
     }
 

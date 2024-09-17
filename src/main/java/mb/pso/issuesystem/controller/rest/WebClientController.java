@@ -104,9 +104,9 @@ public class WebClientController {
 
     @GetMapping("/issues")
     public ResponseEntity<Page<Issue>> getAllIssuesPageable(Authentication authentication, @RequestParam int page,
-            @RequestParam int size) {
+            @RequestParam int size, @RequestParam Optional<String> q) {
         Page<Issue> issues = webClientServiceImpl
-                .getAllIssues(PageRequest.of(page, size, Sort.by(Direction.DESC, "id")), authentication);
+                .getAllIssues(PageRequest.of(page, size, Sort.by(Direction.DESC, "id")), authentication, q);
         return ResponseEntity.ok(issues);
     }
 

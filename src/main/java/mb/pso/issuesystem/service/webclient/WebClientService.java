@@ -15,7 +15,7 @@ public interface WebClientService {
 
     public List<Issue> getAllIssues();
 
-    public Page<Issue> getAllIssues(Pageable pageable, Authentication authentication);
+    public Page<Issue> getAllIssues(Pageable pageable, Authentication authentication, Optional<String> q);
 
     public Optional<Issue> getIssueById(Integer id);
 }
