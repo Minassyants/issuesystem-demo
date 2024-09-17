@@ -1,6 +1,7 @@
 package mb.pso.issuesystem.controller.rest;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -104,9 +105,9 @@ public class WebClientController {
 
     @GetMapping("/issues")
     public ResponseEntity<Page<Issue>> getAllIssuesPageable(Authentication authentication, @RequestParam int page,
-            @RequestParam int size, @RequestParam Optional<String> q) {
+            @RequestParam int size, @RequestParam Optional<String> q, @RequestParam Optional<List<String>> sf) {
         Page<Issue> issues = webClientServiceImpl
-                .getAllIssues(PageRequest.of(page, size, Sort.by(Direction.DESC, "id")), authentication, q);
+                .getAllIssues(PageRequest.of(page, size, Sort.by(Direction.DESC, "id")), authentication, q, sf);
         return ResponseEntity.ok(issues);
     }
 
