@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
@@ -182,17 +183,26 @@ public class WebClientServiceImpl implements WebClientService {
     }
 
     @Override
-    public Page<Issue> getAllIssues(Pageable pageable, Authentication authentication, Optional<String> q) {
+    public Page<Issue> getAllIssues(Pageable pageable, Authentication authentication, Optional<String> q,
+            Optional<List<String>> searchFieldsOptional) {
         Jwt jwt = (Jwt) authentication.getPrincipal();
         String roles = jwt.getClaimAsString("scope");
         QIssue issue = QIssue.issue;
         BooleanBuilder where = new BooleanBuilder();
-
         if (q.isPresent()) {
-            NativeQuery query = NativeQuery.builder().withQuery(arg0 -> arg0.multiMatch(arg1 -> arg1.fields(
-                    "issueDescription")
-                    .query(q.get()))).build();
-            SearchHits<IssueDocument> a = elasticsearchOperations.search(query, IssueDocument.class);
+            NativeQuery query = NativeQuery.builder().withQuery(t -> t.match(t1 -> t1.query(q.get()))).build();
+            if (searchFieldsOptional.isPresent()) {
+                List<String> searchFields = searchFieldsOptional.get();
+                if (searchFields.size() > 0)
+                    query = NativeQuery.builder().withQuery(arg0 -> arg0.multiMatch(arg1 -> arg1.fields(
+                            searchFields)
+                            .query(q.get()))).build();
+
+            }
+
+            // TODO инлекс надо в переменную выводить
+            SearchHits<IssueDocument> a = elasticsearchOperations.search(query, IssueDocument.class,
+                    IndexCoordinates.of("pso_issue_gzk"));
             List<Integer> w = a.map(arg0 -> arg0.getContent().getId()).toList();
             where.and(issue.id.in(w));
         }
