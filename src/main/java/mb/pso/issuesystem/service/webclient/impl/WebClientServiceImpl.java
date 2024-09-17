@@ -21,6 +21,8 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
+import co.elastic.clients.elasticsearch._types.query_dsl.QueryStringQuery;
 import io.vertx.core.json.JsonObject;
 import mb.pso.issuesystem.entity.AdditionalAttribute;
 import mb.pso.issuesystem.entity.BasicReportRow;
@@ -190,7 +192,9 @@ public class WebClientServiceImpl implements WebClientService {
         QIssue issue = QIssue.issue;
         BooleanBuilder where = new BooleanBuilder();
         if (q.isPresent()) {
-            NativeQuery query = NativeQuery.builder().withQuery(t -> t.match(t1 -> t1.query(q.get()))).build();
+            // NativeQuery query = NativeQuery.builder().withQuery(t -> t.match(t1 ->
+            // t1.queryName(roles).query(q.get()))).build();
+            NativeQuery query = NativeQuery.builder().withQuery(t -> t.queryString(t1 -> t1.query(q.get()))).build();
             if (searchFieldsOptional.isPresent()) {
                 List<String> searchFields = searchFieldsOptional.get();
                 if (searchFields.size() > 0)
