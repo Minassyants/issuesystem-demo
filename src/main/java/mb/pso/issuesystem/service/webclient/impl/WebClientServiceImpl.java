@@ -190,7 +190,7 @@ public class WebClientServiceImpl implements WebClientService {
 
         if (q.isPresent()) {
             NativeQuery query = NativeQuery.builder().withQuery(arg0 -> arg0.multiMatch(arg1 -> arg1.fields(
-                    List.of(IssueDocument.class.getDeclaredFields()).stream().map(arg2 -> arg2.getName()).toList())
+                    "issueDescription")
                     .query(q.get()))).build();
             SearchHits<IssueDocument> a = elasticsearchOperations.search(query, IssueDocument.class);
             List<Integer> w = a.map(arg0 -> arg0.getContent().getId()).toList();
@@ -201,7 +201,7 @@ public class WebClientServiceImpl implements WebClientService {
             where.and(issue.issuedEmployee.mail.eq(jwt.getClaimAsString("email"))
                     .and(issue.status.eq(IssueStatus.INPROGRESS)));
         }
-        
+
         Page<Issue> issues = issueRepository.findAll(where, pageable);
         return issues;
     }
