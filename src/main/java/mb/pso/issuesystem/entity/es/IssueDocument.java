@@ -20,7 +20,7 @@ import mb.pso.issuesystem.entity.Subject;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 
 @Document(indexName = "pso_issue_gzk")
-@Setting(settingPath = "classpath:/es_settings/pso_issue.json")
+@Setting(settingPath = "/es_settings/pso_issue/settings.json")
 public class IssueDocument {
     @Id
     private Integer id;
