@@ -7,6 +7,7 @@ import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
 import jakarta.persistence.Id;
 import mb.pso.issuesystem.entity.AdditionalAttribute;
@@ -19,6 +20,7 @@ import mb.pso.issuesystem.entity.Subject;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 
 @Document(indexName = "pso_issue_gzk")
+@Setting(settingPath = "classpath:/es_settings/pso_issue.json")
 public class IssueDocument {
     @Id
     private Integer id;

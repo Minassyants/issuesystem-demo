@@ -1,0 +1,32 @@
+{
+    "analysis": {
+        "index_analyzer": {
+            "my_index_analyzer": {
+                "type": "custom",
+                "tokenizer": "standard",
+                "filter": [
+                    "lowercase",
+                    "mynGram"
+                ]
+            }
+        },
+        "search_analyzer": {
+            "my_search_analyzer": {
+                "type": "custom",
+                "tokenizer": "standard",
+                "filter": [
+                    "standard",
+                    "lowercase",
+                    "mynGram"
+                ]
+            }
+        },
+        "filter": {
+            "mynGram": {
+                "type": "nGram",
+                "min_gram": 6,
+                "max_gram": 7
+            }
+        }
+    }
+}
