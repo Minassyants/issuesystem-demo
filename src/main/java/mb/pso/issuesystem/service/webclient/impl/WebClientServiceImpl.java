@@ -192,9 +192,8 @@ public class WebClientServiceImpl implements WebClientService {
         QIssue issue = QIssue.issue;
         BooleanBuilder where = new BooleanBuilder();
         if (q.isPresent()) {
-            // NativeQuery query = NativeQuery.builder().withQuery(t -> t.match(t1 ->
-            // t1.queryName(roles).query(q.get()))).build();
-            NativeQuery query = NativeQuery.builder().withQuery(t -> t.queryString(t1 -> t1.query(q.get()))).build();
+            // NativeQuery query = NativeQuery.builder().withQuery(t -> t.queryString(t1 -> t1.query(q.get()))).build();
+            NativeQuery query = NativeQuery.builder().withQuery(t->t.fuzzy(arg0 -> arg0.value(q.get()))).build();
             if (searchFieldsOptional.isPresent()) {
                 List<String> searchFields = searchFieldsOptional.get();
                 if (searchFields.size() > 0)
