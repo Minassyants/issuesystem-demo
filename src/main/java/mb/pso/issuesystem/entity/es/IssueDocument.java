@@ -7,17 +7,9 @@ import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
-import org.springframework.data.elasticsearch.annotations.MultiField;
 import org.springframework.data.elasticsearch.annotations.Setting;
 
 import jakarta.persistence.Id;
-import mb.pso.issuesystem.entity.AdditionalAttribute;
-import mb.pso.issuesystem.entity.Client;
-import mb.pso.issuesystem.entity.Department;
-import mb.pso.issuesystem.entity.Employee;
-import mb.pso.issuesystem.entity.IssueAttribute;
-import mb.pso.issuesystem.entity.IssueType;
-import mb.pso.issuesystem.entity.Subject;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 
 @Document(indexName = "pso_issue_gzk")
@@ -72,119 +64,116 @@ public class IssueDocument {
     @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String issueResult;
 
-    public IssueDocument() {
+    public IssueDocument(Integer id, IssueStatus status, Date docDate, String clientName, String clientAdress,
+            String clientEmail, String clientPhoneNumber, String type, String subjectDescription, String subjectVin,
+            String subjectType, List<String> issueAttributes, String issueDescription, String issuedDepartment,
+            String issuedEmployeeGivenName, String issuedEmployeeSn, String issuedEmployeeMail, String issuedDemands,
+            List<String> additionalAttributes, String departmentFeedback, String issueResult) {
+        this.id = id;
+        this.status = status;
+        this.docDate = docDate;
+        this.clientName = clientName;
+        this.clientAdress = clientAdress;
+        this.clientEmail = clientEmail;
+        this.clientPhoneNumber = clientPhoneNumber;
+        this.type = type;
+        this.subjectDescription = subjectDescription;
+        this.subjectVin = subjectVin;
+        this.subjectType = subjectType;
+        this.issueAttributes = issueAttributes;
+        this.issueDescription = issueDescription;
+        this.issuedDepartment = issuedDepartment;
+        this.issuedEmployeeGivenName = issuedEmployeeGivenName;
+        this.issuedEmployeeSn = issuedEmployeeSn;
+        this.issuedEmployeeMail = issuedEmployeeMail;
+        this.issuedDemands = issuedDemands;
+        this.additionalAttributes = additionalAttributes;
+        this.departmentFeedback = departmentFeedback;
+        this.issueResult = issueResult;
     }
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public IssueStatus getStatus() {
         return status;
-    }
-
-    public void setStatus(IssueStatus status) {
-        this.status = status;
     }
 
     public Date getDocDate() {
         return docDate;
     }
 
-    public void setDocDate(Date docDate) {
-        this.docDate = docDate;
+    public String getClientName() {
+        return clientName;
     }
 
-    public Client getClient() {
-        return client;
+    public String getClientAdress() {
+        return clientAdress;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public String getClientEmail() {
+        return clientEmail;
     }
 
-    public IssueType getType() {
+    public String getClientPhoneNumber() {
+        return clientPhoneNumber;
+    }
+
+    public String getType() {
         return type;
     }
 
-    public void setType(IssueType type) {
-        this.type = type;
+    public String getSubjectDescription() {
+        return subjectDescription;
     }
 
-    public Subject getSubject() {
-        return subject;
+    public String getSubjectVin() {
+        return subjectVin;
     }
 
-    public void setSubject(Subject subject) {
-        this.subject = subject;
+    public String getSubjectType() {
+        return subjectType;
     }
 
-    public List<IssueAttribute> getIssueAttributes() {
+    public List<String> getIssueAttributes() {
         return issueAttributes;
-    }
-
-    public void setIssueAttributes(List<IssueAttribute> issueAttributes) {
-        this.issueAttributes = issueAttributes;
     }
 
     public String getIssueDescription() {
         return issueDescription;
     }
 
-    public void setIssueDescription(String issueDescription) {
-        this.issueDescription = issueDescription;
-    }
-
-    public Department getIssuedDepartment() {
+    public String getIssuedDepartment() {
         return issuedDepartment;
     }
 
-    public void setIssuedDepartment(Department issuedDepartment) {
-        this.issuedDepartment = issuedDepartment;
+    public String getIssuedEmployeeGivenName() {
+        return issuedEmployeeGivenName;
     }
 
-    public Employee getIssuedEmployee() {
-        return issuedEmployee;
+    public String getIssuedEmployeeSn() {
+        return issuedEmployeeSn;
     }
 
-    public void setIssuedEmployee(Employee issuedEmployee) {
-        this.issuedEmployee = issuedEmployee;
+    public String getIssuedEmployeeMail() {
+        return issuedEmployeeMail;
     }
 
     public String getIssuedDemands() {
         return issuedDemands;
     }
 
-    public void setIssuedDemands(String issuedDemands) {
-        this.issuedDemands = issuedDemands;
-    }
-
-    public List<AdditionalAttribute> getAdditionalAttributes() {
+    public List<String> getAdditionalAttributes() {
         return additionalAttributes;
-    }
-
-    public void setAdditionalAttributes(List<AdditionalAttribute> additionalAttributes) {
-        this.additionalAttributes = additionalAttributes;
     }
 
     public String getDepartmentFeedback() {
         return departmentFeedback;
     }
 
-    public void setDepartmentFeedback(String departmentFeedback) {
-        this.departmentFeedback = departmentFeedback;
-    }
-
     public String getIssueResult() {
         return issueResult;
-    }
-
-    public void setIssueResult(String issueResult) {
-        this.issueResult = issueResult;
     }
 
 }

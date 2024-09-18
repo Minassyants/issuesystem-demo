@@ -6,7 +6,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import mb.pso.issuesystem.entity.Client;
+import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.Issue;
+import mb.pso.issuesystem.entity.Subject;
+import mb.pso.issuesystem.entity.Vehicle;
 import mb.pso.issuesystem.entity.es.IssueDocument;
 import mb.pso.issuesystem.repository.es.IssueDocumentRepository;
 import mb.pso.issuesystem.service.impl.IssueServiceImpl;
@@ -35,21 +39,31 @@ public class IssueController {
     public void reindexSearch() {
         Iterable<Issue> issues = issueServiceImpl.getAll();
         issues.forEach(issue -> {
-            IssueDocument issueDocument = new IssueDocument();
-            issueDocument.setId(issue.getId());
-            issueDocument.setStatus(issue.getStatus());
-            issueDocument.setDocDate(issue.getDocDate());
-            issueDocument.setClient(issue.getClient());
-            issueDocument.setType(issue.getType());
-            issueDocument.setSubject(issue.getSubject());
-            issueDocument.setIssueAttributes(issue.getIssueAttributes());
-            issueDocument.setIssueDescription(issue.getIssueDescription());
-            issueDocument.setIssuedDepartment(issue.getIssuedDepartment());
-            issueDocument.setIssuedEmployee(issue.getIssuedEmployee());
-            issueDocument.setIssuedDemands(issue.getIssuedDemands());
-            issueDocument.setAdditionalAttributes(issue.getAdditionalAttributes());
-            issueDocument.setDepartmentFeedback(issue.getDepartmentFeedback());
-            issueDocument.setIssueResult(issue.getIssueResult());
+            Client client = issue.getClient();
+            Subject subject = issue.getSubject();
+            Employee employee = issue.getIssuedEmployee();
+            IssueDocument issueDocument = new IssueDocument(
+                    issue.getId(),
+                    issue.getStatus(),
+                    issue.getDocDate(),
+                    client.getName(),
+                    client.getAddress(),
+                    client.getEmail(),
+                    client.getPhoneNumber(),
+                    issue.getType().getName(),
+                    subject.getDescription(),
+                    subject instanceof Vehicle ? ((Vehicle) subject).getVin() : null,
+                    subject instanceof Vehicle ? "vehicle" : "good",
+                    issue.getIssueAttributes().stream().map(arg0 -> arg0.getName()).toList(),
+                    issue.getIssueDescription(),
+                    issue.getIssuedDepartment().getName(),
+                    employee.getGivenName(),
+                    employee.getSn(),
+                    employee.getMail(),
+                    issue.getIssuedDemands(),
+                    issue.getAdditionalAttributes().stream().map(arg0 -> arg0.getStringValue()).toList(),
+                    issue.getDepartmentFeedback(),
+                    issue.getIssueResult());
             issueDocumentRepository.save(issueDocument);
         });
     }
