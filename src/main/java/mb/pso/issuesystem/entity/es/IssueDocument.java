@@ -41,23 +41,23 @@ public class IssueDocument {
     @Field(type = FieldType.Keyword)
     private String subjectType;
 
-    @Field(type = FieldType.Keyword, analyzer = "my_index_analyzer")
+    @Field(type = FieldType.Keyword)
     private List<String> issueAttributes;
     @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String issueDescription;
     @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String issuedDepartment;
 
-    @Field(type = FieldType.Keyword, analyzer = "my_index_analyzer")
+    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String issuedEmployeeGivenName;
-    @Field(type = FieldType.Keyword, analyzer = "my_index_analyzer")
+    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String issuedEmployeeSn;
-    @Field(type = FieldType.Keyword, analyzer = "my_index_analyzer")
+    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String issuedEmployeeMail;
 
     @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String issuedDemands;
-    @Field(type = FieldType.Keyword, analyzer = "my_index_analyzer")
+    @Field(type = FieldType.Keyword)
     private List<String> additionalAttributes;
     @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String departmentFeedback;
