@@ -7,6 +7,7 @@ import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.MultiField;
 import org.springframework.data.elasticsearch.annotations.Setting;
 
 import jakarta.persistence.Id;
@@ -28,20 +29,47 @@ public class IssueDocument {
     private IssueStatus status;
     @Field(type = FieldType.Date, format = DateFormat.epoch_second)
     private Date docDate;
-    private Client client;
-    private IssueType type;
-    private Subject subject;
-    private List<IssueAttribute> issueAttributes;
-    @Field(type = FieldType.Text)
+
+    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
+    private String clientName;
+    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
+    private String clientAdress;
+    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
+    private String clientEmail;
+    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
+    private String clientPhoneNumber;
+
+    @Field(type = FieldType.Keyword)
+    private String type;
+
+    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
+    private String subjectDescription;
+    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
+    private String subjectVin;
+    @Field(type = FieldType.Keyword)
+    private String subjectType;
+
+    @Field(type = FieldType.Keyword, analyzer = "my_index_analyzer")
+    private List<String> issueAttributes;
+    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String issueDescription;
-    private Department issuedDepartment;
-    private Employee issuedEmployee;
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
+    private String issuedDepartment;
+
+    @Field(type = FieldType.Keyword, analyzer = "my_index_analyzer")
+    private String issuedEmployeeGivenName;
+    @Field(type = FieldType.Keyword, analyzer = "my_index_analyzer")
+    private String issuedEmployeeSn;
+    @Field(type = FieldType.Keyword, analyzer = "my_index_analyzer")
+    private String issuedEmployeeMail;
+
+    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String issuedDemands;
-    private List<AdditionalAttribute> additionalAttributes;
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Keyword, analyzer = "my_index_analyzer")
+    private List<String> additionalAttributes;
+    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String departmentFeedback;
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String issueResult;
 
     public IssueDocument() {
