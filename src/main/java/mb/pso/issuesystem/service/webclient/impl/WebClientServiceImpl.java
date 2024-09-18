@@ -192,8 +192,10 @@ public class WebClientServiceImpl implements WebClientService {
         QIssue issue = QIssue.issue;
         BooleanBuilder where = new BooleanBuilder();
         if (q.isPresent()) {
-            // NativeQuery query = NativeQuery.builder().withQuery(t -> t.queryString(t1 -> t1.query(q.get()))).build();
-            NativeQuery query = NativeQuery.builder().withQuery(t->t.fuzzy(arg0 -> arg0.value(q.get()))).build();
+            // NativeQuery query = NativeQuery.builder().withQuery(t -> t.queryString(t1 ->
+            // t1.query(q.get()))).build();
+            NativeQuery query = NativeQuery.builder()
+                    .withQuery(t -> t.queryString(arg0 -> arg0.fuzziness("auto").query(q.get()))).build();
             if (searchFieldsOptional.isPresent()) {
                 List<String> searchFields = searchFieldsOptional.get();
                 if (searchFields.size() > 0)
@@ -203,7 +205,7 @@ public class WebClientServiceImpl implements WebClientService {
 
             }
 
-            // TODO инлекс надо в переменную выводить
+            // TODO индекс надо в переменную выводить
             SearchHits<IssueDocument> a = elasticsearchOperations.search(query, IssueDocument.class,
                     IndexCoordinates.of("pso_issue_gzk"));
             List<Integer> w = a.map(arg0 -> arg0.getContent().getId()).toList();
