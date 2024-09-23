@@ -16,6 +16,7 @@ import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
@@ -25,6 +26,7 @@ import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryStringQuery;
 import io.vertx.core.json.JsonObject;
 import mb.pso.issuesystem.entity.AdditionalAttribute;
+import mb.pso.issuesystem.entity.AttachedFile;
 import mb.pso.issuesystem.entity.BasicReportRow;
 import mb.pso.issuesystem.entity.Client;
 import mb.pso.issuesystem.entity.Department;
@@ -49,6 +51,7 @@ import mb.pso.issuesystem.repository.IssueTypeRepository;
 import mb.pso.issuesystem.repository.SubjectRepository;
 import mb.pso.issuesystem.repository.ldap.AdUserRepository;
 import mb.pso.issuesystem.service.notifications.impl.EmailNotificationServiceImpl;
+import mb.pso.issuesystem.service.s3.MinioService;
 import mb.pso.issuesystem.service.webclient.WebClientService;
 
 @Service
@@ -65,13 +68,15 @@ public class WebClientServiceImpl implements WebClientService {
     private final AdUserRepository adUserRepository;
     private final EmailNotificationServiceImpl emailNotificationServiceImpl;
     private final ElasticsearchOperations elasticsearchOperations;
+    private final MinioService minioService;
 
     public WebClientServiceImpl(IssueRepository issueRepository, DepartmentRepository departmentRepository,
             EmailNotificationServiceImpl emailNotificationServiceImpl,
             IssueAttributeRepository issueAttributeRepository, ClientRepository clientRepository,
             IssueTypeRepository issueTypeRepository, SubjectRepository subjectRepository,
             AdditionalAttributeRepository additionalAttributeRepository, EmployeeRepository employeeRepository,
-            AdUserRepository adUserRepository, ElasticsearchOperations elasticsearchOperations) {
+            AdUserRepository adUserRepository, ElasticsearchOperations elasticsearchOperations,
+            MinioService minioService) {
         this.issueRepository = issueRepository;
         this.issueAttributeRepository = issueAttributeRepository;
         this.departmentRepository = departmentRepository;
@@ -83,6 +88,7 @@ public class WebClientServiceImpl implements WebClientService {
         this.adUserRepository = adUserRepository;
         this.emailNotificationServiceImpl = emailNotificationServiceImpl;
         this.elasticsearchOperations = elasticsearchOperations;
+        this.minioService = minioService;
 
     }
 
@@ -345,6 +351,16 @@ public class WebClientServiceImpl implements WebClientService {
     public Iterable<BasicReportRow> getReport(LocalDate start, LocalDate end) {
         end = end.plusDays(1);
         return issueRepository.fetchReport(start, end);
+    }
+
+    public void uploadFilesToIssue(Integer id, List<MultipartFile> files) {
+        Optional<Issue> issueOptional = issueRepository.findById(id);
+        if (issueOptional.isPresent()) {
+            List<AttachedFile> attachedFiles = files.stream().map(arg0 -> minioService.uploadFile(arg0)).toList();
+            Issue issue = issueOptional.get();
+            issue.setAttachedFiles(attachedFiles);
+            issueRepository.save(issue);
+        }
     }
 
 }

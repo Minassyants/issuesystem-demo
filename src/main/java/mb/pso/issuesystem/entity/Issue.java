@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 import mb.pso.issuesystem.listeners.IssueEntityListener;
 
@@ -53,6 +54,40 @@ public class Issue {
     private String departmentFeedback;
     @Column(length = 2000)
     private String issueResult;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<AttachedFile> attachedFiles;
+
+    public Issue(Integer id, IssueStatus status, String docNumber, Date docDate, Client client, IssueType type,
+            Subject subject, List<IssueAttribute> issueAttributes, String issueDescription,
+            List<String> relatedDocFromSigma, Department issuedDepartment, Employee issuedEmployee,
+            String issuedDemands, List<AdditionalAttribute> additionalAttributes, String departmentFeedback,
+            String issueResult, List<AttachedFile> attachedFiles) {
+        this.id = id;
+        this.status = status;
+        this.docNumber = docNumber;
+        this.docDate = docDate;
+        this.client = client;
+        this.type = type;
+        this.subject = subject;
+        this.issueAttributes = issueAttributes;
+        this.issueDescription = issueDescription;
+        this.relatedDocFromSigma = relatedDocFromSigma;
+        this.issuedDepartment = issuedDepartment;
+        this.issuedEmployee = issuedEmployee;
+        this.issuedDemands = issuedDemands;
+        this.additionalAttributes = additionalAttributes;
+        this.departmentFeedback = departmentFeedback;
+        this.issueResult = issueResult;
+        this.attachedFiles = attachedFiles;
+    }
+
+    public List<AttachedFile> getAttachedFiles() {
+        return attachedFiles;
+    }
+
+    public void setAttachedFiles(List<AttachedFile> attachedFiles) {
+        this.attachedFiles = attachedFiles;
+    }
 
     @Override
     public String toString() {

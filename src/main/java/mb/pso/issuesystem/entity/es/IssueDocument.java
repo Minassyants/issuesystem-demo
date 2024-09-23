@@ -3,6 +3,8 @@ package mb.pso.issuesystem.entity.es;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -12,7 +14,7 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 import jakarta.persistence.Id;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 
-@Document(indexName = "pso_issue_gzk")
+@Document(indexName = "#{@environment.getProperty('es.issue.index-name')}")
 @Setting(settingPath = "/es_settings/pso_issue/settings.json")
 public class IssueDocument {
     @Id
@@ -90,6 +92,7 @@ public class IssueDocument {
         this.additionalAttributes = additionalAttributes;
         this.departmentFeedback = departmentFeedback;
         this.issueResult = issueResult;
+        
     }
 
     public Integer getId() {

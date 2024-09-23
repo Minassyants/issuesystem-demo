@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import mb.pso.issuesystem.entity.AdUser;
 import mb.pso.issuesystem.entity.BasicReportRow;
@@ -117,6 +118,13 @@ public class WebClientController {
         if (issue.isPresent())
             return ResponseEntity.ok(issue.get());
         return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/issues/{id}/uploadFile")
+    public ResponseEntity<String> uploadFilesToIssue(@PathVariable Integer id, @RequestBody List<MultipartFile> files) {
+        webClientServiceImpl.uploadFilesToIssue(id, files);
+
+        return ResponseEntity.ok("ok");
     }
 
     @GetMapping("/employee")
