@@ -1,17 +1,25 @@
 package mb.pso.issuesystem.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import mb.pso.issuesystem.listeners.AttachedFileEntityListener;
 
 @Entity
+@EntityListeners(AttachedFileEntityListener.class)
 public class AttachedFile {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String url;
+    @Column(length = 1000)
+    private String filePath;
 
-    public AttachedFile(Integer id, String url) {
+    public AttachedFile(Integer id, String filePath) {
         this.id = id;
-        this.url = url;
+        this.filePath = filePath;
     }
 
     public AttachedFile() {
@@ -25,12 +33,12 @@ public class AttachedFile {
         this.id = id;
     }
 
-    public String getUrl() {
-        return url;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
 }

@@ -1,5 +1,6 @@
 package mb.pso.issuesystem.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class Issue {
     @Column(length = 2000)
     private String issueResult;
     @OneToMany(cascade = CascadeType.ALL)
-    private List<AttachedFile> attachedFiles;
+    private List<AttachedFile> attachedFiles = new ArrayList<>();
 
     public Issue(Integer id, IssueStatus status, String docNumber, Date docDate, Client client, IssueType type,
             Subject subject, List<IssueAttribute> issueAttributes, String issueDescription,
@@ -81,12 +82,21 @@ public class Issue {
         this.attachedFiles = attachedFiles;
     }
 
+    public void addAttachedFile(AttachedFile file) {
+        this.attachedFiles.add(file);
+    }
+
+    public void addAllAttachedFile(List<AttachedFile> files) {
+        this.attachedFiles.addAll(files);
+    }
+
     public List<AttachedFile> getAttachedFiles() {
         return attachedFiles;
     }
 
     public void setAttachedFiles(List<AttachedFile> attachedFiles) {
-        this.attachedFiles = attachedFiles;
+        this.attachedFiles.clear();
+        this.attachedFiles.addAll(attachedFiles);
     }
 
     @Override

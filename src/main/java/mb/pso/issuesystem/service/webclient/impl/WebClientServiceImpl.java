@@ -21,9 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
-import co.elastic.clients.elasticsearch._types.query_dsl.QueryStringQuery;
 import io.vertx.core.json.JsonObject;
 import mb.pso.issuesystem.entity.AdditionalAttribute;
 import mb.pso.issuesystem.entity.AttachedFile;
@@ -353,12 +350,14 @@ public class WebClientServiceImpl implements WebClientService {
         return issueRepository.fetchReport(start, end);
     }
 
-    public void uploadFilesToIssue(Integer id, List<MultipartFile> files) {
+    public void uploadFilesToIssue(Integer id, MultipartFile[] files) {
         Optional<Issue> issueOptional = issueRepository.findById(id);
         if (issueOptional.isPresent()) {
-            List<AttachedFile> attachedFiles = files.stream().map(arg0 -> minioService.uploadFile(arg0)).toList();
             Issue issue = issueOptional.get();
-            issue.setAttachedFiles(attachedFiles);
+            List<AttachedFile> attachedFiles = List.of(files).stream()
+                    .map(arg0 -> minioService.uploadFileToIssue(issue, arg0))
+                    .toList();
+            issue.addAllAttachedFile(attachedFiles);
             issueRepository.save(issue);
         }
     }

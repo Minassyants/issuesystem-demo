@@ -121,7 +121,7 @@ public class WebClientController {
     }
 
     @PostMapping("/issues/{id}/uploadFile")
-    public ResponseEntity<String> uploadFilesToIssue(@PathVariable Integer id, @RequestBody List<MultipartFile> files) {
+    public ResponseEntity<String> uploadFilesToIssue(@PathVariable Integer id, @RequestParam("files") MultipartFile[] files) {
         webClientServiceImpl.uploadFilesToIssue(id, files);
 
         return ResponseEntity.ok("ok");
