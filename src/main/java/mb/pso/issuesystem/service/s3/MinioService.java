@@ -50,7 +50,7 @@ public class MinioService {
             Date curDate = new Date();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm");
             String fileName = issue.getId().toString() + "/"
-                    + " " + dateFormat.format(curDate) + " "
+                    + dateFormat.format(curDate) + " "
                     + file.getOriginalFilename();
             minioClient
                     .putObject(
