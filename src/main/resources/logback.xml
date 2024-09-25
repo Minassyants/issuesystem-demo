@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <springProperty name="APPNAME" source="spring.application.name" />
+
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="ELASTIC" class="com.agido.logback.elasticsearch.ElasticsearchAppender">
+        <url>http://192.168.50.18:7000/_bulk</url>
+        <index>logs-issuesystem-%date{yyyy-MM-dd}</index>
+        <!-- <type>tester</type> -->
+        <loggerName>es-logger</loggerName> <!-- optional -->
+        <errorLoggerName>es-error-logger</errorLoggerName> <!-- optional -->
+        <connectTimeout>30000</connectTimeout> <!-- optional (in ms, default 30000) -->
+        <errorsToStderr>false</errorsToStderr> <!-- optional (default false) -->
+        <includeCallerData>false</includeCallerData> <!-- optional (default false) -->
+        <logsToStderr>false</logsToStderr> <!-- optional (default false) -->
+        <maxQueueSize>104857600</maxQueueSize> <!-- optional (default 104857600) -->
+        <maxRetries>3</maxRetries> <!-- optional (default 3) -->
+        <readTimeout>30000</readTimeout> <!-- optional (in ms, default 30000) -->
+        <sleepTime>250</sleepTime> <!-- optional (in ms, default 250) -->
+        <rawJsonMessage>false</rawJsonMessage> <!-- optional (default false) -->
+        <includeMdc>false</includeMdc> <!-- optional (default false) -->
+        <maxMessageSize>100</maxMessageSize> <!-- optional (default -1 -->
+        <!-- <authentication class="com.agido.logback.elasticsearch.config.BasicAuthentication" />  -->
+        <objectSerialization>true</objectSerialization> <!-- optional (default false) -->
+        <keyPrefix>data.</keyPrefix> <!-- optional (default None) -->
+        <operation>create</operation> <!-- optional (supported: index, create, update, delete -
+        default create) -->
+
+        <properties>
+            <!-- please note that <property> tags are also supported, esProperty was added for
+            logback-1.3 compatibility -->
+            <esProperty>
+                <name>appname</name>
+                <value>${APPNAME}</value>
+            </esProperty>
+            <esProperty>
+                <name>host</name>
+                <value>${HOSTNAME}</value>
+                <allowEmpty>false</allowEmpty>
+            </esProperty>
+            <esProperty>
+                <name>severity</name>
+                <value>%level</value>
+            </esProperty>
+            <esProperty>
+                <name>thread</name>
+                <value>%thread</value>
+            </esProperty>
+            <esProperty>
+                <name>stacktrace</name>
+                <value>%ex</value>
+            </esProperty>
+            <esProperty>
+                <name>logger</name>
+                <value>%logger</value>
+            </esProperty>
+        </properties>
+        <headers>
+            <header>
+                <name>Content-Type</name>
+                <value>application/json</value>
+            </header>
+        </headers>
+    </appender>
+
+
+    <!-- Root Logger with Console and File Logging -->
+    <root level="info">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="ELASTIC" />
+    </root>
+    <logger name="es-error-logger" level="INFO" additivity="false">
+        <appender-ref ref="FILELOGGER" />
+    </logger>
+
+    <logger name="es-logger" level="INFO" additivity="false">
+        <appender name="ES_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <!-- ... -->
+            <encoder>
+                <pattern>%msg</pattern> <!-- This pattern is important, otherwise it won't be the raw
+                Elasticsearch format anyomre -->
+            </encoder>
+        </appender>
+    </logger>
+
+</configuration>

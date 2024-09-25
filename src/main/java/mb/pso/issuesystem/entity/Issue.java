@@ -17,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 import mb.pso.issuesystem.listeners.IssueEntityListener;
 
@@ -57,12 +58,15 @@ public class Issue {
     private String issueResult;
     @OneToMany(cascade = CascadeType.ALL)
     private List<AttachedFile> attachedFiles = new ArrayList<>();
+    @OneToOne(cascade = CascadeType.ALL)
+    private Chat chat;
 
+    
     public Issue(Integer id, IssueStatus status, String docNumber, Date docDate, Client client, IssueType type,
             Subject subject, List<IssueAttribute> issueAttributes, String issueDescription,
             List<String> relatedDocFromSigma, Department issuedDepartment, Employee issuedEmployee,
             String issuedDemands, List<AdditionalAttribute> additionalAttributes, String departmentFeedback,
-            String issueResult, List<AttachedFile> attachedFiles) {
+            String issueResult, List<AttachedFile> attachedFiles, Chat chat) {
         this.id = id;
         this.status = status;
         this.docNumber = docNumber;
@@ -80,6 +84,7 @@ public class Issue {
         this.departmentFeedback = departmentFeedback;
         this.issueResult = issueResult;
         this.attachedFiles = attachedFiles;
+        this.chat = chat;
     }
 
     public void addAttachedFile(AttachedFile file) {
@@ -246,6 +251,14 @@ public class Issue {
 
     public void setIssuedEmployee(Employee issuedEmployee) {
         this.issuedEmployee = issuedEmployee;
+    }
+
+    public Chat getChat() {
+        return chat;
+    }
+
+    public void setChat(Chat chat) {
+        this.chat = chat;
     }
 
 }
