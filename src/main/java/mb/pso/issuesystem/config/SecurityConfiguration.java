@@ -3,12 +3,17 @@ package mb.pso.issuesystem.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -59,15 +64,33 @@ public class SecurityConfiguration {
     // TODO Добавить исключение для клиентской формы принятия жалоб
     @Bean
     @Order(1)
-    SecurityFilterChain BasicfilterChain(HttpSecurity http,
-            ActiveDirectoryLdapAuthenticationProvider activeDirectoryLdapAuthenticationProvider,
-            DaoAuthenticationProvider daoAuthenticationProvider) throws Exception {
+    SecurityFilterChain BasicfilterChain(HttpSecurity http, AdUserDetailsContextMapper adUserDetailsContextMapper
+    // ,
+    // ActiveDirectoryLdapAuthenticationProvider
+    // activeDirectoryLdapAuthenticationProvider,
+    // DaoAuthenticationProvider daoAuthenticationProvider
+    ) throws Exception {
         http.securityMatcher("/token")
                 .authorizeHttpRequests(t -> t.requestMatchers("/token").permitAll())
                 .csrf(t -> t.disable())
                 .httpBasic(withDefaults())
                 .authenticationManager(new ProviderManager(
-                        List.of(daoAuthenticationProvider, activeDirectoryLdapAuthenticationProvider)))
+                        List.of(daoAuthenticationProvider(), authenticationProvider(adUserDetailsContextMapper))))
+                // .authenticationProvider(daoAuthenticationProvider)
+                // .authenticationProvider(activeDirectoryLdapAuthenticationProvider)
+                // .authenticationManager(new ProviderManager(
+                // List.of(daoAuthenticationProvider,
+                // activeDirectoryLdapAuthenticationProvider)))
+                // .authenticationManager(authentication -> {
+                // Authentication x;
+                // try {
+                // x = daoAuthenticationProvider.authenticate(authentication);
+                // assert x != null;
+                // } catch (Exception e) {
+                // x = activeDirectoryLdapAuthenticationProvider.authenticate(authentication);
+                // }
+                // return x;
+                // })
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
 
@@ -105,7 +128,6 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
     ActiveDirectoryLdapAuthenticationProvider authenticationProvider(
             AdUserDetailsContextMapper adUserDetailsContextMapper) {
         ActiveDirectoryLdapAuthenticationProvider ad = new ActiveDirectoryLdapAuthenticationProvider("ukravto.ua",
@@ -118,12 +140,23 @@ public class SecurityConfiguration {
         return ad;
     }
 
-    @Bean
     DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userServiceImpl);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
+
+    // @Bean
+    // public AuthenticationManager authenticationManager(HttpSecurity http,
+    // DaoAuthenticationProvider daoAuthenticationProvider,
+    // ActiveDirectoryLdapAuthenticationProvider
+    // activeDirectoryLdapAuthenticationProvider) throws Exception {
+    // AuthenticationManagerBuilder authenticationManagerBuilder = http
+    // .getSharedObject(AuthenticationManagerBuilder.class);
+    // return
+    // authenticationManagerBuilder.authenticationProvider(daoAuthenticationProvider)
+    // .authenticationProvider(activeDirectoryLdapAuthenticationProvider).build();
+    // }
 
 }

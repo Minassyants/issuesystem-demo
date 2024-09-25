@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import mb.pso.issuesystem.entity.AdUser;
+import mb.pso.issuesystem.entity.AdUserDetails;
 import mb.pso.issuesystem.entity.BasicReportRow;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.Users;
@@ -113,7 +115,7 @@ public class WebClientController {
     }
 
     @GetMapping("/issues/{id}")
-    public ResponseEntity<Issue> getIssueById(@PathVariable Integer id) {
+    public ResponseEntity<Issue> getIssueById(@PathVariable Integer id, @AuthenticationPrincipal AdUserDetails user) {
         Optional<Issue> issue = webClientServiceImpl.getIssueById(id);
         if (issue.isPresent())
             return ResponseEntity.ok(issue.get());

@@ -37,9 +37,16 @@ spring:
                         scripts:
                             action: update
                             create-target: ./src/main/resources/db/buffered_migration/V__script.sql
+
+    servlet:
+        multipart:
+            max-file-size: 100MB
+            max-request-size: 100MB
                         
 server:
         port: 8080
+        tomcat:
+            max-swallow-size: -1
 management:
     endpoints:
         web:
