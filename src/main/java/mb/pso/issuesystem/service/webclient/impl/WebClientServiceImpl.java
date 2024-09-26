@@ -110,7 +110,6 @@ public class WebClientServiceImpl implements WebClientService {
                 issue.setDocDate(new Date());
 
             // Chat chat = new Chat();
-            issue.setChat(new Chat());
 
             // Ищем клиента по номеру телефона
             Client exampleClient = new Client();
@@ -171,7 +170,11 @@ public class WebClientServiceImpl implements WebClientService {
                 issue.setAdditionalAttributes(l);
             }
 
+
+            //FIXME это пздц
             createdIssue = issueRepository.save(issue);
+            createdIssue.setChat(new Chat(createdIssue));
+            createdIssue = issueRepository.save(createdIssue);
 
             // [ ] пока выключил оповещения
             // EmailNotification emailNotification = new EmailNotification("bsk1c",

@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
@@ -60,7 +61,7 @@ public class Issue {
     @OneToMany(cascade = CascadeType.ALL)
     private List<AttachedFile> attachedFiles = new ArrayList<>();
     @OneToOne(cascade = CascadeType.ALL)
-    private Chat chat = new Chat();
+    private Chat chat;
 
     
     public Issue(Integer id, IssueStatus status, String docNumber, Date docDate, Client client, IssueType type,
@@ -260,6 +261,7 @@ public class Issue {
 
     public void setChat(Chat chat) {
         this.chat = chat;
+        // chat.setIssue(this);
     }
 
 }

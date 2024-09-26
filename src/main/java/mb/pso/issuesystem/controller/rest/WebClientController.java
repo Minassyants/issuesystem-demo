@@ -59,7 +59,7 @@ public class WebClientController {
     }
 
     @PostMapping("/chat/send")
-    public void sendMessage(Message message) {
+    public void sendMessage(@RequestBody Message message) {
         imServiceImpl.sendMessage(message);
     }
 

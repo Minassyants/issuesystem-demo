@@ -1,37 +1,37 @@
 package mb.pso.issuesystem.entity.im;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import mb.pso.issuesystem.entity.Issue;
 
 @Entity
 public class Chat {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    // @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     // [ ] Fetch type lazy +
     // https://stackoverflow.com/questions/28746584/how-to-avoid-lazy-fetch-in-json-serialization-using-spring-data-jpa-spring-web
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JsonIgnore
     private Issue issue;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Message> messages = new ArrayList<>();
 
     public Chat() {
     }
 
-    public Chat(Integer id, Issue issue, List<Message> messages) {
+    public Chat(Issue issue) {
+        this.issue = issue;
+    }
+
+    public Chat(Integer id, Issue issue) {
         this.id = id;
         this.issue = issue;
-        this.messages = messages;
+
     }
 
     public Integer getId() {
@@ -48,14 +48,6 @@ public class Chat {
 
     public void setIssue(Issue issue) {
         this.issue = issue;
-    }
-
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
     }
 
 }

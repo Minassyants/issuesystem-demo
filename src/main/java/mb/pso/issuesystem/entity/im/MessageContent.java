@@ -13,7 +13,7 @@ import jakarta.persistence.OneToMany;
 import mb.pso.issuesystem.entity.AttachedFile;
 
 @Entity
-public class MessageContent {
+public class MessageContent  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

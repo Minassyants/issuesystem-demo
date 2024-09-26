@@ -3,17 +3,15 @@ package mb.pso.issuesystem.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,9 +23,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.util.WebUtils;
 
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -35,6 +31,9 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -66,7 +65,7 @@ public class SecurityConfiguration {
 
     // [ ] Добавить исключение для клиентской формы принятия жалоб
     @Bean
-    @Order(1)
+    @Order(50)
     SecurityFilterChain BasicfilterChain(HttpSecurity http, AdUserDetailsContextMapper adUserDetailsContextMapper
     // ,
     // ActiveDirectoryLdapAuthenticationProvider
@@ -100,10 +99,10 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    @Order(2)
+    @Order(60)
     SecurityFilterChain JWTfilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(t -> t.anyRequest().authenticated())
+                .authorizeHttpRequests(t -> t.requestMatchers("/ws/**").permitAll().anyRequest().authenticated())
                 .csrf(t -> t.disable())
                 .oauth2ResourceServer(t -> t.jwt(withDefaults()))
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -112,6 +111,16 @@ public class SecurityConfiguration {
                         .accessDeniedHandler(new BearerTokenAccessDeniedHandler()));
         return http.build();
 
+    }
+
+    public String tokenExtractor(HttpServletRequest request) {
+        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (header != null)
+            return header.replace("Bearer ", "");
+        Cookie cookie = WebUtils.getCookie(request, "access_token");
+        if (cookie != null)
+            return cookie.getValue();
+        return null;
     }
 
     @Bean
@@ -150,6 +159,11 @@ public class SecurityConfiguration {
         return provider;
     }
 
+    @Bean
+    AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .build();
+    }
 
     // @Bean
     // public AuthenticationManager authenticationManager(HttpSecurity http,
