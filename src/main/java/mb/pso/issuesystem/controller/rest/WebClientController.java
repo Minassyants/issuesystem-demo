@@ -26,22 +26,44 @@ import mb.pso.issuesystem.entity.AdUserDetails;
 import mb.pso.issuesystem.entity.BasicReportRow;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.Users;
+import mb.pso.issuesystem.entity.im.Message;
+import mb.pso.issuesystem.service.impl.ImServiceImpl;
 import mb.pso.issuesystem.service.impl.UserServiceImpl;
 import mb.pso.issuesystem.service.webclient.impl.WebClientServiceImpl;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(originPatterns = "*", origins = "*")
 public class WebClientController {
 
     private final WebClientServiceImpl webClientServiceImpl;
     private final UserServiceImpl userServiceImpl;
+    private final ImServiceImpl imServiceImpl;
 
-    public WebClientController(WebClientServiceImpl webClientServiceImpl, UserServiceImpl userServiceImpl) {
+    public WebClientController(WebClientServiceImpl webClientServiceImpl, UserServiceImpl userServiceImpl,
+            ImServiceImpl imServiceImpl) {
         this.webClientServiceImpl = webClientServiceImpl;
         this.userServiceImpl = userServiceImpl;
+        this.imServiceImpl = imServiceImpl;
     }
 
-    // TODO: Это полная ...
+    @GetMapping("/chat/{id}")
+    public ResponseEntity<Page<Message>> getMessagesPageable(@PathVariable Integer id,
+            @RequestParam Optional<Integer> size,
+            @RequestParam Optional<Integer> page) {
+        Integer _page = page.orElse(0);
+        Integer _size = size.orElse(10);
+
+        return ResponseEntity.ok(imServiceImpl.getMessagesByChatIdPageable(id,
+                PageRequest.of(_page, _size, Sort.by(Direction.DESC, "createdAt"))));
+
+    }
+
+    @PostMapping("/chat/send")
+    public void sendMessage(Message message) {
+        imServiceImpl.sendMessage(message);
+    }
+
+    // BUG: Это полная ...
     @GetMapping("/auth")
     public ResponseEntity<Users> auth(@RequestParam String username) {
         Optional<Users> user = userServiceImpl.getByName(username);
@@ -123,7 +145,8 @@ public class WebClientController {
     }
 
     @PostMapping("/issues/{id}/uploadFile")
-    public ResponseEntity<String> uploadFilesToIssue(@PathVariable Integer id, @RequestParam("files") MultipartFile[] files) {
+    public ResponseEntity<String> uploadFilesToIssue(@PathVariable Integer id,
+            @RequestParam("files") MultipartFile[] files) {
         webClientServiceImpl.uploadFilesToIssue(id, files);
 
         return ResponseEntity.ok("ok");

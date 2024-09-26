@@ -1,4 +1,4 @@
-package mb.pso.issuesystem.entity;
+package mb.pso.issuesystem.entity.im;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,12 +6,16 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import mb.pso.issuesystem.entity.AttachedFile;
 
 @Entity
 public class MessageContent {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column(length = 1000)
     private String textMessage;
@@ -21,6 +25,9 @@ public class MessageContent {
 
     public Integer getId() {
         return id;
+    }
+
+    public MessageContent() {
     }
 
     public void setId(Integer id) {

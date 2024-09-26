@@ -56,6 +56,7 @@ logging:
     level:
         org:
             flywaydb: debug
+
 es:
     issue:
         index-name: pso_issue_gzk_test

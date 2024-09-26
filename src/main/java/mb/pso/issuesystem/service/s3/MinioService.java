@@ -24,9 +24,9 @@ import mb.pso.issuesystem.repository.AttachedFileRepository;
 
 @Service
 public class MinioService {
-    // TODO эти все штуки надо выводить в env переменные
+    // [ ] эти все штуки надо выводить в env переменные
     private final MinioClient minioClient;
-    // TODO bucketName в env
+    // [ ] bucketName в env
     private final String bucketName = "issuesystem";
     private final AttachedFileRepository attachedFileRepository;
 
@@ -40,7 +40,7 @@ public class MinioService {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            // [ ] Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -67,7 +67,7 @@ public class MinioService {
             return attachedFile;
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            // [ ] Auto-generated catch block
             e.printStackTrace();
         }
         return null;
@@ -77,7 +77,7 @@ public class MinioService {
         try {
             minioClient.removeObject(RemoveObjectArgs.builder().bucket(bucketName).object(file.getFilePath()).build());
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            // [ ] Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -94,7 +94,7 @@ public class MinioService {
             return fileInfo;
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            // [ ] Auto-generated catch block
             e.printStackTrace();
             return null;
         }

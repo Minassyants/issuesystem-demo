@@ -25,6 +25,9 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -61,7 +64,7 @@ public class SecurityConfiguration {
         this.userServiceImpl = userServiceImpl;
     }
 
-    // TODO Добавить исключение для клиентской формы принятия жалоб
+    // [ ] Добавить исключение для клиентской формы принятия жалоб
     @Bean
     @Order(1)
     SecurityFilterChain BasicfilterChain(HttpSecurity http, AdUserDetailsContextMapper adUserDetailsContextMapper
@@ -146,6 +149,7 @@ public class SecurityConfiguration {
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
+
 
     // @Bean
     // public AuthenticationManager authenticationManager(HttpSecurity http,

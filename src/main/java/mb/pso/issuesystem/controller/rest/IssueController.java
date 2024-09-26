@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequestMapping("/api/issue")
 public class IssueController {
     private final IssueServiceImpl issueServiceImpl;
-    // TODO должен быть сервис у IssueDocument
+    // [ ] должен быть сервис у IssueDocument
     private final IssueDocumentRepository issueDocumentRepository;
 
     public IssueController(IssueServiceImpl issueServiceImpl, IssueDocumentRepository issueDocumentRepository) {

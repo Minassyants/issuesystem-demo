@@ -2,7 +2,7 @@
 <configuration>
 
     <springProperty name="APPNAME" source="spring.application.name" />
-
+    <springProperty scope="context" name="ACTIVE_PROFILE" source="spring.profiles.active"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -11,7 +11,7 @@
     </appender>
     <appender name="ELASTIC" class="com.agido.logback.elasticsearch.ElasticsearchAppender">
         <url>http://192.168.50.18:7000/_bulk</url>
-        <index>logs-issuesystem-%date{yyyy-MM-dd}</index>
+        <index>logs-${ACTIVE_PROFILE}-issuesystem-%date{yyyy-MM-dd}</index>
         <!-- <type>tester</type> -->
         <loggerName>es-logger</loggerName> <!-- optional -->
         <errorLoggerName>es-error-logger</errorLoggerName> <!-- optional -->

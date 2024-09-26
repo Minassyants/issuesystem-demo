@@ -11,7 +11,7 @@ import mb.pso.issuesystem.entity.AttachedFile;
 public class AttachedFileEntityListener {
 
     private final MinioClient minioClient;
-    // TODO bucketName в env
+    // [ ] bucketName в env
     private final String bucketName = "issuesystem";
 
     public AttachedFileEntityListener() {
@@ -25,7 +25,7 @@ public class AttachedFileEntityListener {
             minioClient.removeObject(
                     RemoveObjectArgs.builder().bucket(bucketName).object(attachedFile.getFilePath()).build());
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            // [ ] Auto-generated catch block
             e.printStackTrace();
         }
     }

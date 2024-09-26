@@ -37,6 +37,7 @@ import mb.pso.issuesystem.entity.QIssue;
 import mb.pso.issuesystem.entity.Subject;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 import mb.pso.issuesystem.entity.es.IssueDocument;
+import mb.pso.issuesystem.entity.im.Chat;
 import mb.pso.issuesystem.entity.utility.EmailNotification;
 import mb.pso.issuesystem.repository.AdditionalAttributeRepository;
 import mb.pso.issuesystem.repository.ClientRepository;
@@ -92,7 +93,7 @@ public class WebClientServiceImpl implements WebClientService {
     @Override
     public Issue registerNewIssue(Issue issue) {
 
-        // TODO Тут надо убрать поиск, может съедать новые заявки, должен быть дебаунс
+        // [ ] Тут надо убрать поиск, может съедать новые заявки, должен быть дебаунс
         // или какой то доп флаг для избежания дубликации.
         Issue exampleIssue = new Issue();
         exampleIssue.setClient(issue.getClient());
@@ -107,6 +108,9 @@ public class WebClientServiceImpl implements WebClientService {
             issue.setStatus(IssueStatus.NEW);
             if (issue.getDocDate() == null)
                 issue.setDocDate(new Date());
+
+            // Chat chat = new Chat();
+            issue.setChat(new Chat());
 
             // Ищем клиента по номеру телефона
             Client exampleClient = new Client();
@@ -169,7 +173,7 @@ public class WebClientServiceImpl implements WebClientService {
 
             createdIssue = issueRepository.save(issue);
 
-            // TODO пока выключил оповещения
+            // [ ] пока выключил оповещения
             // EmailNotification emailNotification = new EmailNotification("bsk1c",
             // createdIssue.getClient().getEmail(),
             // "issueRegisteredForClient", "Регистрация обращения");
@@ -208,7 +212,7 @@ public class WebClientServiceImpl implements WebClientService {
 
             }
 
-            // TODO индекс надо в переменную выводить
+            // [ ] индекс надо в переменную выводить
             SearchHits<IssueDocument> a = elasticsearchOperations.search(query, IssueDocument.class,
                     IndexCoordinates.of("pso_issue_gzk"));
             List<Integer> w = a.map(arg0 -> arg0.getContent().getId()).toList();
