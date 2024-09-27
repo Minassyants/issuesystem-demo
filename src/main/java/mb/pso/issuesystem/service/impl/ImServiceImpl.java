@@ -39,7 +39,7 @@ public class ImServiceImpl {
     public void sendMessage(Message message) {
         Message msg = messageRepository.save(message);
 
-        simpMessagingTemplate.convertAndSend("/topic/chat/" + msg.getChat().getId().toString(), msg.getId().toString());
+        simpMessagingTemplate.convertAndSend("/topic/chat/" + msg.getChat().getId().toString(), msg);
 
     }
 

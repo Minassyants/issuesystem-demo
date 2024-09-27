@@ -2,6 +2,7 @@ package mb.pso.issuesystem.config;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -14,6 +15,8 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -23,9 +26,11 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.socket.client.standard.WebSocketContainerFactoryBean;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
 @Order(Ordered.HIGHEST_PRECEDENCE + 99)
 @Configuration
@@ -39,9 +44,22 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         this.jwtDecoder = jwtDecoder;
     }
 
+    @Bean
+    public WebSocketContainerFactoryBean createWebSocketContainer() {
+        WebSocketContainerFactoryBean container = new WebSocketContainerFactoryBean();
+        container.setMaxSessionIdleTimeout(10000);
+        container.setMaxTextMessageBufferSize(8192);
+        container.setMaxBinaryMessageBufferSize(8192);
+        return container;
+    }
+
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/topic");
+        ThreadPoolTaskScheduler pingScheduler = new ThreadPoolTaskScheduler();
+        pingScheduler.initialize();
+        registry.enableSimpleBroker("/topic")
+                .setHeartbeatValue(new long[] { 7000, 7000 })
+                .setTaskScheduler(pingScheduler);
         registry.setApplicationDestinationPrefixes("/app");
     }
 
