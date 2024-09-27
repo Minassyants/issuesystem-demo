@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.querydsl.core.types.Predicate;
 
+import mb.pso.issuesystem.entity.im.Chat;
 import mb.pso.issuesystem.entity.im.Message;
 import mb.pso.issuesystem.entity.im.QMessage;
+import mb.pso.issuesystem.repository.im.ChatRepository;
 import mb.pso.issuesystem.repository.im.MessageRepository;
 
 @Service
@@ -18,13 +20,21 @@ import mb.pso.issuesystem.repository.im.MessageRepository;
 public class ImServiceImpl {
     private final MessageRepository messageRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final ChatRepository chatRepository;
 
-    public ImServiceImpl(MessageRepository messageRepository, SimpMessagingTemplate simpMessagingTemplate) {
+    public ImServiceImpl(MessageRepository messageRepository, SimpMessagingTemplate simpMessagingTemplate,
+            ChatRepository chatRepository) {
         this.messageRepository = messageRepository;
         this.simpMessagingTemplate = simpMessagingTemplate;
+        this.chatRepository = chatRepository;
     }
 
-    // [ ] getMessagesByChatId
+    public Chat getChatById(Integer id)
+    {
+        return chatRepository.findById(id).orElseGet(null);
+    }
+
+    // [x] getMessagesByChatId
     public List<Message> getMessagesByChatId(Integer id) {
         return messageRepository.findByChatId(id);
     }

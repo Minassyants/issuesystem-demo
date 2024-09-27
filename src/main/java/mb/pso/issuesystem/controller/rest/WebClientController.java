@@ -26,6 +26,7 @@ import mb.pso.issuesystem.entity.AdUserDetails;
 import mb.pso.issuesystem.entity.BasicReportRow;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.Users;
+import mb.pso.issuesystem.entity.im.Chat;
 import mb.pso.issuesystem.entity.im.Message;
 import mb.pso.issuesystem.service.impl.ImServiceImpl;
 import mb.pso.issuesystem.service.impl.UserServiceImpl;
@@ -47,6 +48,11 @@ public class WebClientController {
     }
 
     @GetMapping("/chat/{id}")
+    public ResponseEntity<Chat> getChatById(@PathVariable Integer id) {
+        return ResponseEntity.ok(imServiceImpl.getChatById(id));
+    }
+
+    @GetMapping("/chat/messages/{id}")
     public ResponseEntity<Page<Message>> getMessagesPageable(@PathVariable Integer id,
             @RequestParam Optional<Integer> size,
             @RequestParam Optional<Integer> page) {
