@@ -10,7 +10,6 @@ import jakarta.persistence.PostUpdate;
 import mb.pso.issuesystem.entity.AdditionalAttribute;
 import mb.pso.issuesystem.entity.Client;
 import mb.pso.issuesystem.entity.Department;
-import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.IssueAttribute;
 import mb.pso.issuesystem.entity.IssueType;
@@ -32,7 +31,6 @@ public class IssueEntityListener {
     public void handlePostPersistOrPostUpdate(Issue issue) {
         Client client = issue.getClient();
         Subject subject = issue.getSubject();
-        Employee employee = issue.getIssuedEmployee();
         IssueType issueType = issue.getType();
         List<IssueAttribute> issueAttributes = issue.getIssueAttributes();
         Department department = issue.getIssuedDepartment();
@@ -52,15 +50,12 @@ public class IssueEntityListener {
                 issueAttributes == null ? null : issueAttributes.stream().map(arg0 -> arg0.getName()).toList(),
                 issue.getIssueDescription(),
                 department == null ? null : department.getName(),
-                employee == null ? null : employee.getGivenName(),
-                employee == null ? null : employee.getSn(),
-                employee == null ? null : employee.getMail(),
+                issue.getIssuedEmployees().stream().map(t -> t.toString()).toList(),
+                issue.getDepartmentFeedbacks().stream().map(t -> t.getText()).toList(),
                 issue.getIssuedDemands(),
                 additionalAttributes == null ? null
                         : additionalAttributes.stream().map(arg0 -> arg0.getStringValue()).toList(),
-                issue.getDepartmentFeedback(),
                 issue.getIssueResult());
-
         issueDocumentRepository.save(issueDocument);
     }
 

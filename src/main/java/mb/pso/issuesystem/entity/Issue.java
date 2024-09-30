@@ -16,7 +16,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
@@ -48,14 +47,30 @@ public class Issue {
     private List<String> relatedDocFromSigma;
     @ManyToOne(cascade = CascadeType.ALL)
     private Department issuedDepartment;
+
+    /**
+     * @deprecated use issuedEmployees instead.
+     */
     @ManyToOne(cascade = CascadeType.ALL)
     private Employee issuedEmployee;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Employee> issuedEmployees = new ArrayList<>();
+
     @Column(length = 2000)
     private String issuedDemands;
     @ManyToMany(cascade = CascadeType.ALL)
     private List<AdditionalAttribute> additionalAttributes;
+
+    /**
+     * @deprecated use departmentFeedbacks instead.
+     */
     @Column(length = 2000)
     private String departmentFeedback;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private List<DepartmentFeedback> departmentFeedbacks = new ArrayList<>();
+
     @Column(length = 2000)
     private String issueResult;
     @OneToMany(cascade = CascadeType.ALL)
@@ -63,12 +78,12 @@ public class Issue {
     @OneToOne(cascade = CascadeType.ALL)
     private Chat chat;
 
-    
     public Issue(Integer id, IssueStatus status, String docNumber, Date docDate, Client client, IssueType type,
             Subject subject, List<IssueAttribute> issueAttributes, String issueDescription,
             List<String> relatedDocFromSigma, Department issuedDepartment, Employee issuedEmployee,
-            String issuedDemands, List<AdditionalAttribute> additionalAttributes, String departmentFeedback,
-            String issueResult, List<AttachedFile> attachedFiles, Chat chat) {
+            List<Employee> issuedEmployees, String issuedDemands, List<AdditionalAttribute> additionalAttributes,
+            String departmentFeedback, List<DepartmentFeedback> departmentFeedbacks, String issueResult,
+            List<AttachedFile> attachedFiles, Chat chat) {
         this.id = id;
         this.status = status;
         this.docNumber = docNumber;
@@ -81,9 +96,11 @@ public class Issue {
         this.relatedDocFromSigma = relatedDocFromSigma;
         this.issuedDepartment = issuedDepartment;
         this.issuedEmployee = issuedEmployee;
+        this.issuedEmployees = issuedEmployees;
         this.issuedDemands = issuedDemands;
         this.additionalAttributes = additionalAttributes;
         this.departmentFeedback = departmentFeedback;
+        this.departmentFeedbacks = departmentFeedbacks;
         this.issueResult = issueResult;
         this.attachedFiles = attachedFiles;
         this.chat = chat;
@@ -227,14 +244,26 @@ public class Issue {
         return this.issuedDepartment != null && !this.issuedDepartment.isEmpty();
     }
 
+    /**
+     * 
+     * @deprecated
+     */
     public boolean hasEmployee() {
         return this.issuedEmployee != null && !this.issuedEmployee.isEmpty();
     }
 
+    /**
+     * 
+     * @deprecated
+     */
     public String getDepartmentFeedback() {
         return departmentFeedback;
     }
 
+    /**
+     * 
+     * @deprecated
+     */
     public void setDepartmentFeedback(String departmentFeedback) {
         this.departmentFeedback = departmentFeedback;
     }
@@ -247,10 +276,16 @@ public class Issue {
         this.id = id;
     }
 
+    /**
+     * @deprecated
+     */
     public Employee getIssuedEmployee() {
         return issuedEmployee;
     }
 
+    /**
+     * @deprecated
+     */
     public void setIssuedEmployee(Employee issuedEmployee) {
         this.issuedEmployee = issuedEmployee;
     }
@@ -262,6 +297,40 @@ public class Issue {
     public void setChat(Chat chat) {
         this.chat = chat;
         // chat.setIssue(this);
+    }
+
+    public void addAllIssuedEmployees(List<Employee> employees) {
+        this.issuedEmployees.addAll(employees);
+    }
+
+    public void addIssuedEmployee(Employee employee) {
+        this.issuedEmployees.add(employee);
+    }
+
+    public List<Employee> getIssuedEmployees() {
+        return issuedEmployees;
+    }
+
+    public void setIssuedEmployees(List<Employee> issuedEmployees) {
+        this.issuedEmployees.clear();
+        this.issuedEmployees.addAll(issuedEmployees);
+    }
+
+    public void addDepartmentFeedbacks(DepartmentFeedback departmentFeedback) {
+        this.departmentFeedbacks.add(departmentFeedback);
+    }
+
+    public void addAllDepartmentFeedbacks(List<DepartmentFeedback> departmentFeedbacks) {
+        this.departmentFeedbacks.addAll(departmentFeedbacks);
+    }
+
+    public List<DepartmentFeedback> getDepartmentFeedbacks() {
+        return departmentFeedbacks;
+    }
+
+    public void setDepartmentFeedbacks(List<DepartmentFeedback> departmentFeedbacks) {
+        this.departmentFeedbacks.clear();
+        this.departmentFeedbacks.addAll(departmentFeedbacks);
     }
 
 }

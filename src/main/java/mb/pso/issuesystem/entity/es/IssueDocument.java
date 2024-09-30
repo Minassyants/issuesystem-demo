@@ -3,8 +3,6 @@ package mb.pso.issuesystem.entity.es;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -50,17 +48,27 @@ public class IssueDocument {
     @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String issuedDepartment;
 
+    /** @deprecated */
     @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String issuedEmployeeGivenName;
+    /** @deprecated */
     @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String issuedEmployeeSn;
+    /** @deprecated */
     @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String issuedEmployeeMail;
+
+    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
+    private List<String> issuedEmployees;
+
+    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
+    private List<String> departmentFeedbacks;
 
     @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String issuedDemands;
     @Field(type = FieldType.Keyword)
     private List<String> additionalAttributes;
+    /** @deprecated */
     @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String departmentFeedback;
     @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
@@ -69,8 +77,8 @@ public class IssueDocument {
     public IssueDocument(Integer id, IssueStatus status, Date docDate, String clientName, String clientAdress,
             String clientEmail, String clientPhoneNumber, String type, String subjectDescription, String subjectVin,
             String subjectType, List<String> issueAttributes, String issueDescription, String issuedDepartment,
-            String issuedEmployeeGivenName, String issuedEmployeeSn, String issuedEmployeeMail, String issuedDemands,
-            List<String> additionalAttributes, String departmentFeedback, String issueResult) {
+            List<String> issuedEmployees, List<String> departmentFeedbacks, String issuedDemands,
+            List<String> additionalAttributes, String issueResult) {
         this.id = id;
         this.status = status;
         this.docDate = docDate;
@@ -85,98 +93,195 @@ public class IssueDocument {
         this.issueAttributes = issueAttributes;
         this.issueDescription = issueDescription;
         this.issuedDepartment = issuedDepartment;
-        this.issuedEmployeeGivenName = issuedEmployeeGivenName;
-        this.issuedEmployeeSn = issuedEmployeeSn;
-        this.issuedEmployeeMail = issuedEmployeeMail;
+        this.issuedEmployees = issuedEmployees;
+        this.departmentFeedbacks = departmentFeedbacks;
         this.issuedDemands = issuedDemands;
         this.additionalAttributes = additionalAttributes;
-        this.departmentFeedback = departmentFeedback;
         this.issueResult = issueResult;
-        
     }
 
     public Integer getId() {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public IssueStatus getStatus() {
         return status;
+    }
+
+    public void setStatus(IssueStatus status) {
+        this.status = status;
     }
 
     public Date getDocDate() {
         return docDate;
     }
 
+    public void setDocDate(Date docDate) {
+        this.docDate = docDate;
+    }
+
     public String getClientName() {
         return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     public String getClientAdress() {
         return clientAdress;
     }
 
+    public void setClientAdress(String clientAdress) {
+        this.clientAdress = clientAdress;
+    }
+
     public String getClientEmail() {
         return clientEmail;
+    }
+
+    public void setClientEmail(String clientEmail) {
+        this.clientEmail = clientEmail;
     }
 
     public String getClientPhoneNumber() {
         return clientPhoneNumber;
     }
 
+    public void setClientPhoneNumber(String clientPhoneNumber) {
+        this.clientPhoneNumber = clientPhoneNumber;
+    }
+
     public String getType() {
         return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getSubjectDescription() {
         return subjectDescription;
     }
 
+    public void setSubjectDescription(String subjectDescription) {
+        this.subjectDescription = subjectDescription;
+    }
+
     public String getSubjectVin() {
         return subjectVin;
+    }
+
+    public void setSubjectVin(String subjectVin) {
+        this.subjectVin = subjectVin;
     }
 
     public String getSubjectType() {
         return subjectType;
     }
 
+    public void setSubjectType(String subjectType) {
+        this.subjectType = subjectType;
+    }
+
     public List<String> getIssueAttributes() {
         return issueAttributes;
+    }
+
+    public void setIssueAttributes(List<String> issueAttributes) {
+        this.issueAttributes = issueAttributes;
     }
 
     public String getIssueDescription() {
         return issueDescription;
     }
 
+    public void setIssueDescription(String issueDescription) {
+        this.issueDescription = issueDescription;
+    }
+
     public String getIssuedDepartment() {
         return issuedDepartment;
+    }
+
+    public void setIssuedDepartment(String issuedDepartment) {
+        this.issuedDepartment = issuedDepartment;
     }
 
     public String getIssuedEmployeeGivenName() {
         return issuedEmployeeGivenName;
     }
 
+    public void setIssuedEmployeeGivenName(String issuedEmployeeGivenName) {
+        this.issuedEmployeeGivenName = issuedEmployeeGivenName;
+    }
+
     public String getIssuedEmployeeSn() {
         return issuedEmployeeSn;
+    }
+
+    public void setIssuedEmployeeSn(String issuedEmployeeSn) {
+        this.issuedEmployeeSn = issuedEmployeeSn;
     }
 
     public String getIssuedEmployeeMail() {
         return issuedEmployeeMail;
     }
 
+    public void setIssuedEmployeeMail(String issuedEmployeeMail) {
+        this.issuedEmployeeMail = issuedEmployeeMail;
+    }
+
+    public List<String> getIssuedEmployees() {
+        return issuedEmployees;
+    }
+
+    public void setIssuedEmployees(List<String> issuedEmployees) {
+        this.issuedEmployees = issuedEmployees;
+    }
+
+    public List<String> getDepartmentFeedbacks() {
+        return departmentFeedbacks;
+    }
+
+    public void setDepartmentFeedbacks(List<String> departmentFeedbacks) {
+        this.departmentFeedbacks = departmentFeedbacks;
+    }
+
     public String getIssuedDemands() {
         return issuedDemands;
+    }
+
+    public void setIssuedDemands(String issuedDemands) {
+        this.issuedDemands = issuedDemands;
     }
 
     public List<String> getAdditionalAttributes() {
         return additionalAttributes;
     }
 
+    public void setAdditionalAttributes(List<String> additionalAttributes) {
+        this.additionalAttributes = additionalAttributes;
+    }
+
     public String getDepartmentFeedback() {
         return departmentFeedback;
     }
 
+    public void setDepartmentFeedback(String departmentFeedback) {
+        this.departmentFeedback = departmentFeedback;
+    }
+
     public String getIssueResult() {
         return issueResult;
+    }
+
+    public void setIssueResult(String issueResult) {
+        this.issueResult = issueResult;
     }
 
 }

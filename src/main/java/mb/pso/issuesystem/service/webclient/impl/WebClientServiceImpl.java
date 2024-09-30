@@ -150,11 +150,11 @@ public class WebClientServiceImpl implements WebClientService {
                     issue.setIssuedDepartment(iDepartment.get());
             }
 
-            if (issue.getIssuedEmployee() != null) {
-                Optional<Employee> iEmployee = employeeRepository.findOne(Example.of(issue.getIssuedEmployee()));
-                if (iEmployee.isPresent())
-                    issue.setIssuedEmployee(iEmployee.get());
-            }
+            // if (issue.getIssuedEmployee() != null) {
+            //     Optional<Employee> iEmployee = employeeRepository.findOne(Example.of(issue.getIssuedEmployee()));
+            //     if (iEmployee.isPresent())
+            //         issue.setIssuedEmployee(iEmployee.get());
+            // }
 
             // Ищем AdditionalAttribute
             if (issue.getAdditionalAttributes() != null) {
@@ -237,6 +237,7 @@ public class WebClientServiceImpl implements WebClientService {
         return issue;
     }
 
+    /**@deprecated */
     public Issue updateInternalInfo(Issue issue) {
         Optional<Issue> _oldIssue = issueRepository.findById(issue.getId());
         if (!_oldIssue.isPresent())

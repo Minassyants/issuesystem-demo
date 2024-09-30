@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -27,7 +28,7 @@ public class Chat {
     @MapsId
     @JsonIgnore
     private Issue issue;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Employee> members = new ArrayList<>();
 
     public Chat() {

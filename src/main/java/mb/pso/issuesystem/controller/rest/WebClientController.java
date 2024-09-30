@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import mb.pso.issuesystem.entity.AdUser;
 import mb.pso.issuesystem.entity.AdUserDetails;
 import mb.pso.issuesystem.entity.BasicReportRow;
+import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.Users;
 import mb.pso.issuesystem.entity.im.Chat;
@@ -45,6 +46,20 @@ public class WebClientController {
         this.webClientServiceImpl = webClientServiceImpl;
         this.userServiceImpl = userServiceImpl;
         this.imServiceImpl = imServiceImpl;
+    }
+
+    // FIXME оптимизировать эндпоинты
+    @PostMapping("/chat/{chatId}/deleteMember")
+    public ResponseEntity<Chat> deleteMemberFromChat(@PathVariable Integer chatId, @RequestBody Employee employee) {
+        Chat chat = imServiceImpl.deleteMemberFromChat(chatId, employee);
+        return ResponseEntity.ok(chat);
+    }
+
+    @PostMapping("/chat/{chatId}/addmember")
+    public ResponseEntity<Chat> addMemberToChat(@PathVariable Integer chatId, @RequestBody Employee employee) {
+
+        Chat chat = imServiceImpl.addMemberToChat(chatId, employee);
+        return ResponseEntity.ok(chat);
     }
 
     @GetMapping("/chat/{id}")
