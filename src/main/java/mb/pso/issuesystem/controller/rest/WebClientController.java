@@ -10,8 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import mb.pso.issuesystem.entity.AdUser;
 import mb.pso.issuesystem.entity.AdUserDetails;
 import mb.pso.issuesystem.entity.BasicReportRow;
+import mb.pso.issuesystem.entity.DepartmentFeedback;
 import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.Users;
@@ -48,7 +49,7 @@ public class WebClientController {
         this.imServiceImpl = imServiceImpl;
     }
 
-    // FIXME оптимизировать эндпоинты
+    // FIXME раскидать по сервисам????
     @PostMapping("/chat/{chatId}/deleteMember")
     public ResponseEntity<Chat> deleteMemberFromChat(@PathVariable Integer chatId, @RequestBody Employee employee) {
         Chat chat = imServiceImpl.deleteMemberFromChat(chatId, employee);
@@ -92,51 +93,52 @@ public class WebClientController {
         return ResponseEntity.ok(user.get());
     }
 
-    @PostMapping("/setClosed")
-    public ResponseEntity<Issue> setClosed(@RequestBody Issue issue) {
-        Issue updatedIssue = webClientServiceImpl.setClosed(issue);
+    @PostMapping("/issue/{id}/setclosed")
+    public ResponseEntity<Issue> setClosed(@PathVariable Integer id) {
+        Issue updatedIssue = webClientServiceImpl.setClosed(id);
         if (updatedIssue == null)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(updatedIssue);
     }
 
-    @PostMapping("/updateIssueResult")
-    public ResponseEntity<Issue> updateIssueResult(@RequestBody Issue issue) {
-        Issue updatedIssue = webClientServiceImpl.updateIssueResult(issue);
+    @PostMapping("/issue/{id}/setinprogress")
+    public ResponseEntity<Issue> setInProgress(@PathVariable Integer id) {
+        Issue updatedIssue = webClientServiceImpl.setInProgress(id);
         if (updatedIssue == null)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(updatedIssue);
     }
 
-    @PostMapping("/updateDepartmentFeedback")
-    public ResponseEntity<Issue> updateDepartmentFeedback(@RequestBody Issue issue) {
-        Issue updatedIssue = webClientServiceImpl.updateDepartmentFeedback(issue);
+    @PostMapping("/issue/{id}/setpending")
+    public ResponseEntity<Issue> setPendingResult(@PathVariable Integer id) {
+        Issue updatedIssue = webClientServiceImpl.setPending(id);
+        if (updatedIssue == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(updatedIssue);
+    }
+
+    @PostMapping("/issue/{id}/updatedepartmentfeedbacks")
+    public ResponseEntity<Issue> updateDepartmentFeedbacks(@PathVariable Integer id,
+            @RequestBody List<DepartmentFeedback> departmentFeedbacks) {
+        Issue updatedIssue = webClientServiceImpl.updateDepartmentFeedbacks(id, departmentFeedbacks);
+        if (updatedIssue == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(updatedIssue);
+    }
+
+    @PostMapping("/issue/{id}/updateissuedemployees")
+    public ResponseEntity<Issue> updateIssuedEmployees(@PathVariable Integer id,
+            @RequestBody List<Employee> employees) {
+        Issue updatedIssue = webClientServiceImpl.updateIssuedEmployees(id, employees);
         if (updatedIssue == null)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(updatedIssue);
 
     }
 
-    @PostMapping("/setPendingResult")
-    public ResponseEntity<Issue> setPendingResult(@RequestBody Issue issue) {
-
-        Issue updatedIssue = webClientServiceImpl.setPending(issue);
-        if (updatedIssue == null)
-            return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(updatedIssue);
-    }
-
-    @PostMapping("/setInProgress")
-    public ResponseEntity<Issue> setInProgress(@RequestBody Issue issue) {
-        Issue updatedIssue = webClientServiceImpl.setInProgress(issue);
-        if (updatedIssue == null)
-            return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(updatedIssue);
-    }
-
-    @PostMapping("/updateInternalInfo")
-    public ResponseEntity<Issue> updateInternalInfo(@RequestBody Issue issue) {
-        Issue updatedIssue = webClientServiceImpl.updateInternalInfo(issue);
+    @PostMapping("/issue/{id}/updateissueresult")
+    public ResponseEntity<Issue> updateIssueResult(@PathVariable Integer id, @RequestBody String issueResult) {
+        Issue updatedIssue = webClientServiceImpl.updateIssueResult(id, issueResult);
         if (updatedIssue == null)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(updatedIssue);
@@ -149,15 +151,15 @@ public class WebClientController {
         return ResponseEntity.ok(createdIssue);
     }
 
-    @GetMapping("/issues")
-    public ResponseEntity<Page<Issue>> getAllIssuesPageable(Authentication authentication, @RequestParam int page,
+    @GetMapping("/issue")
+    public ResponseEntity<Page<Issue>> getAllIssuesPageable(@AuthenticationPrincipal Jwt jwt, @RequestParam int page,
             @RequestParam int size, @RequestParam Optional<String> q, @RequestParam Optional<List<String>> sf) {
         Page<Issue> issues = webClientServiceImpl
-                .getAllIssues(PageRequest.of(page, size, Sort.by(Direction.DESC, "id")), authentication, q, sf);
+                .getAllIssues(PageRequest.of(page, size, Sort.by(Direction.DESC, "id")), jwt, q, sf);
         return ResponseEntity.ok(issues);
     }
 
-    @GetMapping("/issues/{id}")
+    @GetMapping("/issue/{id}")
     public ResponseEntity<Issue> getIssueById(@PathVariable Integer id, @AuthenticationPrincipal AdUserDetails user) {
         Optional<Issue> issue = webClientServiceImpl.getIssueById(id);
         if (issue.isPresent())
@@ -165,12 +167,29 @@ public class WebClientController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/issues/{id}/uploadFile")
-    public ResponseEntity<String> uploadFilesToIssue(@PathVariable Integer id,
-            @RequestParam("files") MultipartFile[] files) {
-        webClientServiceImpl.uploadFilesToIssue(id, files);
+    @GetMapping("/issue/{id}/issuedemployees")
+    public ResponseEntity<List<Employee>> getIssuedEmployeesByIssueId(@PathVariable Integer id) {
+        List<Employee> issuedEmployees = webClientServiceImpl.getIssuedEmployeesByIssueId(id);
+        if (issuedEmployees == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(issuedEmployees);
+    }
 
-        return ResponseEntity.ok("ok");
+    @GetMapping("/issue/{id}/departmentfeedbacks")
+    public ResponseEntity<List<DepartmentFeedback>> getDepartmentFeedbacksByIssueId(@PathVariable Integer id) {
+        List<DepartmentFeedback> departmentFeedbacks = webClientServiceImpl.getDepartmentFeedbacksByIssueId(id);
+        if (departmentFeedbacks == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(departmentFeedbacks);
+    }
+
+    @PostMapping("/issue/{id}/uploadFile")
+    public ResponseEntity<Issue> uploadFilesToIssue(@PathVariable Integer id,
+            @RequestParam MultipartFile[] files) {
+        Issue issue = webClientServiceImpl.uploadFilesToIssue(id, files);
+        if (issue == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(issue);
     }
 
     @GetMapping("/employee")

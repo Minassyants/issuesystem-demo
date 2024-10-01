@@ -1,9 +1,9 @@
 package mb.pso.issuesystem.service.webclient.impl;
 
-import java.util.Date;
-import java.util.List;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Example;
@@ -13,7 +13,6 @@ import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,24 +20,24 @@ import org.springframework.web.multipart.MultipartFile;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
-import io.vertx.core.json.JsonObject;
+import mb.pso.issuesystem.entity.AdUser;
 import mb.pso.issuesystem.entity.AdditionalAttribute;
 import mb.pso.issuesystem.entity.AttachedFile;
 import mb.pso.issuesystem.entity.BasicReportRow;
 import mb.pso.issuesystem.entity.Client;
 import mb.pso.issuesystem.entity.Department;
+import mb.pso.issuesystem.entity.DepartmentFeedback;
 import mb.pso.issuesystem.entity.Employee;
-import mb.pso.issuesystem.entity.AdUser;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.IssueAttribute;
 import mb.pso.issuesystem.entity.IssueType;
 import mb.pso.issuesystem.entity.QAdUser;
+import mb.pso.issuesystem.entity.QEmployee;
 import mb.pso.issuesystem.entity.QIssue;
 import mb.pso.issuesystem.entity.Subject;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 import mb.pso.issuesystem.entity.es.IssueDocument;
 import mb.pso.issuesystem.entity.im.Chat;
-import mb.pso.issuesystem.entity.utility.EmailNotification;
 import mb.pso.issuesystem.repository.AdditionalAttributeRepository;
 import mb.pso.issuesystem.repository.ClientRepository;
 import mb.pso.issuesystem.repository.DepartmentRepository;
@@ -151,9 +150,10 @@ public class WebClientServiceImpl implements WebClientService {
             }
 
             // if (issue.getIssuedEmployee() != null) {
-            //     Optional<Employee> iEmployee = employeeRepository.findOne(Example.of(issue.getIssuedEmployee()));
-            //     if (iEmployee.isPresent())
-            //         issue.setIssuedEmployee(iEmployee.get());
+            // Optional<Employee> iEmployee =
+            // employeeRepository.findOne(Example.of(issue.getIssuedEmployee()));
+            // if (iEmployee.isPresent())
+            // issue.setIssuedEmployee(iEmployee.get());
             // }
 
             // Ищем AdditionalAttribute
@@ -170,8 +170,7 @@ public class WebClientServiceImpl implements WebClientService {
                 issue.setAdditionalAttributes(l);
             }
 
-
-            //FIXME это пздц
+            // FIXME это пздц
             createdIssue = issueRepository.save(issue);
             createdIssue.setChat(new Chat(createdIssue));
             createdIssue = issueRepository.save(createdIssue);
@@ -195,9 +194,8 @@ public class WebClientServiceImpl implements WebClientService {
     }
 
     @Override
-    public Page<Issue> getAllIssues(Pageable pageable, Authentication authentication, Optional<String> q,
+    public Page<Issue> getAllIssues(Pageable pageable, Jwt jwt, Optional<String> q,
             Optional<List<String>> searchFieldsOptional) {
-        Jwt jwt = (Jwt) authentication.getPrincipal();
         String roles = jwt.getClaimAsString("scope");
         QIssue issue = QIssue.issue;
         BooleanBuilder where = new BooleanBuilder();
@@ -223,7 +221,8 @@ public class WebClientServiceImpl implements WebClientService {
         }
 
         if (roles.contains("employee")) {
-            where.and(issue.issuedEmployee.mail.eq(jwt.getClaimAsString("email"))
+            where.and(issue.issuedEmployees.any().displayName.eq(jwt.getClaimAsString("displayname"))
+                    .or(issue.chat.members.any().displayName.eq(jwt.getClaimAsString("displayname")))
                     .and(issue.status.eq(IssueStatus.INPROGRESS)));
         }
 
@@ -237,107 +236,113 @@ public class WebClientServiceImpl implements WebClientService {
         return issue;
     }
 
-    /**@deprecated */
-    public Issue updateInternalInfo(Issue issue) {
-        Optional<Issue> _oldIssue = issueRepository.findById(issue.getId());
-        if (!_oldIssue.isPresent())
-            return null;
+    public List<Employee> getIssuedEmployeesByIssueId(Integer issueId) {
+        Issue issue = issueRepository.findById(issueId).orElse(null);
+        if (issue != null)
+            return issue.getIssuedEmployees();
+        return null;
 
-        Issue oldIssue = _oldIssue.get();
-        Department department = issue.getIssuedDepartment();
-        Optional<Department> c = departmentRepository.findOne(Example.of(department));
-        if (c.isPresent())
-            oldIssue.setIssuedDepartment(c.get());
-        else
-            oldIssue.setIssuedDepartment(departmentRepository.save(department));
+    }
 
-        Employee employee = issue.getIssuedEmployee();
-        Optional<Employee> e = employeeRepository.findOne(Example.of(employee));
-        if (e.isPresent())
-            oldIssue.setIssuedEmployee(e.get());
-        else
-            oldIssue.setIssuedEmployee(employeeRepository.save(employee));
+    public List<DepartmentFeedback> getDepartmentFeedbacksByIssueId(Integer issueId) {
+        Issue issue = issueRepository.findById(issueId).orElse(null);
+        if (issue != null)
+            return issue.getDepartmentFeedbacks();
+        return null;
+    }
 
-        issue = issueRepository.save(oldIssue);
+    /**
+     * @param issueId
+     * @param employees
+     * @return update Issue or <b>null</b> if issue not found.
+     */
+    public Issue updateIssuedEmployees(Integer issueId, List<Employee> employees) {
+
+        List<Employee> foundEmployees = employees.stream()
+                .map(t -> employeeRepository.findOne(Example.of(t)).orElse(t)).toList();
+        Issue issue = issueRepository.findById(issueId).orElse(null);
+        if (issue != null) {
+            issue.setIssuedEmployees(foundEmployees);
+            issue = issueRepository.save(issue);
+        }
         return issue;
 
     }
 
-    public Issue setInProgress(Issue issue) {
-        Optional<Issue> _oldIssue = issueRepository.findById(issue.getId());
-        if (!_oldIssue.isPresent())
-            return null;
-
-        Issue oldIssue = _oldIssue.get();
-        if (oldIssue.getStatus() != IssueStatus.NEW | !oldIssue.hasDepartment()
-                | !oldIssue.hasEmployee())
-            return null;
-        oldIssue.setStatus(IssueStatus.INPROGRESS);
-        issue = issueRepository.save(oldIssue);
-
-        EmailNotification emailNotification = new EmailNotification("bsk1c",
-                issue.getIssuedEmployee().getMail(),
-                "issueRegisteredForEmployee", "Новая рекламация");
-        JsonObject body = new JsonObject();
-        body.put("name",
-                issue.getIssuedEmployee().getGivenName().concat(" ").concat(issue.getIssuedEmployee().getSn()));
-        body.put("login",
-                issue.getIssuedEmployee().getGivenName().substring(0, 1).concat(".")
-                        .concat(issue.getIssuedEmployee().getSn()));
-        emailNotification.setBody(body);
-        emailNotificationServiceImpl.sendEmail(emailNotification);
-
+    public Issue setInProgress(Integer issueId) {
+        Issue issue = issueRepository.findById(issueId).orElse(null);
+        if (issue != null) {
+            issue.setStatus(IssueStatus.INPROGRESS);
+            issue = issueRepository.save(issue);
+        }
+        // EmailNotification emailNotification = new EmailNotification("bsk1c",
+        // issue.getIssuedEmployee().getMail(),
+        // "issueRegisteredForEmployee", "Новая рекламация");
+        // JsonObject body = new JsonObject();
+        // body.put("name",
+        // issue.getIssuedEmployee().getGivenName().concat("
+        // ").concat(issue.getIssuedEmployee().getSn()));
+        // body.put("login",
+        // issue.getIssuedEmployee().getGivenName().substring(0, 1).concat(".")
+        // .concat(issue.getIssuedEmployee().getSn()));
+        // emailNotification.setBody(body);
+        // emailNotificationServiceImpl.sendEmail(emailNotification);
         return issue;
 
     }
 
-    public Issue updateDepartmentFeedback(Issue issue) {
-        Optional<Issue> _oldIssue = issueRepository.findById(issue.getId());
-        if (!_oldIssue.isPresent())
-            return null;
-
-        Issue oldIssue = _oldIssue.get();
-        oldIssue.setDepartmentFeedback(issue.getDepartmentFeedback());
-        issue = issueRepository.save(oldIssue);
+    /**
+     * @param issueId
+     * @param departmentFeedbacks
+     * @return updated Issue or <b>null</b> if issue not found
+     */
+    public Issue updateDepartmentFeedbacks(Integer issueId, List<DepartmentFeedback> departmentFeedbacks) {
+        Issue issue = issueRepository.findById(issueId).orElse(null);
+        if (issue != null) {
+            issue.setDepartmentFeedbacks(departmentFeedbacks);
+            issue = issueRepository.save(issue);
+        }
         return issue;
     }
 
-    public Issue setPending(Issue issue) {
-        Optional<Issue> _oldIssue = issueRepository.findById(issue.getId());
-        if (!_oldIssue.isPresent())
-            return null;
+    /**
+     * @param issueId
+     * @return updated Issue or <b>null</b> if issue not found.
+     */
+    public Issue setPending(Integer issueId) {
+        Issue issue = issueRepository.findById(issueId).orElse(null);
+        if (issue != null) {
+            issue.setStatus(IssueStatus.PENDINGRESULT);
+            issue = issueRepository.save(issue);
 
-        Issue oldIssue = _oldIssue.get();
-        if (oldIssue.getStatus() != IssueStatus.INPROGRESS |
-                oldIssue.getDepartmentFeedback() == null | oldIssue.getDepartmentFeedback().isEmpty())
-            return null;
-        oldIssue.setStatus(IssueStatus.PENDINGRESULT);
-        issue = issueRepository.save(oldIssue);
+        }
         return issue;
     }
 
-    public Issue updateIssueResult(Issue issue) {
-        Optional<Issue> _oldIssue = issueRepository.findById(issue.getId());
-        if (!_oldIssue.isPresent())
-            return null;
-
-        Issue oldIssue = _oldIssue.get();
-        oldIssue.setIssueResult(issue.getIssueResult());
-        issue = issueRepository.save(oldIssue);
+    /**
+     * @param issueId
+     * @param issueResult
+     * @return update Issue or <b>null</b> if issue not found.
+     */
+    public Issue updateIssueResult(Integer issueId, String issueResult) {
+        Issue issue = issueRepository.findById(issueId).orElse(null);
+        if (issue != null) {
+            issue.setIssueResult(issueResult);
+            issue = issueRepository.save(issue);
+        }
         return issue;
     }
 
-    public Issue setClosed(Issue issue) {
-        Optional<Issue> _oldIssue = issueRepository.findById(issue.getId());
-        if (!_oldIssue.isPresent())
-            return null;
-
-        Issue oldIssue = _oldIssue.get();
-        if (oldIssue.getStatus() != IssueStatus.PENDINGRESULT |
-                oldIssue.getIssueResult() == null | oldIssue.getIssueResult().isEmpty())
-            return null;
-        oldIssue.setStatus(IssueStatus.CLOSED);
-        issue = issueRepository.save(oldIssue);
+    /**
+     * @param issueId
+     * @return updated Issue or <b>null</b> if issue not found.
+     */
+    public Issue setClosed(Integer issueId) {
+        Issue issue = issueRepository.findById(issueId).orElse(null);
+        if (issue != null) {
+            issue.setStatus(IssueStatus.CLOSED);
+            issue = issueRepository.save(issue);
+        }
         return issue;
     }
 
@@ -345,10 +350,6 @@ public class WebClientServiceImpl implements WebClientService {
         QAdUser adUser = QAdUser.adUser;
         queryString = queryString.replace(" ", "*");
         Predicate predicate = adUser.displayName.like("*".concat(queryString).concat("*"));
-
-        // Predicate predicate =
-        // adUser.givenName.like("*".concat(queryString).concat("*"))
-        // .or(adUser.sn.like("*".concat(queryString).concat("*"))).and(adUser.mail.isNotNull());
         return adUserRepository.findAll(predicate);
 
     }
@@ -358,16 +359,16 @@ public class WebClientServiceImpl implements WebClientService {
         return issueRepository.fetchReport(start, end);
     }
 
-    public void uploadFilesToIssue(Integer id, MultipartFile[] files) {
-        Optional<Issue> issueOptional = issueRepository.findById(id);
-        if (issueOptional.isPresent()) {
-            Issue issue = issueOptional.get();
+    public Issue uploadFilesToIssue(Integer id, MultipartFile[] files) {
+        Issue issue = issueRepository.findById(id).orElse(null);
+        if (issue != null) {
             List<AttachedFile> attachedFiles = List.of(files).stream()
                     .map(arg0 -> minioService.uploadFileToIssue(issue, arg0))
                     .toList();
             issue.addAllAttachedFile(attachedFiles);
             issueRepository.save(issue);
         }
+        return issue;
     }
 
 }

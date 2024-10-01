@@ -1,7 +1,7 @@
 package mb.pso.issuesystem.entity;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import mb.pso.issuesystem.entity.im.Message;
 
@@ -18,11 +19,13 @@ public class DepartmentFeedback {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Employee author;
     @OneToOne(optional = true)
     private Message message;
     @Column(length = 2000)
     private String feedback;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<AttachedFile> attachedFiles = new ArrayList<>();
 
     public DepartmentFeedback() {

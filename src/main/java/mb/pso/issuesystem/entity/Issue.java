@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,7 +40,6 @@ public class Issue {
     private IssueType type;
     @ManyToOne(cascade = CascadeType.ALL)
     private Subject subject = null;
-
     @ManyToMany(cascade = CascadeType.ALL)
     private List<IssueAttribute> issueAttributes;
     @Column(length = 2000)
@@ -47,30 +47,14 @@ public class Issue {
     private List<String> relatedDocFromSigma;
     @ManyToOne(cascade = CascadeType.ALL)
     private Department issuedDepartment;
-
-    /**
-     * @deprecated use issuedEmployees instead.
-     */
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Employee issuedEmployee;
-
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Employee> issuedEmployees = new ArrayList<>();
-
     @Column(length = 2000)
     private String issuedDemands;
     @ManyToMany(cascade = CascadeType.ALL)
     private List<AdditionalAttribute> additionalAttributes;
-
-    /**
-     * @deprecated use departmentFeedbacks instead.
-     */
-    @Column(length = 2000)
-    private String departmentFeedback;
-
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<DepartmentFeedback> departmentFeedbacks = new ArrayList<>();
-
     @Column(length = 2000)
     private String issueResult;
     @OneToMany(cascade = CascadeType.ALL)
@@ -80,10 +64,10 @@ public class Issue {
 
     public Issue(Integer id, IssueStatus status, String docNumber, Date docDate, Client client, IssueType type,
             Subject subject, List<IssueAttribute> issueAttributes, String issueDescription,
-            List<String> relatedDocFromSigma, Department issuedDepartment, Employee issuedEmployee,
-            List<Employee> issuedEmployees, String issuedDemands, List<AdditionalAttribute> additionalAttributes,
-            String departmentFeedback, List<DepartmentFeedback> departmentFeedbacks, String issueResult,
-            List<AttachedFile> attachedFiles, Chat chat) {
+            List<String> relatedDocFromSigma, Department issuedDepartment, List<Employee> issuedEmployees,
+            String issuedDemands, List<AdditionalAttribute> additionalAttributes,
+            List<DepartmentFeedback> departmentFeedbacks, String issueResult, List<AttachedFile> attachedFiles,
+            Chat chat) {
         this.id = id;
         this.status = status;
         this.docNumber = docNumber;
@@ -95,11 +79,9 @@ public class Issue {
         this.issueDescription = issueDescription;
         this.relatedDocFromSigma = relatedDocFromSigma;
         this.issuedDepartment = issuedDepartment;
-        this.issuedEmployee = issuedEmployee;
         this.issuedEmployees = issuedEmployees;
         this.issuedDemands = issuedDemands;
         this.additionalAttributes = additionalAttributes;
-        this.departmentFeedback = departmentFeedback;
         this.departmentFeedbacks = departmentFeedbacks;
         this.issueResult = issueResult;
         this.attachedFiles = attachedFiles;
@@ -128,9 +110,10 @@ public class Issue {
         return "Issue [id=" + id + ", status=" + status + ", docNumber=" + docNumber + ", docDate=" + docDate
                 + ", client=" + client + ", type=" + type + ", subject=" + subject + ", issueAttributes="
                 + issueAttributes + ", issueDescription=" + issueDescription + ", relatedDocFromSigma="
-                + relatedDocFromSigma + ", issuedDepartment=" + issuedDepartment + ", issuedEmployee=" + issuedEmployee
-                + ", issuedDemands=" + issuedDemands + ", additionalAttributes=" + additionalAttributes
-                + ", departmentFeedback=" + departmentFeedback + ", issueResult=" + issueResult + "]";
+                + relatedDocFromSigma + ", issuedDepartment=" + issuedDepartment + ", issuedEmployees="
+                + issuedEmployees + ", issuedDemands=" + issuedDemands + ", additionalAttributes="
+                + additionalAttributes + ", departmentFeedbacks=" + departmentFeedbacks + ", issueResult=" + issueResult
+                + ", attachedFiles=" + attachedFiles + ", chat=" + chat + "]";
     }
 
     public Issue() {
@@ -244,50 +227,12 @@ public class Issue {
         return this.issuedDepartment != null && !this.issuedDepartment.isEmpty();
     }
 
-    /**
-     * 
-     * @deprecated
-     */
-    public boolean hasEmployee() {
-        return this.issuedEmployee != null && !this.issuedEmployee.isEmpty();
-    }
-
-    /**
-     * 
-     * @deprecated
-     */
-    public String getDepartmentFeedback() {
-        return departmentFeedback;
-    }
-
-    /**
-     * 
-     * @deprecated
-     */
-    public void setDepartmentFeedback(String departmentFeedback) {
-        this.departmentFeedback = departmentFeedback;
-    }
-
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    /**
-     * @deprecated
-     */
-    public Employee getIssuedEmployee() {
-        return issuedEmployee;
-    }
-
-    /**
-     * @deprecated
-     */
-    public void setIssuedEmployee(Employee issuedEmployee) {
-        this.issuedEmployee = issuedEmployee;
     }
 
     public Chat getChat() {

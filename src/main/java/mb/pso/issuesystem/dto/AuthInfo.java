@@ -1,6 +1,7 @@
 package mb.pso.issuesystem.dto;
 
 public class AuthInfo {
+    private String displayName;
     private String username;
     private String token;
     private String scope;
@@ -30,6 +31,14 @@ public class AuthInfo {
     }
 
     public AuthInfo() {
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String diplayName) {
+        this.displayName = diplayName;
     }
 
 }

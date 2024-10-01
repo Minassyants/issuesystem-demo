@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.Jwt;
 
 import mb.pso.issuesystem.entity.Issue;
 
@@ -15,9 +15,9 @@ public interface WebClientService {
 
     public List<Issue> getAllIssues();
 
-    public Page<Issue> getAllIssues(Pageable pageable, Authentication authentication, Optional<String> q, Optional<List<String>> searchFields);
+    public Page<Issue> getAllIssues(Pageable pageable, Jwt jwt, Optional<String> q,
+            Optional<List<String>> searchFields);
 
     public Optional<Issue> getIssueById(Integer id);
-
 
 }

@@ -8,7 +8,6 @@ import org.springframework.ldap.odm.annotations.Id;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entry(objectClasses = { "user", "top" }, base = "OU=Kazakhstan,OU=Remote Users,DC=ukravto,DC=loc")
-
 public final class AdUser {
 
     @Id

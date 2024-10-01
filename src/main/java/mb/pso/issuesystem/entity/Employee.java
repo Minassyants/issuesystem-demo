@@ -2,22 +2,17 @@ package mb.pso.issuesystem.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-/*Should always match AdUser */
+/* Should always match AdUser */
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private String displayName;
     private String givenName;
     private String sn;
     @Column(unique = true)
     private String mail;
-
-   
 
     public String getGivenName() {
         return givenName;
@@ -47,15 +42,15 @@ public class Employee {
     }
 
     public boolean isEmpty() {
-        return this.id == null;
+        return this.displayName == null;
     }
 
-    public Integer getId() {
-        return id;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
 }

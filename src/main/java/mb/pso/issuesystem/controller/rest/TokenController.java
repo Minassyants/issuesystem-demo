@@ -33,7 +33,9 @@ public class TokenController {
 		String scope = authentication.getAuthorities().stream()
 				.map(GrantedAuthority::getAuthority)
 				.collect(Collectors.joining(" "));
-		String email = ((AdUserDetails) authentication.getPrincipal()).getEmail();
+				AdUserDetails userDetails = (AdUserDetails) authentication.getPrincipal();
+		String email = userDetails.getEmail();
+		String displayName = userDetails.getDisplayName();
 		JwtClaimsSet claims = JwtClaimsSet.builder()
 				.issuer("self")
 				.issuedAt(now)
@@ -41,9 +43,11 @@ public class TokenController {
 				.subject(authentication.getName())
 				.claim("scope", scope)
 				.claim("email", email)
+				.claim("displayname",displayName)
 				.build();
 		// @formatter:on
 		AuthInfo authInfo = new AuthInfo();
+		authInfo.setDisplayName(displayName);
 		authInfo.setToken(this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue());
 		authInfo.setUsername(authentication.getName());
 		authInfo.setScope(scope);
