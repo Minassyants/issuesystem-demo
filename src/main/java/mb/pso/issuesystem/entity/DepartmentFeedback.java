@@ -31,8 +31,10 @@ public class DepartmentFeedback {
     public DepartmentFeedback() {
     }
 
-    public DepartmentFeedback(Integer id, Message message, String feedback, List<AttachedFile> attachedFiles) {
+    public DepartmentFeedback(Integer id, Employee author, Message message, String feedback,
+            List<AttachedFile> attachedFiles) {
         this.id = id;
+        this.author = author;
         this.message = message;
         this.feedback = feedback;
         this.attachedFiles = attachedFiles;
@@ -83,5 +85,13 @@ public class DepartmentFeedback {
     public void setAttachedFiles(List<AttachedFile> attachedFiles) {
         this.attachedFiles.clear();
         this.attachedFiles.addAll(attachedFiles);
+    }
+
+    public Employee getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Employee author) {
+        this.author = author;
     }
 }

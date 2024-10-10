@@ -2,16 +2,43 @@ package mb.pso.issuesystem.dto;
 
 public class AuthInfo {
     private String displayName;
+    private String givenName;
+    private String sn;
+    private String mail;
     private String username;
     private String token;
     private String scope;
 
-    public String getScope() {
-        return scope;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setScope(String scope) {
-        this.scope = scope;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getGivenName() {
+        return givenName;
+    }
+
+    public void setGivenName(String givenName) {
+        this.givenName = givenName;
+    }
+
+    public String getSn() {
+        return sn;
+    }
+
+    public void setSn(String sn) {
+        this.sn = sn;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     public String getUsername() {
@@ -30,15 +57,26 @@ public class AuthInfo {
         this.token = token;
     }
 
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
+    public AuthInfo(String displayName, String givenName, String sn, String mail, String username, String token,
+            String scope) {
+        this.displayName = displayName;
+        this.givenName = givenName;
+        this.sn = sn;
+        this.mail = mail;
+        this.username = username;
+        this.token = token;
+        this.scope = scope;
+    }
+
     public AuthInfo() {
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String diplayName) {
-        this.displayName = diplayName;
     }
 
 }

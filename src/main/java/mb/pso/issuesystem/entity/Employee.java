@@ -40,6 +40,14 @@ public class Employee {
 
     public Employee() {
     }
+    
+
+    public Employee(String displayName, String givenName, String sn, String mail) {
+        this.displayName = displayName;
+        this.givenName = givenName;
+        this.sn = sn;
+        this.mail = mail;
+    }
 
     public boolean isEmpty() {
         return this.displayName == null;

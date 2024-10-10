@@ -29,13 +29,15 @@ public class TokenController {
 	public ResponseEntity<AuthInfo> token(Authentication authentication) {
 		Instant now = Instant.now();
 		// long expiry = 36000L;
-		// @formatter:off
+
 		String scope = authentication.getAuthorities().stream()
 				.map(GrantedAuthority::getAuthority)
 				.collect(Collectors.joining(" "));
-				AdUserDetails userDetails = (AdUserDetails) authentication.getPrincipal();
+		AdUserDetails userDetails = (AdUserDetails) authentication.getPrincipal();
 		String email = userDetails.getEmail();
 		String displayName = userDetails.getDisplayName();
+		String givenName = userDetails.getGivenName();
+		String sn = userDetails.getSn();
 		JwtClaimsSet claims = JwtClaimsSet.builder()
 				.issuer("self")
 				.issuedAt(now)
@@ -43,11 +45,14 @@ public class TokenController {
 				.subject(authentication.getName())
 				.claim("scope", scope)
 				.claim("email", email)
-				.claim("displayname",displayName)
+				.claim("displayname", displayName)
 				.build();
-		// @formatter:on
+
 		AuthInfo authInfo = new AuthInfo();
 		authInfo.setDisplayName(displayName);
+		authInfo.setGivenName(givenName);
+		authInfo.setSn(sn);
+		authInfo.setMail(email);
 		authInfo.setToken(this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue());
 		authInfo.setUsername(authentication.getName());
 		authInfo.setScope(scope);
