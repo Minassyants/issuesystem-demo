@@ -40,6 +40,7 @@ import mb.pso.issuesystem.entity.es.IssueDocument;
 import mb.pso.issuesystem.entity.im.Chat;
 import mb.pso.issuesystem.repository.AdditionalAttributeRepository;
 import mb.pso.issuesystem.repository.ClientRepository;
+import mb.pso.issuesystem.repository.DepartmentFeedbackRepository;
 import mb.pso.issuesystem.repository.DepartmentRepository;
 import mb.pso.issuesystem.repository.EmployeeRepository;
 import mb.pso.issuesystem.repository.IssueAttributeRepository;
@@ -57,6 +58,7 @@ public class WebClientServiceImpl implements WebClientService {
     private final IssueRepository issueRepository;
     private final IssueAttributeRepository issueAttributeRepository;
     private final DepartmentRepository departmentRepository;
+    private final DepartmentFeedbackRepository departmentFeedbackRepository;
     private final ClientRepository clientRepository;
     private final IssueTypeRepository issueTypeRepository;
     private final SubjectRepository subjectRepository;
@@ -73,10 +75,11 @@ public class WebClientServiceImpl implements WebClientService {
             IssueTypeRepository issueTypeRepository, SubjectRepository subjectRepository,
             AdditionalAttributeRepository additionalAttributeRepository, EmployeeRepository employeeRepository,
             AdUserRepository adUserRepository, ElasticsearchOperations elasticsearchOperations,
-            MinioService minioService) {
+            MinioService minioService, DepartmentFeedbackRepository departmentFeedbackRepository) {
         this.issueRepository = issueRepository;
         this.issueAttributeRepository = issueAttributeRepository;
         this.departmentRepository = departmentRepository;
+        this.departmentFeedbackRepository = departmentFeedbackRepository;
         this.clientRepository = clientRepository;
         this.issueTypeRepository = issueTypeRepository;
         this.subjectRepository = subjectRepository;
@@ -251,6 +254,17 @@ public class WebClientServiceImpl implements WebClientService {
         return null;
     }
 
+    public Issue addToIssuedEmployees(Integer issueId, Employee employee) {
+        Issue issue = issueRepository.findById(issueId).orElse(null);
+        if (issue != null) {
+            Employee foundEmployee = employeeRepository.findOne(Example.of(employee)).orElse(employee);
+            issue.addIssuedEmployee(foundEmployee);
+            issueRepository.save(issue);
+        }
+
+        return issue;
+    }
+
     /**
      * @param issueId
      * @param employees
@@ -289,6 +303,23 @@ public class WebClientServiceImpl implements WebClientService {
         // emailNotificationServiceImpl.sendEmail(emailNotification);
         return issue;
 
+    }
+
+    public Issue addToDepartmentFeedbacks(Integer issueId, DepartmentFeedback departmentFeedback) {
+        Issue issue = issueRepository.findById(issueId).orElse(null);
+        if (issue != null) {
+            // [ ] Не оптимально --
+            DepartmentFeedback foundDepartmentFeedback = departmentFeedbackRepository
+                    .findOne(Example.of(departmentFeedback)).orElse(departmentFeedback);
+            Employee foundEmployee = employeeRepository.findById(foundDepartmentFeedback.getAuthor().getDisplayName())
+                    .orElse(foundDepartmentFeedback.getAuthor());
+            foundDepartmentFeedback.setAuthor(foundEmployee);
+            // --
+
+            issue.addDepartmentFeedbacks(foundDepartmentFeedback);
+            issueRepository.save(issue);
+        }
+        return issue;
     }
 
     /**

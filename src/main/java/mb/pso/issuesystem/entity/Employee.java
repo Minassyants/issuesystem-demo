@@ -40,7 +40,17 @@ public class Employee {
 
     public Employee() {
     }
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+        final Employee other = (Employee) obj;
+        return this.displayName.equals(other.displayName);
+    }
 
     public Employee(String displayName, String givenName, String sn, String mail) {
         this.displayName = displayName;

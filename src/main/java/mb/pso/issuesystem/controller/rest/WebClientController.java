@@ -117,10 +117,27 @@ public class WebClientController {
         return ResponseEntity.ok(updatedIssue);
     }
 
+    @PostMapping("/issue/{id}/addtodepartmentfeedbacks")
+    public ResponseEntity<Issue> addToDepartmentFeedbacks(@PathVariable Integer id,
+            @RequestBody DepartmentFeedback departmentFeedback) {
+        Issue updatedIssue = webClientServiceImpl.addToDepartmentFeedbacks(id, departmentFeedback);
+        if (updatedIssue == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(updatedIssue);
+    }
+
     @PostMapping("/issue/{id}/updatedepartmentfeedbacks")
     public ResponseEntity<Issue> updateDepartmentFeedbacks(@PathVariable Integer id,
             @RequestBody List<DepartmentFeedback> departmentFeedbacks) {
         Issue updatedIssue = webClientServiceImpl.updateDepartmentFeedbacks(id, departmentFeedbacks);
+        if (updatedIssue == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(updatedIssue);
+    }
+
+    @PostMapping("/issue/{id}/addtoissuedemployees")
+    public ResponseEntity<Issue> addToIssuedEmployees(@PathVariable Integer id, @RequestBody Employee employee) {
+        Issue updatedIssue = webClientServiceImpl.addToIssuedEmployees(id, employee);
         if (updatedIssue == null)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(updatedIssue);

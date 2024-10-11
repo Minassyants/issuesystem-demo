@@ -69,10 +69,17 @@ public class ImServiceImpl {
     }
 
     // [x] sendMessage
+    // [ ] добавить индикацую успешности отправки сообщения
     public void sendMessage(Message message) {
-        Message msg = messageRepository.save(message);
+        Chat chat = chatRepository.findById(message.getChat().getId()).orElse(null);
 
-        simpMessagingTemplate.convertAndSend("/topic/chat/" + msg.getChat().getId().toString(), msg);
+        if (chat != null) {
+            Employee author = employeeRepository.findOne(Example.of(message.getAuthor())).orElse(message.getAuthor());
+            message.setAuthor(author);
+            Message msg = messageRepository.save(message);
+
+            simpMessagingTemplate.convertAndSend("/topic/chat/" + msg.getChat().getId().toString(), msg);
+        }
 
     }
 

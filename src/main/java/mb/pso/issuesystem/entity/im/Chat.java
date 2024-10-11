@@ -2,6 +2,8 @@ package mb.pso.issuesystem.entity.im;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.Collections;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,7 +29,7 @@ public class Chat {
     @JsonIgnore
     private Issue issue;
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<Employee> members = new ArrayList<>();
+    private Set<Employee> members = Collections.emptySet();
 
     public Chat() {
     }
@@ -36,7 +38,7 @@ public class Chat {
         this.issue = issue;
     }
 
-    public Chat(Integer id, Issue issue, List<Employee> members) {
+    public Chat(Integer id, Issue issue, Set<Employee> members) {
         this.id = id;
         this.issue = issue;
         this.members = members;
@@ -58,11 +60,11 @@ public class Chat {
         this.issue = issue;
     }
 
-    public List<Employee> getMembers() {
+    public Set<Employee> getMembers() {
         return members;
     }
 
-    public void setMembers(List<Employee> members) {
+    public void setMembers(Set<Employee> members) {
         this.members = members;
     }
 
