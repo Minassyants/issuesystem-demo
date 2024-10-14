@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -38,6 +39,8 @@ import mb.pso.issuesystem.entity.Subject;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 import mb.pso.issuesystem.entity.es.IssueDocument;
 import mb.pso.issuesystem.entity.im.Chat;
+import mb.pso.issuesystem.exceptions.IllegalActionException;
+import mb.pso.issuesystem.exceptions.IssueNotFoundException;
 import mb.pso.issuesystem.repository.AdditionalAttributeRepository;
 import mb.pso.issuesystem.repository.ClientRepository;
 import mb.pso.issuesystem.repository.DepartmentFeedbackRepository;
@@ -234,33 +237,42 @@ public class WebClientServiceImpl implements WebClientService {
     }
 
     @Override
-    public Optional<Issue> getIssueById(Integer id) {
-        Optional<Issue> issue = issueRepository.findById(id);
+    public Issue getIssueById(Integer id) {
+        Issue issue = issueRepository.findById(id).orElse(null);
+
+        if (issue == null)
+            throw new IssueNotFoundException(id);
+
         return issue;
     }
 
-    public List<Employee> getIssuedEmployeesByIssueId(Integer issueId) {
+    public Set<Employee> getIssuedEmployeesByIssueId(Integer issueId) {
         Issue issue = issueRepository.findById(issueId).orElse(null);
-        if (issue != null)
-            return issue.getIssuedEmployees();
-        return null;
+        if (issue == null)
+            throw new IssueNotFoundException(issueId);
+
+        return issue.getIssuedEmployees();
 
     }
 
-    public List<DepartmentFeedback> getDepartmentFeedbacksByIssueId(Integer issueId) {
+    public Set<DepartmentFeedback> getDepartmentFeedbacksByIssueId(Integer issueId) {
         Issue issue = issueRepository.findById(issueId).orElse(null);
-        if (issue != null)
-            return issue.getDepartmentFeedbacks();
-        return null;
+        if (issue == null)
+            throw new IssueNotFoundException(issueId);
+        return issue.getDepartmentFeedbacks();
     }
 
     public Issue addToIssuedEmployees(Integer issueId, Employee employee) {
         Issue issue = issueRepository.findById(issueId).orElse(null);
-        if (issue != null) {
-            Employee foundEmployee = employeeRepository.findOne(Example.of(employee)).orElse(employee);
-            issue.addIssuedEmployee(foundEmployee);
-            issueRepository.save(issue);
-        }
+        if (issue == null)
+            throw new IssueNotFoundException(issueId);
+
+        if (issue.getStatus() != IssueStatus.INPROGRESS)
+            throw new IllegalActionException("Employee can be added only while INPROGRESS");
+
+        Employee foundEmployee = employeeRepository.findOne(Example.of(employee)).orElse(employee);
+        issue.addIssuedEmployee(foundEmployee);
+        issueRepository.save(issue);
 
         return issue;
     }
@@ -271,24 +283,35 @@ public class WebClientServiceImpl implements WebClientService {
      * @return update Issue or <b>null</b> if issue not found.
      */
     public Issue updateIssuedEmployees(Integer issueId, List<Employee> employees) {
+        Issue issue = issueRepository.findById(issueId).orElse(null);
+        if (issue == null)
+            throw new IssueNotFoundException(issueId);
+
+        if (issue.getStatus() != IssueStatus.INPROGRESS)
+            throw new IllegalActionException("Employee can be added only while INPROGRESS");
 
         List<Employee> foundEmployees = employees.stream()
                 .map(t -> employeeRepository.findOne(Example.of(t)).orElse(t)).toList();
-        Issue issue = issueRepository.findById(issueId).orElse(null);
-        if (issue != null) {
-            issue.setIssuedEmployees(foundEmployees);
-            issue = issueRepository.save(issue);
-        }
+
+        issue.setIssuedEmployees(foundEmployees);
+        issue = issueRepository.save(issue);
+
         return issue;
 
     }
 
     public Issue setInProgress(Integer issueId) {
         Issue issue = issueRepository.findById(issueId).orElse(null);
-        if (issue != null) {
-            issue.setStatus(IssueStatus.INPROGRESS);
-            issue = issueRepository.save(issue);
-        }
+
+        if (issue == null)
+            throw new IssueNotFoundException(issueId);
+
+        if (issue.getStatus() != IssueStatus.NEW)
+            throw new IllegalActionException("INPROGRESS can be only set from NEW");
+
+        issue.setStatus(IssueStatus.INPROGRESS);
+        issue = issueRepository.save(issue);
+
         // EmailNotification emailNotification = new EmailNotification("bsk1c",
         // issue.getIssuedEmployee().getMail(),
         // "issueRegisteredForEmployee", "Новая рекламация");
@@ -307,18 +330,24 @@ public class WebClientServiceImpl implements WebClientService {
 
     public Issue addToDepartmentFeedbacks(Integer issueId, DepartmentFeedback departmentFeedback) {
         Issue issue = issueRepository.findById(issueId).orElse(null);
-        if (issue != null) {
-            // [ ] Не оптимально --
-            DepartmentFeedback foundDepartmentFeedback = departmentFeedbackRepository
-                    .findOne(Example.of(departmentFeedback)).orElse(departmentFeedback);
-            Employee foundEmployee = employeeRepository.findById(foundDepartmentFeedback.getAuthor().getDisplayName())
-                    .orElse(foundDepartmentFeedback.getAuthor());
-            foundDepartmentFeedback.setAuthor(foundEmployee);
-            // --
 
-            issue.addDepartmentFeedbacks(foundDepartmentFeedback);
-            issueRepository.save(issue);
-        }
+        if (issue == null)
+            throw new IssueNotFoundException(issueId);
+
+        if (issue.getStatus() != IssueStatus.INPROGRESS)
+            throw new IllegalActionException("Feedback can be added only while INPROGRESS");
+
+        // [ ] Не оптимально --
+        DepartmentFeedback foundDepartmentFeedback = departmentFeedbackRepository
+                .findOne(Example.of(departmentFeedback)).orElse(departmentFeedback);
+        Employee foundEmployee = employeeRepository.findById(foundDepartmentFeedback.getAuthor().getDisplayName())
+                .orElse(foundDepartmentFeedback.getAuthor());
+        foundDepartmentFeedback.setAuthor(foundEmployee);
+        // --
+
+        issue.addDepartmentFeedbacks(foundDepartmentFeedback);
+        issueRepository.save(issue);
+
         return issue;
     }
 
@@ -329,10 +358,16 @@ public class WebClientServiceImpl implements WebClientService {
      */
     public Issue updateDepartmentFeedbacks(Integer issueId, List<DepartmentFeedback> departmentFeedbacks) {
         Issue issue = issueRepository.findById(issueId).orElse(null);
-        if (issue != null) {
-            issue.setDepartmentFeedbacks(departmentFeedbacks);
-            issue = issueRepository.save(issue);
-        }
+
+        if (issue == null)
+            throw new IssueNotFoundException(issueId);
+
+        if (issue.getStatus() != IssueStatus.INPROGRESS)
+            throw new IllegalActionException("Feedback can be added only while INPROGRESS");
+
+        issue.setDepartmentFeedbacks(departmentFeedbacks);
+        issue = issueRepository.save(issue);
+
         return issue;
     }
 
@@ -342,11 +377,17 @@ public class WebClientServiceImpl implements WebClientService {
      */
     public Issue setPending(Integer issueId) {
         Issue issue = issueRepository.findById(issueId).orElse(null);
-        if (issue != null) {
-            issue.setStatus(IssueStatus.PENDINGRESULT);
-            issue = issueRepository.save(issue);
 
-        }
+        if (issue == null)
+            throw new IssueNotFoundException(issueId);
+
+        if (issue.getStatus() != IssueStatus.INPROGRESS)
+            throw new IllegalActionException("PENDINGRESULT can be only set from INPROGRESS");
+
+        issue.setStatus(IssueStatus.PENDINGRESULT);
+        issue.getChat().setIsClosed(true);
+        issue = issueRepository.save(issue);
+
         return issue;
     }
 
@@ -357,10 +398,16 @@ public class WebClientServiceImpl implements WebClientService {
      */
     public Issue updateIssueResult(Integer issueId, String issueResult) {
         Issue issue = issueRepository.findById(issueId).orElse(null);
-        if (issue != null) {
-            issue.setIssueResult(issueResult);
-            issue = issueRepository.save(issue);
-        }
+
+        if (issue == null)
+            throw new IssueNotFoundException(issueId);
+
+        if (issue.getStatus() != IssueStatus.PENDINGRESULT)
+            throw new IllegalActionException("Issue result can be added only while PENDINGRESULT");
+
+        issue.setIssueResult(issueResult);
+        issue = issueRepository.save(issue);
+
         return issue;
     }
 
@@ -370,10 +417,16 @@ public class WebClientServiceImpl implements WebClientService {
      */
     public Issue setClosed(Integer issueId) {
         Issue issue = issueRepository.findById(issueId).orElse(null);
-        if (issue != null) {
-            issue.setStatus(IssueStatus.CLOSED);
-            issue = issueRepository.save(issue);
-        }
+
+        if (issue == null)
+            throw new IssueNotFoundException(issueId);
+
+        if (issue.getStatus() != IssueStatus.PENDINGRESULT)
+            throw new IllegalActionException("CLOSED can be only set from PRENDINGRESULT");
+
+        issue.setStatus(IssueStatus.CLOSED);
+        issue = issueRepository.save(issue);
+
         return issue;
     }
 
@@ -393,13 +446,16 @@ public class WebClientServiceImpl implements WebClientService {
 
     public Issue uploadFilesToIssue(Integer id, MultipartFile[] files) {
         Issue issue = issueRepository.findById(id).orElse(null);
-        if (issue != null) {
-            List<AttachedFile> attachedFiles = List.of(files).stream()
-                    .map(arg0 -> minioService.uploadFileToIssue(issue, arg0))
-                    .toList();
-            issue.addAllAttachedFile(attachedFiles);
-            issueRepository.save(issue);
-        }
+
+        if (issue == null)
+            throw new IssueNotFoundException(id);
+
+        List<AttachedFile> attachedFiles = List.of(files).stream()
+                .map(arg0 -> minioService.uploadFileToIssue(issue, arg0))
+                .toList();
+        issue.addAllAttachedFile(attachedFiles);
+        issueRepository.save(issue);
+
         return issue;
     }
 

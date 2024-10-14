@@ -18,6 +18,6 @@ public interface WebClientService {
     public Page<Issue> getAllIssues(Pageable pageable, Jwt jwt, Optional<String> q,
             Optional<List<String>> searchFields);
 
-    public Optional<Issue> getIssueById(Integer id);
+    public Issue getIssueById(Integer id);
 
 }

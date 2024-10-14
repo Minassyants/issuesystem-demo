@@ -1,8 +1,10 @@
 package mb.pso.issuesystem.entity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -48,13 +50,13 @@ public class Issue {
     @ManyToOne(cascade = CascadeType.ALL)
     private Department issuedDepartment;
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<Employee> issuedEmployees = new ArrayList<>();
+    private Set<Employee> issuedEmployees = Collections.emptySet();
     @Column(length = 2000)
     private String issuedDemands;
     @ManyToMany(cascade = CascadeType.ALL)
     private List<AdditionalAttribute> additionalAttributes;
     @OneToMany(cascade = CascadeType.ALL)
-    private List<DepartmentFeedback> departmentFeedbacks = new ArrayList<>();
+    private Set<DepartmentFeedback> departmentFeedbacks = Collections.emptySet();
     @Column(length = 2000)
     private String issueResult;
     @OneToMany(cascade = CascadeType.ALL)
@@ -62,11 +64,13 @@ public class Issue {
     @OneToOne(cascade = CascadeType.ALL)
     private Chat chat;
 
+    
+
     public Issue(Integer id, IssueStatus status, String docNumber, Date docDate, Client client, IssueType type,
             Subject subject, List<IssueAttribute> issueAttributes, String issueDescription,
-            List<String> relatedDocFromSigma, Department issuedDepartment, List<Employee> issuedEmployees,
+            List<String> relatedDocFromSigma, Department issuedDepartment, Set<Employee> issuedEmployees,
             String issuedDemands, List<AdditionalAttribute> additionalAttributes,
-            List<DepartmentFeedback> departmentFeedbacks, String issueResult, List<AttachedFile> attachedFiles,
+            Set<DepartmentFeedback> departmentFeedbacks, String issueResult, List<AttachedFile> attachedFiles,
             Chat chat) {
         this.id = id;
         this.status = status;
@@ -252,7 +256,7 @@ public class Issue {
         this.issuedEmployees.add(employee);
     }
 
-    public List<Employee> getIssuedEmployees() {
+    public Set<Employee> getIssuedEmployees() {
         return issuedEmployees;
     }
 
@@ -269,7 +273,7 @@ public class Issue {
         this.departmentFeedbacks.addAll(departmentFeedbacks);
     }
 
-    public List<DepartmentFeedback> getDepartmentFeedbacks() {
+    public Set<DepartmentFeedback> getDepartmentFeedbacks() {
         return departmentFeedbacks;
     }
 

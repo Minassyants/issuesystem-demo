@@ -22,6 +22,7 @@ public class Chat {
     @Id
     // @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    private Boolean isClosed = false;
     // [ ] Fetch type lazy +
     // https://stackoverflow.com/questions/28746584/how-to-avoid-lazy-fetch-in-json-serialization-using-spring-data-jpa-spring-web
     @OneToOne(fetch = FetchType.LAZY)
@@ -38,8 +39,9 @@ public class Chat {
         this.issue = issue;
     }
 
-    public Chat(Integer id, Issue issue, Set<Employee> members) {
+    public Chat(Integer id, Boolean isClosed, Issue issue, Set<Employee> members) {
         this.id = id;
+        this.isClosed = isClosed;
         this.issue = issue;
         this.members = members;
     }
@@ -66,6 +68,14 @@ public class Chat {
 
     public void setMembers(Set<Employee> members) {
         this.members = members;
+    }
+
+    public Boolean getIsClosed() {
+        return isClosed;
+    }
+
+    public void setIsClosed(Boolean isClosed) {
+        this.isClosed = isClosed;
     }
 
 }

@@ -3,6 +3,7 @@ package mb.pso.issuesystem.controller.rest;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -138,8 +139,6 @@ public class WebClientController {
     @PostMapping("/issue/{id}/addtoissuedemployees")
     public ResponseEntity<Issue> addToIssuedEmployees(@PathVariable Integer id, @RequestBody Employee employee) {
         Issue updatedIssue = webClientServiceImpl.addToIssuedEmployees(id, employee);
-        if (updatedIssue == null)
-            return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(updatedIssue);
     }
 
@@ -147,8 +146,6 @@ public class WebClientController {
     public ResponseEntity<Issue> updateIssuedEmployees(@PathVariable Integer id,
             @RequestBody List<Employee> employees) {
         Issue updatedIssue = webClientServiceImpl.updateIssuedEmployees(id, employees);
-        if (updatedIssue == null)
-            return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(updatedIssue);
 
     }
@@ -178,25 +175,19 @@ public class WebClientController {
 
     @GetMapping("/issue/{id}")
     public ResponseEntity<Issue> getIssueById(@PathVariable Integer id, @AuthenticationPrincipal AdUserDetails user) {
-        Optional<Issue> issue = webClientServiceImpl.getIssueById(id);
-        if (issue.isPresent())
-            return ResponseEntity.ok(issue.get());
-        return ResponseEntity.notFound().build();
+        Issue issue = webClientServiceImpl.getIssueById(id);
+        return ResponseEntity.ok(issue);
     }
 
     @GetMapping("/issue/{id}/issuedemployees")
-    public ResponseEntity<List<Employee>> getIssuedEmployeesByIssueId(@PathVariable Integer id) {
-        List<Employee> issuedEmployees = webClientServiceImpl.getIssuedEmployeesByIssueId(id);
-        if (issuedEmployees == null)
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<Set<Employee>> getIssuedEmployeesByIssueId(@PathVariable Integer id) {
+        Set<Employee> issuedEmployees = webClientServiceImpl.getIssuedEmployeesByIssueId(id);
         return ResponseEntity.ok(issuedEmployees);
     }
 
     @GetMapping("/issue/{id}/departmentfeedbacks")
-    public ResponseEntity<List<DepartmentFeedback>> getDepartmentFeedbacksByIssueId(@PathVariable Integer id) {
-        List<DepartmentFeedback> departmentFeedbacks = webClientServiceImpl.getDepartmentFeedbacksByIssueId(id);
-        if (departmentFeedbacks == null)
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<Set<DepartmentFeedback>> getDepartmentFeedbacksByIssueId(@PathVariable Integer id) {
+        Set<DepartmentFeedback> departmentFeedbacks = webClientServiceImpl.getDepartmentFeedbacksByIssueId(id);
         return ResponseEntity.ok(departmentFeedbacks);
     }
 

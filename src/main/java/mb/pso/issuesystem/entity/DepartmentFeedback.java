@@ -28,6 +28,17 @@ public class DepartmentFeedback {
     @OneToMany(cascade = CascadeType.ALL)
     private List<AttachedFile> attachedFiles = new ArrayList<>();
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+        final DepartmentFeedback other = (DepartmentFeedback) obj;
+        return this.id == other.id;
+    }
+
     public DepartmentFeedback() {
     }
 
