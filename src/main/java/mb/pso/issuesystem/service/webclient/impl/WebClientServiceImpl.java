@@ -35,6 +35,7 @@ import mb.pso.issuesystem.entity.IssueType;
 import mb.pso.issuesystem.entity.QAdUser;
 import mb.pso.issuesystem.entity.QEmployee;
 import mb.pso.issuesystem.entity.QIssue;
+import mb.pso.issuesystem.entity.QIssueAttribute;
 import mb.pso.issuesystem.entity.Subject;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 import mb.pso.issuesystem.entity.es.IssueDocument;
@@ -135,17 +136,18 @@ public class WebClientServiceImpl implements WebClientService {
                 issue.setSubject(issueSubject.get());
 
             // Ищем IssueAttributes
-            if (issue.getIssueAttributes() != null) {
-                List<IssueAttribute> l = new ArrayList<IssueAttribute>();
-                for (IssueAttribute i : issue.getIssueAttributes()) {
-                    Optional<IssueAttribute> f = issueAttributeRepository.findOne(Example.of(i));
-                    if (f.isPresent())
-                        l.add(f.get());
-                    else
-                        l.add(i);
-                }
-                issue.setIssueAttributes(l);
-            }
+            //
+            // if (issue.getIssueAttributes() != null) {
+            // List<IssueAttribute> l = new ArrayList<IssueAttribute>();
+            // for (IssueAttribute i : issue.getIssueAttributes()) {
+            // Optional<IssueAttribute> f = issueAttributeRepository.findOne(Example.of(i));
+            // if (f.isPresent())
+            // l.add(f.get());
+            // else
+            // l.add(i);
+            // }
+            // issue.setIssueAttributes(l);
+            // }
 
             // Ищем Department
             if (issue.getIssuedDepartment() != null) {
@@ -391,6 +393,34 @@ public class WebClientServiceImpl implements WebClientService {
         return issue;
     }
 
+    public Issue updateIssueAttributes(Integer issueId, List<IssueAttribute> issueAttributes) {
+        Issue issue = issueRepository.findById(issueId).orElse(null);
+        if (issue == null)
+            throw new IssueNotFoundException(issueId);
+
+        if (issue.getStatus() != IssueStatus.NEW)
+            throw new IllegalActionException("Issue attributes can only be set while NEW");
+
+        issue.setIssueAttributes(issueAttributes);
+        issueRepository.save(issue);
+        return issue;
+
+    }
+
+    public Issue updateIssueSubject(Integer issueId, Subject subject) {
+        Issue issue = issueRepository.findById(issueId).orElse(null);
+        if (issue == null)
+            throw new IssueNotFoundException(issueId);
+
+        if (issue.getStatus() != IssueStatus.NEW)
+            throw new IllegalActionException("Issue subject can only be set while NEW");
+
+        Subject newSubject = subjectRepository.findOne(Example.of(subject)).orElse(subject);
+        issue.setSubject(newSubject);
+        issueRepository.save(issue);
+        return issue;
+    }
+
     /**
      * @param issueId
      * @param issueResult
@@ -437,6 +467,12 @@ public class WebClientServiceImpl implements WebClientService {
                 .and(adUser.displayName.isNotNull()).and(adUser.displayName.like("*".concat(queryString).concat("*")));
         return adUserRepository.findAll(predicate);
 
+    }
+
+    public Iterable<IssueAttribute> getAvailableIssueAttributes() {
+        QIssueAttribute issueAttribute = QIssueAttribute.issueAttribute;
+        Predicate predicate = issueAttribute.isDeprecated.eq(false);
+        return issueAttributeRepository.findAll(predicate);
     }
 
     public Iterable<BasicReportRow> getReport(LocalDate start, LocalDate end) {

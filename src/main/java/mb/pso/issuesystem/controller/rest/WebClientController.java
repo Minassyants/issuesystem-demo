@@ -28,6 +28,8 @@ import mb.pso.issuesystem.entity.BasicReportRow;
 import mb.pso.issuesystem.entity.DepartmentFeedback;
 import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.Issue;
+import mb.pso.issuesystem.entity.IssueAttribute;
+import mb.pso.issuesystem.entity.Subject;
 import mb.pso.issuesystem.entity.Users;
 import mb.pso.issuesystem.entity.im.Chat;
 import mb.pso.issuesystem.entity.im.Message;
@@ -150,6 +152,19 @@ public class WebClientController {
 
     }
 
+    @PostMapping("/issue/{id}/updateissueattributes")
+    public ResponseEntity<Issue> updateIssueAttributes(@PathVariable Integer id,
+            @RequestBody List<IssueAttribute> issueAttributes) {
+        Issue updateIssue = webClientServiceImpl.updateIssueAttributes(id, issueAttributes);
+        return ResponseEntity.ok(updateIssue);
+    }
+
+    @PostMapping("/issue/{id}/updateissuesubject")
+    public ResponseEntity<Issue> updateIssueSubject(@PathVariable Integer id, @RequestBody Subject subject) {
+        Issue updatedIssue = webClientServiceImpl.updateIssueSubject(id, subject);
+        return ResponseEntity.ok(updatedIssue);
+    }
+
     @PostMapping("/issue/{id}/updateissueresult")
     public ResponseEntity<Issue> updateIssueResult(@PathVariable Integer id, @RequestBody String issueResult) {
         Issue updatedIssue = webClientServiceImpl.updateIssueResult(id, issueResult);
@@ -203,6 +218,11 @@ public class WebClientController {
     @GetMapping("/employee")
     public ResponseEntity<Iterable<AdUser>> getAllEmployees(@RequestParam String q) {
         return ResponseEntity.ok(webClientServiceImpl.findEmployeesByGivenNameSn(q));
+    }
+
+    @GetMapping("/availableissueattributes")
+    public ResponseEntity<Iterable<IssueAttribute>> getAvailableIssueAttributes() {
+        return ResponseEntity.ok(webClientServiceImpl.getAvailableIssueAttributes());
     }
 
     @GetMapping("/report")

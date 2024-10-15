@@ -42,8 +42,8 @@ public class Issue {
     private IssueType type;
     @ManyToOne(cascade = CascadeType.ALL)
     private Subject subject = null;
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<IssueAttribute> issueAttributes;
+    @ManyToMany(cascade = CascadeType.MERGE)
+    private List<IssueAttribute> issueAttributes = new ArrayList<>();
     @Column(length = 2000)
     private String issueDescription;
     private List<String> relatedDocFromSigma;
@@ -63,8 +63,6 @@ public class Issue {
     private List<AttachedFile> attachedFiles = new ArrayList<>();
     @OneToOne(cascade = CascadeType.ALL)
     private Chat chat;
-
-    
 
     public Issue(Integer id, IssueStatus status, String docNumber, Date docDate, Client client, IssueType type,
             Subject subject, List<IssueAttribute> issueAttributes, String issueDescription,
@@ -176,7 +174,8 @@ public class Issue {
     }
 
     public void setIssueAttributes(List<IssueAttribute> issueAttributes) {
-        this.issueAttributes = issueAttributes;
+        this.issueAttributes.clear();
+        this.issueAttributes.addAll(issueAttributes);
     }
 
     public String getIssueDescription() {

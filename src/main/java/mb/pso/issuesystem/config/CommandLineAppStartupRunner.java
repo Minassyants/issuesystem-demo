@@ -18,12 +18,14 @@ import co.elastic.clients.util.DateTime;
 import mb.pso.issuesystem.entity.Client;
 import mb.pso.issuesystem.entity.Department;
 import mb.pso.issuesystem.entity.Issue;
+import mb.pso.issuesystem.entity.IssueAttribute;
 import mb.pso.issuesystem.entity.IssueType;
 import mb.pso.issuesystem.entity.Users;
 import mb.pso.issuesystem.entity.Vehicle;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 import mb.pso.issuesystem.entity.enums.Roles;
 import mb.pso.issuesystem.entity.es.IssueDocument;
+import mb.pso.issuesystem.repository.IssueAttributeRepository;
 import mb.pso.issuesystem.repository.IssueRepository;
 import mb.pso.issuesystem.repository.IssueTypeRepository;
 import mb.pso.issuesystem.repository.UserRepository;
@@ -34,13 +36,16 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
     private final UserRepository userRepository;
     private final IssueRepository issueRepository;
     private final IssueTypeRepository issueTypeRepository;
+    private final IssueAttributeRepository issueAttributeRepository;
     private final IssueDocumentRepository obRepository;
 
     public CommandLineAppStartupRunner(UserRepository userRepository, IssueRepository issueRepository,
-            IssueTypeRepository issueTypeRepository, IssueDocumentRepository obRepository) {
+            IssueTypeRepository issueTypeRepository, IssueDocumentRepository obRepository,
+            IssueAttributeRepository issueAttributeRepository) {
         this.userRepository = userRepository;
         this.issueRepository = issueRepository;
         this.issueTypeRepository = issueTypeRepository;
+        this.issueAttributeRepository = issueAttributeRepository;
         this.obRepository = obRepository;
     }
 
@@ -72,6 +77,25 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
                 System.out.println("IssueType already exists!");
             }
+        }
+
+        List<String> issueAttributeStrings = List.of(
+                "Ненадлежащее качество товара",
+                "Ненадлежащее качество предоставления услуг",
+                "Срыв сроков поставки автомобилей, запасных частей, аксессуаров",
+                "Отказ от гарантийных обязательств",
+                "Грубость и нестандартное поведение работника",
+                "Несвоевременное предоставление документов на оплату",
+                "Недовольство клиента к системе оплаты за производственные услуги и купленные запасные части",
+                "Требования заключенного между сторонами договора",
+                "Повторный заезд, ПСО и т.д.");
+        for (String string : issueAttributeStrings) {
+            IssueAttribute issueAttribute = new IssueAttribute(string);
+            issueAttribute.setIsDeprecated(null);
+            IssueAttribute i = issueAttributeRepository.findOne(Example.of(issueAttribute)).orElse(issueAttribute);
+            i.setIsDeprecated(false);
+            issueAttributeRepository.save(i);
+            System.out.println("IssueAttribute craeted/updated!");
         }
 
         // <Issue> a = new ArrayList<Issue>();
@@ -114,7 +138,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         // t.setTestDate(Date.from(Instant.now()));
         // t.setTestDateTime(DateTime.of(Instant.now()));
         // t.setTestLocalDateTime(LocalDateTime.now());
-        
+
         // obRepository.save(t);
 
     }

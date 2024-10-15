@@ -14,6 +14,7 @@ public class IssueAttribute {
     private Integer id;
     @Column(unique = true)
     private String name;
+    private Boolean isDeprecated = false;
 
     @Override
     public String toString() {
@@ -41,6 +42,14 @@ public class IssueAttribute {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Boolean getIsDeprecated() {
+        return isDeprecated;
+    }
+
+    public void setIsDeprecated(Boolean isDeprecated) {
+        this.isDeprecated = isDeprecated;
     }
 
 }
