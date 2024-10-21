@@ -21,7 +21,7 @@ public class Message {
     private Integer id;
     @OneToOne(cascade = CascadeType.ALL)
     private MessageContent content;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Employee author;
     @Column(updatable = false)
     @CreationTimestamp

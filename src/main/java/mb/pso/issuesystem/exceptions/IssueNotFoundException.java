@@ -2,6 +2,6 @@ package mb.pso.issuesystem.exceptions;
 
 public class IssueNotFoundException extends RuntimeException {
     public IssueNotFoundException(Integer issueId) {
-        super(issueId.toString() + " not found");
+        super("Issue " + issueId.toString() + " not found");
     }
 }

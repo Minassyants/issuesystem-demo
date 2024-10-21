@@ -10,10 +10,15 @@ import org.springframework.stereotype.Service;
 
 import com.querydsl.core.types.Predicate;
 
+import jakarta.transaction.Transactional;
+import jakarta.transaction.Transactional.TxType;
 import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.im.Chat;
 import mb.pso.issuesystem.entity.im.Message;
 import mb.pso.issuesystem.entity.im.QMessage;
+import mb.pso.issuesystem.exceptions.ChatNotFoundException;
+import mb.pso.issuesystem.exceptions.EmployeeNotFoundException;
+import mb.pso.issuesystem.exceptions.IllegalActionException;
 import mb.pso.issuesystem.repository.EmployeeRepository;
 import mb.pso.issuesystem.repository.im.ChatRepository;
 import mb.pso.issuesystem.repository.im.MessageRepository;
@@ -34,23 +39,41 @@ public class ImServiceImpl {
         this.employeeRepository = employeeRepository;
     }
 
-    public Chat deleteMemberFromChat(Integer chatId, Employee employee) {
+    @Transactional(value = TxType.REQUIRED)
+    public Employee deleteMemberFromChat(Integer chatId, Employee employee) {
         Chat chat = chatRepository.findById(chatId).orElse(null);
-        if (chat != null) {
-            if (chat.getMembers().removeIf(t -> t.getMail().equals(employee.getMail())))
-                return chatRepository.save(chat);
-        }
-        return null;
+
+        if (chat == null)
+            throw new ChatNotFoundException(chatId.toString());
+
+        if (chat.getIsClosed())
+            throw new IllegalActionException("Chat is already closed.");
+
+        Employee foundEmployee = employeeRepository.findById(employee.getDisplayName()).orElse(null);
+        if (foundEmployee == null)
+            throw new EmployeeNotFoundException(employee.getDisplayName());
+
+        if (chat.getMembers().removeIf(t -> t.equals(foundEmployee)))
+            chatRepository.save(chat);
+
+        return foundEmployee;
     }
 
-    public Chat addMemberToChat(Integer chatId, Employee employee) {
+    @Transactional(value = TxType.REQUIRED)
+    public Employee addMemberToChat(Integer chatId, Employee employee) {
         Chat chat = chatRepository.findById(chatId).orElse(null);
-        if (chat != null) {
-            employee = employeeRepository.findOne(Example.of(employee)).orElse(employee);
-            chat.getMembers().add(employee);
-            return chatRepository.save(chat);
-        }
-        return null;
+
+        if (chat == null)
+            throw new ChatNotFoundException(chatId.toString());
+
+        if (chat.getIsClosed())
+            throw new IllegalActionException("Chat is already closed.");
+
+        employee = employeeRepository.findOne(Example.of(employee)).orElse(employee);
+        chat.getMembers().add(employee);
+        chat = chatRepository.save(chat);
+
+        return employee;
     }
 
     public Chat getChatById(Integer id) {
@@ -70,16 +93,20 @@ public class ImServiceImpl {
 
     // [x] sendMessage
     // [ ] добавить индикацую успешности отправки сообщения
-    public void sendMessage(Message message) {
+    public Message sendMessage(Message message) {
         Chat chat = chatRepository.findById(message.getChat().getId()).orElse(null);
 
-        if (chat != null) {
-            Employee author = employeeRepository.findOne(Example.of(message.getAuthor())).orElse(message.getAuthor());
-            message.setAuthor(author);
-            Message msg = messageRepository.save(message);
+        if (chat == null)
+            throw new ChatNotFoundException(message.getChat().getId().toString());
 
-            simpMessagingTemplate.convertAndSend("/topic/chat/" + msg.getChat().getId().toString(), msg);
-        }
+        if (chat.getIsClosed())
+            throw new IllegalActionException("Chat is already closed.");
+
+        Employee author = employeeRepository.findOne(Example.of(message.getAuthor())).orElse(message.getAuthor());
+        message.setAuthor(author);
+        Message msg = messageRepository.save(message);
+
+        return msg;
 
     }
 

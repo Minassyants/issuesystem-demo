@@ -52,19 +52,21 @@ public class WebClientController {
         this.imServiceImpl = imServiceImpl;
     }
 
-    // FIXME раскидать по сервисам????
-    @PostMapping("/chat/{chatId}/deleteMember")
-    public ResponseEntity<Chat> deleteMemberFromChat(@PathVariable Integer chatId, @RequestBody Employee employee) {
-        Chat chat = imServiceImpl.deleteMemberFromChat(chatId, employee);
-        return ResponseEntity.ok(chat);
-    }
+    // // раскидать по сервисам????
+    // @PostMapping("/chat/{chatId}/deleteMember")
+    // public ResponseEntity<Chat> deleteMemberFromChat(@PathVariable Integer
+    // chatId, @RequestBody Employee employee) {
+    // Chat chat = imServiceImpl.deleteMemberFromChat(chatId, employee);
+    // return ResponseEntity.ok(chat);
+    // }
 
-    @PostMapping("/chat/{chatId}/addmember")
-    public ResponseEntity<Chat> addMemberToChat(@PathVariable Integer chatId, @RequestBody Employee employee) {
+    // @PostMapping("/chat/{chatId}/addmember")
+    // public ResponseEntity<Chat> addMemberToChat(@PathVariable Integer chatId,
+    // @RequestBody Employee employee) {
 
-        Chat chat = imServiceImpl.addMemberToChat(chatId, employee);
-        return ResponseEntity.ok(chat);
-    }
+    // Chat chat = imServiceImpl.addMemberToChat(chatId, employee);
+    // return ResponseEntity.ok(chat);
+    // }
 
     @GetMapping("/chat/{id}")
     public ResponseEntity<Chat> getChatById(@PathVariable Integer id) {
@@ -83,10 +85,10 @@ public class WebClientController {
 
     }
 
-    @PostMapping("/chat/send")
-    public void sendMessage(@RequestBody Message message) {
-        imServiceImpl.sendMessage(message);
-    }
+    // @PostMapping("/chat/send")
+    // public void sendMessage(@RequestBody Message message) {
+    // imServiceImpl.sendMessage(message);
+    // }
 
     // BUG: Это полная ...
     @GetMapping("/auth")
