@@ -39,6 +39,14 @@ public class ImServiceImpl {
         this.employeeRepository = employeeRepository;
     }
 
+
+    public Message markAsRead(Integer messageId)
+    {
+        Message msg = messageRepository.findById(messageId).orElse(null);
+        // if (msg == null)
+        return msg;
+    }
+
     @Transactional(value = TxType.REQUIRED)
     public Employee deleteMemberFromChat(Integer chatId, Employee employee) {
         Chat chat = chatRepository.findById(chatId).orElse(null);

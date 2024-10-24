@@ -1,6 +1,8 @@
 package mb.pso.issuesystem.entity.im;
 
 import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.Collections;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -29,12 +31,16 @@ public class Message {
     @ManyToOne
     private Chat chat;
 
-    public Message(Integer id, MessageContent content, Employee author, LocalDateTime createdAt, Chat chat) {
+    private Set<String> seenBy = Collections.emptySet();
+
+    public Message(Integer id, MessageContent content, Employee author, LocalDateTime createdAt, Chat chat,
+            Set<String> seenBy) {
         this.id = id;
         this.content = content;
         this.author = author;
         this.createdAt = createdAt;
         this.chat = chat;
+        this.seenBy = seenBy;
     }
 
     public Message() {
@@ -78,6 +84,15 @@ public class Message {
 
     public void setAuthor(Employee author) {
         this.author = author;
+    }
+
+    public Set<String> getSeenBy() {
+        return seenBy;
+    }
+
+    public void setSeenBy(Set<String> seenBy) {
+        this.seenBy.clear();
+        this.seenBy.addAll(seenBy);
     }
 
 }
