@@ -1,8 +1,9 @@
 package mb.pso.issuesystem.entity.im;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 import java.util.Collections;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -13,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import mb.pso.issuesystem.entity.Employee;
 
@@ -30,17 +32,17 @@ public class Message {
     private LocalDateTime createdAt;
     @ManyToOne
     private Chat chat;
-
-    private Set<String> seenBy = Collections.emptySet();
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<MessageStatus> statuses = new HashSet<MessageStatus>();
 
     public Message(Integer id, MessageContent content, Employee author, LocalDateTime createdAt, Chat chat,
-            Set<String> seenBy) {
+            Set<MessageStatus> statuses) {
         this.id = id;
         this.content = content;
         this.author = author;
         this.createdAt = createdAt;
         this.chat = chat;
-        this.seenBy = seenBy;
+        this.statuses = statuses;
     }
 
     public Message() {
@@ -86,13 +88,19 @@ public class Message {
         this.author = author;
     }
 
-    public Set<String> getSeenBy() {
-        return seenBy;
+    public Set<MessageStatus> getStatuses() {
+        return statuses;
     }
 
-    public void setSeenBy(Set<String> seenBy) {
-        this.seenBy.clear();
-        this.seenBy.addAll(seenBy);
+    public void setStatuses(Set<MessageStatus> status) {
+        this.statuses.clear();
+        this.statuses.addAll(status);
     }
+
+    public void addToStatuses(MessageStatus status) {
+        this.statuses.add(status);
+    }
+
+    
 
 }

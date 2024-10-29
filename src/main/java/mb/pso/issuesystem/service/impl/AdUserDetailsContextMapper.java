@@ -18,7 +18,7 @@ public class AdUserDetailsContextMapper extends LdapUserDetailsMapper {
             Collection<? extends GrantedAuthority> authorities) {
         UserDetails userDetails = super.mapUserFromContext(ctx, username, authorities);
         AdUserDetails user = new AdUserDetails(userDetails.getUsername(), "",
-                userDetails.getAuthorities(), ctx.getStringAttribute("mail"));
+                userDetails.getAuthorities(), ctx.getStringAttribute("mail"),ctx.getStringAttribute("displayName"),ctx.getStringAttribute("givenName"),ctx.getStringAttribute("sn"));
                 
 
         return user;

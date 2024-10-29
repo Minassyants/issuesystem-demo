@@ -6,6 +6,7 @@ public class SocketMsg {
         NEWMESSAGE,
         ADDEDMEMBER,
         DELETEDMEMBER,
+        READ,
         ERROR
     }
 

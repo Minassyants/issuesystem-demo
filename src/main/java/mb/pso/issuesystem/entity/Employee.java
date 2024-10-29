@@ -1,5 +1,7 @@
 package mb.pso.issuesystem.entity;
 
+import org.springframework.security.oauth2.jwt.Jwt;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

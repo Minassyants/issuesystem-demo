@@ -1,9 +1,9 @@
 package mb.pso.issuesystem.entity.im;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import java.util.Collections;
+import java.util.Collection;
+import java.util.Set;
+import java.util.HashSet;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -30,7 +30,7 @@ public class Chat {
     @JsonIgnore
     private Issue issue;
     @ManyToMany(cascade = CascadeType.ALL)
-    private Set<Employee> members = Collections.emptySet();
+    private Set<Employee> members = new HashSet<Employee>();
 
     public Chat() {
     }
@@ -67,7 +67,17 @@ public class Chat {
     }
 
     public void setMembers(Set<Employee> members) {
-        this.members = members;
+        this.members.clear();
+        if (members != null)
+            this.members.addAll(members);
+    }
+
+    public void addToMembers(Collection<Employee> members) {
+        this.members.addAll(members);
+    }
+
+    public void addToMembers(Employee member) {
+        this.members.add(member);
     }
 
     public Boolean getIsClosed() {

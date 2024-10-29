@@ -302,16 +302,28 @@ public class WebClientServiceImpl implements WebClientService {
 
     }
 
-    public Issue setInProgress(Integer issueId) {
+    public Issue setInProgress(Integer issueId, String displayName) {
         Issue issue = issueRepository.findById(issueId).orElse(null);
+        Employee author = employeeRepository.findById(displayName).orElse(null);
 
         if (issue == null)
             throw new IssueNotFoundException(issueId);
+
+        if (author == null) {
+            QAdUser adUser = QAdUser.adUser;
+            Predicate predicate = adUser.displayName.eq(displayName);
+            AdUser foundUser = adUserRepository.findOne(predicate).orElse(null);
+            if (foundUser == null)
+                throw new IllegalActionException(displayName + " not found in AD.");
+            author = new Employee(foundUser.getDisplayName(), foundUser.getGivenName(), foundUser.getSn(),
+                    foundUser.getMail());
+        }
 
         if (issue.getStatus() != IssueStatus.NEW)
             throw new IllegalActionException("INPROGRESS can be only set from NEW");
 
         issue.setStatus(IssueStatus.INPROGRESS);
+        issue.getChat().addToMembers(author);
         issue = issueRepository.save(issue);
 
         // EmailNotification emailNotification = new EmailNotification("bsk1c",

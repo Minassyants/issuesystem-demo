@@ -3,13 +3,12 @@ package mb.pso.issuesystem.controller.im;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 import mb.pso.issuesystem.dto.webSocket.SocketMsg;
-import mb.pso.issuesystem.entity.AdUserDetails;
 import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.im.Message;
 import mb.pso.issuesystem.service.impl.ImServiceImpl;
@@ -47,9 +46,13 @@ public class ChatController {
     }
 
     @MessageMapping("/message/{id}/markasread")
+    @Transactional
     public void markAsRead(@DestinationVariable Integer id, JwtAuthenticationToken jwt) {
         String displayName = ((Jwt) jwt.getPrincipal()).getClaimAsString("displayname");
-        
+        Message msg = imServiceImpl.markAsRead(id, displayName);
+
+        simpMessagingTemplate.convertAndSend("/topic/chat/" + msg.getChat().getId().toString(),
+                new SocketMsg(SocketMsg.MsgType.READ, msg));
     }
 
 }

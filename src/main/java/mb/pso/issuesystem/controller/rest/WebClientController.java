@@ -107,8 +107,9 @@ public class WebClientController {
     }
 
     @PostMapping("/issue/{id}/setinprogress")
-    public ResponseEntity<Issue> setInProgress(@PathVariable Integer id) {
-        Issue updatedIssue = webClientServiceImpl.setInProgress(id);
+    public ResponseEntity<Issue> setInProgress(@AuthenticationPrincipal Jwt jwt, @PathVariable Integer id) {
+        String displayName = jwt.getClaimAsString("displayname");
+        Issue updatedIssue = webClientServiceImpl.setInProgress(id, displayName);
         if (updatedIssue == null)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(updatedIssue);
