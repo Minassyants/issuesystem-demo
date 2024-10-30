@@ -34,9 +34,6 @@ public class Chat {
     private Issue issue;
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Employee> members = new HashSet<Employee>();
-    @OneToMany(fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Message> messages = new ArrayList<>();
 
     public Chat() {
     }
@@ -61,14 +58,6 @@ public class Chat {
         this.isClosed = isClosed;
         this.issue = issue;
         this.members = members;
-    }
-
-    public Chat(Integer id, Boolean isClosed, Issue issue, Set<Employee> members, List<Message> messages) {
-        this.id = id;
-        this.isClosed = isClosed;
-        this.issue = issue;
-        this.members = members;
-        this.messages = messages;
     }
 
     public Integer getId() {
@@ -111,15 +100,6 @@ public class Chat {
 
     public void setIsClosed(Boolean isClosed) {
         this.isClosed = isClosed;
-    }
-
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages.clear();
-        this.messages.addAll(messages);
     }
 
 }
