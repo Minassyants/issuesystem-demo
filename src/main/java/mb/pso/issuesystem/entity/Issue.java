@@ -24,9 +24,10 @@ import jakarta.persistence.OneToOne;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 import mb.pso.issuesystem.entity.im.Chat;
 import mb.pso.issuesystem.listeners.IssueEntityListener;
+import mb.pso.issuesystem.listeners.IssueEntityNotificationListener;
 
 @Entity
-@EntityListeners(IssueEntityListener.class)
+@EntityListeners({ IssueEntityListener.class, IssueEntityNotificationListener.class })
 public class Issue {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

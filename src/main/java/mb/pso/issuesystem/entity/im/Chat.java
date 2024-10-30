@@ -1,9 +1,11 @@
 package mb.pso.issuesystem.entity.im;
 
 import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -13,6 +15,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.Issue;
@@ -31,6 +34,9 @@ public class Chat {
     private Issue issue;
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Employee> members = new HashSet<Employee>();
+    @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Message> messages = new ArrayList<>();
 
     public Chat() {
     }
@@ -39,11 +45,30 @@ public class Chat {
         this.issue = issue;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+        final Chat other = (Chat) obj;
+        return this.id.equals(other.id);
+    }
+
     public Chat(Integer id, Boolean isClosed, Issue issue, Set<Employee> members) {
         this.id = id;
         this.isClosed = isClosed;
         this.issue = issue;
         this.members = members;
+    }
+
+    public Chat(Integer id, Boolean isClosed, Issue issue, Set<Employee> members, List<Message> messages) {
+        this.id = id;
+        this.isClosed = isClosed;
+        this.issue = issue;
+        this.members = members;
+        this.messages = messages;
     }
 
     public Integer getId() {
@@ -86,6 +111,15 @@ public class Chat {
 
     public void setIsClosed(Boolean isClosed) {
         this.isClosed = isClosed;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages.clear();
+        this.messages.addAll(messages);
     }
 
 }

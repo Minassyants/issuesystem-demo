@@ -1,7 +1,5 @@
 package mb.pso.issuesystem.entity;
 
-import org.springframework.security.oauth2.jwt.Jwt;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -18,6 +16,12 @@ public class Employee {
 
     public String getGivenName() {
         return givenName;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return this.displayName.hashCode();
     }
 
     public void setGivenName(String givenName) {
