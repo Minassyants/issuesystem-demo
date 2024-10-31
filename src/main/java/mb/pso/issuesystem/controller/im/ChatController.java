@@ -24,6 +24,12 @@ public class ChatController {
         this.imServiceImpl = imServiceImpl;
     }
 
+    @MessageMapping("/chat/{chatId}/unsurpress")
+    public void unsurpressChat(@DestinationVariable Integer chatId, JwtAuthenticationToken jwt) {
+        String displayName = ((Jwt) jwt.getPrincipal()).getClaimAsString("displayname");
+        imServiceImpl.unsurpressChat(chatId, displayName);
+    }
+
     @MessageMapping("/chat/sendmessage")
     public void sendMessage(Message message) {
         Message msg = imServiceImpl.sendMessage(message);
