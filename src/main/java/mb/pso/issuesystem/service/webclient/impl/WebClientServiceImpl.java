@@ -16,6 +16,7 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.querydsl.core.BooleanBuilder;
@@ -302,6 +303,7 @@ public class WebClientServiceImpl implements WebClientService {
 
     }
 
+    
     public Issue setInProgress(Integer issueId, String displayName) {
         Issue issue = issueRepository.findById(issueId).orElse(null);
         Employee author = employeeRepository.findById(displayName).orElse(null);

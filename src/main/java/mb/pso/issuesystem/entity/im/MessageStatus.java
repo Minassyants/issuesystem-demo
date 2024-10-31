@@ -21,12 +21,21 @@ public class MessageStatus {
     @ManyToOne(cascade = CascadeType.ALL)
     private Employee employee;
     private Integer status = 0;
+    private Boolean notificationCreated = false;
 
     public MessageStatus(Integer id, Message message, Employee employee, Integer status) {
         this.id = id;
         this.message = message;
         this.employee = employee;
         this.status = status;
+    }
+
+    public MessageStatus(Integer id, Message message, Employee employee, Integer status, Boolean notificationCreated) {
+        this.id = id;
+        this.message = message;
+        this.employee = employee;
+        this.status = status;
+        this.notificationCreated = notificationCreated;
     }
 
     public MessageStatus() {
@@ -75,6 +84,14 @@ public class MessageStatus {
         if (this.id == null || other.id == null)
             return false;
         return this.id == other.id;
+    }
+
+    public Boolean getNotificationCreated() {
+        return notificationCreated;
+    }
+
+    public void setNotificationCreated(Boolean notificationCreated) {
+        this.notificationCreated = notificationCreated;
     }
 
 }

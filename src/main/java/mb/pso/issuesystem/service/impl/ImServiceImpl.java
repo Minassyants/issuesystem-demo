@@ -10,18 +10,24 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.types.Predicate;
 
+import io.vertx.core.json.JsonObject;
 import mb.pso.issuesystem.entity.Employee;
+import mb.pso.issuesystem.entity.Notification;
+import mb.pso.issuesystem.entity.enums.NotificationPolicy;
+import mb.pso.issuesystem.entity.enums.NotificationType;
 import mb.pso.issuesystem.entity.im.Chat;
 import mb.pso.issuesystem.entity.im.Message;
 import mb.pso.issuesystem.entity.im.MessageStatus;
 import mb.pso.issuesystem.entity.im.QMessage;
 import mb.pso.issuesystem.entity.im.QMessageStatus;
+import mb.pso.issuesystem.entity.utility.EmailNotification;
 import mb.pso.issuesystem.exceptions.ChatNotFoundException;
 import mb.pso.issuesystem.exceptions.EmployeeNotFoundException;
 import mb.pso.issuesystem.exceptions.IllegalActionException;
 import mb.pso.issuesystem.exceptions.MessageNotFoundException;
 import mb.pso.issuesystem.repository.EmployeeRepository;
 import mb.pso.issuesystem.repository.MessageStatusRepository;
+import mb.pso.issuesystem.repository.NotificationRepository;
 import mb.pso.issuesystem.repository.im.ChatRepository;
 import mb.pso.issuesystem.repository.im.MessageRepository;
 
@@ -32,14 +38,16 @@ public class ImServiceImpl {
     private final ChatRepository chatRepository;
     private final EmployeeRepository employeeRepository;
     private final MessageStatusRepository messageStatusRepository;
+    private final NotificationRepository notificationRepository;
 
     public ImServiceImpl(MessageRepository messageRepository, ChatRepository chatRepository,
             EmployeeRepository employeeRepository,
-            MessageStatusRepository messageStatusRepository) {
+            MessageStatusRepository messageStatusRepository, NotificationRepository notificationRepository) {
         this.messageRepository = messageRepository;
         this.chatRepository = chatRepository;
         this.employeeRepository = employeeRepository;
         this.messageStatusRepository = messageStatusRepository;
+        this.notificationRepository = notificationRepository;
     }
 
     public Message markAsRead(Integer messageId, String displayName) {
@@ -103,6 +111,15 @@ public class ImServiceImpl {
         employee = employeeRepository.findOne(Example.of(employee)).orElse(employee);
         chat.addToMembers(employee);
         chat = chatRepository.save(chat);
+
+        Notification notification = new Notification();
+        notification.setEmployee(employee);
+        notification.setPolicy(NotificationPolicy.BOTH);
+        notification.setType(NotificationType.employeeAddedToChat);
+        notification.setIsRead(false);
+        notification.setIsSent(false);
+        notification.setText("Обращение № " + chatId.toString());
+        notificationRepository.save(notification);
 
         return employee;
     }

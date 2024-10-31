@@ -6,7 +6,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import mb.pso.issuesystem.entity.enums.NotificationPolicy;
 import mb.pso.issuesystem.entity.enums.NotificationType;
 
@@ -21,7 +21,7 @@ public class Notification {
     private NotificationPolicy policy;
     private Boolean isRead = false;
     private Boolean isSent = false;
-    @ManyToMany
+    @ManyToOne
     private Employee employee;
     private String text;
     private Integer refId;

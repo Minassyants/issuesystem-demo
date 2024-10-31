@@ -2,15 +2,18 @@ package mb.pso.issuesystem.listeners;
 
 import java.text.DateFormat;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import jakarta.persistence.PostPersist;
+import jakarta.persistence.PrePersist;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.Notification;
 import mb.pso.issuesystem.entity.enums.NotificationPolicy;
 import mb.pso.issuesystem.entity.enums.NotificationType;
 import mb.pso.issuesystem.exceptions.EmployeeNotFoundException;
 import mb.pso.issuesystem.repository.EmployeeRepository;
+import mb.pso.issuesystem.repository.IssueRepository;
 import mb.pso.issuesystem.repository.NotificationRepository;
 
 @Component
@@ -18,14 +21,16 @@ public class IssueEntityNotificationListener {
 
     private NotificationRepository notificationRepository;
     private EmployeeRepository employeeRepository;
+    private IssueRepository issueRepository;
 
-    public IssueEntityNotificationListener(NotificationRepository notificationRepository,
-            EmployeeRepository employeeRepository) {
+    public IssueEntityNotificationListener(@Lazy NotificationRepository notificationRepository,
+            @Lazy EmployeeRepository employeeRepository, @Lazy IssueRepository issueRepository) {
         this.notificationRepository = notificationRepository;
         this.employeeRepository = employeeRepository;
+        this.issueRepository = issueRepository;
     }
 
-    @PostPersist
+    @PrePersist
     public void handlePostPersist(Issue issue) {
         Notification notification = new Notification();
         notification.setPolicy(NotificationPolicy.BOTH);
