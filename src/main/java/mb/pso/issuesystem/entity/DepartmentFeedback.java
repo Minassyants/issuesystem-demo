@@ -19,7 +19,7 @@ public class DepartmentFeedback {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Employee author;
     @OneToOne(optional = true)
     private Message message;

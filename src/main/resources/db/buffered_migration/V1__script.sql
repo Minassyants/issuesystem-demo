@@ -21,9 +21,7 @@ create table message (id integer not null, created_at timestamp(6), author_displ
 create table message_statuses (message_id integer not null, statuses_id integer not null, primary key (message_id, statuses_id));
 create table message_content (id integer not null, is_answer boolean, text_message varchar(1000), primary key (id));
 create table message_content_attached_files (message_content_id integer not null, attached_files_id integer not null);
-create table message_status (id integer not null, notification_created boolean, status integer, employee_display_name varchar(255), message_id integer, primary key (id));
-create table notification (id integer not null, is_read boolean, is_sent boolean, policy varchar(255) check (policy in ('ONLYINAPP','INAPP','BOTH','ONLYMAIL')), ref_id integer, text varchar(255), type varchar(255) check (type in ('newIssue','issueStatusChanged','chatClosed','employeeAddedToIssue','departmentFeedbackAddedToIssue','internalInfoChanged','resultAdded','employeeAddedToChat','newMessageToChat')), employee_display_name varchar(255), primary key (id));
-create table surpressed_chat (id integer not null, chat_id integer, is_surpressed boolean, employee_display_name varchar(255), primary key (id));
+create table message_status (id integer not null, status integer, employee_display_name varchar(255), message_id integer, primary key (id));
 create table users (id integer not null, email varchar(255), password varchar(255), roles smallint array, username varchar(255), department_id integer, primary key (id));
 create table vehicle (id integer not null, description varchar(2000), vin varchar(255), primary key (id));
 alter table if exists additional_attribute_type drop constraint if exists UKgwbhi3act83kxlbf6guuwfydc;
@@ -68,9 +66,7 @@ create sequence issue_type_seq start with 1 increment by 50;
 create sequence message_content_seq start with 1 increment by 50;
 create sequence message_seq start with 1 increment by 50;
 create sequence message_status_seq start with 1 increment by 50;
-create sequence notification_seq start with 1 increment by 50;
 create sequence subject_seq start with 1 increment by 50;
-create sequence surpressed_chat_seq start with 1 increment by 50;
 create sequence users_seq start with 1 increment by 50;
 alter table if exists additional_attribute add constraint FKn5kflrsphv2t81p9en1jwvego foreign key (type_id) references additional_attribute_type;
 alter table if exists chat add constraint FK78k2dtnk89hkpnx65r07m557n foreign key (issue_id) references issue;
@@ -103,6 +99,4 @@ alter table if exists message_content_attached_files add constraint FKi4vlj3454n
 alter table if exists message_content_attached_files add constraint FKndqnhv7unyu9lnbiortlwhwpe foreign key (message_content_id) references message_content;
 alter table if exists message_status add constraint FKhal295sop7dy5wpfv4nvei3ym foreign key (employee_display_name) references employee;
 alter table if exists message_status add constraint FKqboxuo620r6qmh6ds85x5bt3l foreign key (message_id) references message;
-alter table if exists notification add constraint FKjr4rmbulqw0hpx425r4uy581q foreign key (employee_display_name) references employee;
-alter table if exists surpressed_chat add constraint FKpndcerxu6s7w8pl6bgcn1qflo foreign key (employee_display_name) references employee;
 alter table if exists users add constraint FKfi832e3qv89fq376fuh8920y4 foreign key (department_id) references department;

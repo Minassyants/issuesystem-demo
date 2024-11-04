@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 
+import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.IssueAttribute;
 import mb.pso.issuesystem.entity.IssueType;
 import mb.pso.issuesystem.entity.Users;
@@ -17,19 +18,22 @@ import mb.pso.issuesystem.repository.IssueRepository;
 import mb.pso.issuesystem.repository.IssueTypeRepository;
 import mb.pso.issuesystem.repository.UserRepository;
 import mb.pso.issuesystem.repository.es.IssueDocumentRepository;
+import mb.pso.issuesystem.repository.EmployeeRepository;
 
 @Component
 public class CommandLineAppStartupRunner implements CommandLineRunner {
     private final UserRepository userRepository;
     private final IssueTypeRepository issueTypeRepository;
     private final IssueAttributeRepository issueAttributeRepository;
+    private final EmployeeRepository employeeRepository;
 
     public CommandLineAppStartupRunner(UserRepository userRepository, IssueRepository issueRepository,
             IssueTypeRepository issueTypeRepository, IssueDocumentRepository obRepository,
-            IssueAttributeRepository issueAttributeRepository) {
+            IssueAttributeRepository issueAttributeRepository, EmployeeRepository employeeRepository) {
         this.userRepository = userRepository;
         this.issueTypeRepository = issueTypeRepository;
         this.issueAttributeRepository = issueAttributeRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
@@ -80,6 +84,13 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
             issueAttributeRepository.save(i);
             System.out.println("IssueAttribute craeted/updated!");
         }
+
+        // Employee employee = new Employee();
+        // employee.setDisplayName("admin");
+        // employee.setGivenName("admin");
+        // employee.setMail("alexandr.minassyants@mercedes-benz.kz");
+        // employee.setSn("admin");
+        // employeeRepository.save(employee);
 
     }
 }

@@ -228,6 +228,11 @@ public class WebClientController {
         return ResponseEntity.ok(webClientServiceImpl.getAvailableIssueAttributes());
     }
 
+    @GetMapping("/notifications/count")
+    public ResponseEntity<Long> getNotificationCount(@AuthenticationPrincipal Jwt jwt) {
+        return ResponseEntity.ok(webClientServiceImpl.getNotificationCount(jwt));
+    }
+
     @GetMapping("/report")
     @PreAuthorize("hasAuthority('SCOPE_admin')")
     public ResponseEntity<Iterable<BasicReportRow>> getReport(

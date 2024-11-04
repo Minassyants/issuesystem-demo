@@ -116,6 +116,7 @@ public class ImServiceImpl {
             throw new IllegalActionException("Chat is already closed.");
 
         employee = employeeRepository.findOne(Example.of(employee)).orElse(employee);
+        employee = employeeRepository.save(employee);
         chat.addToMembers(employee);
         chat = chatRepository.save(chat);
 

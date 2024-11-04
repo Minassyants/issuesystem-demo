@@ -37,6 +37,7 @@ import mb.pso.issuesystem.entity.QAdUser;
 import mb.pso.issuesystem.entity.QEmployee;
 import mb.pso.issuesystem.entity.QIssue;
 import mb.pso.issuesystem.entity.QIssueAttribute;
+import mb.pso.issuesystem.entity.QNotification;
 import mb.pso.issuesystem.entity.Subject;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 import mb.pso.issuesystem.entity.es.IssueDocument;
@@ -51,6 +52,7 @@ import mb.pso.issuesystem.repository.EmployeeRepository;
 import mb.pso.issuesystem.repository.IssueAttributeRepository;
 import mb.pso.issuesystem.repository.IssueRepository;
 import mb.pso.issuesystem.repository.IssueTypeRepository;
+import mb.pso.issuesystem.repository.NotificationRepository;
 import mb.pso.issuesystem.repository.SubjectRepository;
 import mb.pso.issuesystem.repository.ldap.AdUserRepository;
 import mb.pso.issuesystem.service.notifications.impl.EmailNotificationServiceImpl;
@@ -73,6 +75,7 @@ public class WebClientServiceImpl implements WebClientService {
     private final EmailNotificationServiceImpl emailNotificationServiceImpl;
     private final ElasticsearchOperations elasticsearchOperations;
     private final MinioService minioService;
+    private final NotificationRepository notificationRepository;
 
     public WebClientServiceImpl(IssueRepository issueRepository, DepartmentRepository departmentRepository,
             EmailNotificationServiceImpl emailNotificationServiceImpl,
@@ -80,7 +83,9 @@ public class WebClientServiceImpl implements WebClientService {
             IssueTypeRepository issueTypeRepository, SubjectRepository subjectRepository,
             AdditionalAttributeRepository additionalAttributeRepository, EmployeeRepository employeeRepository,
             AdUserRepository adUserRepository, ElasticsearchOperations elasticsearchOperations,
-            MinioService minioService, DepartmentFeedbackRepository departmentFeedbackRepository) {
+            MinioService minioService, DepartmentFeedbackRepository departmentFeedbackRepository,
+            NotificationRepository notificationRepository) {
+        this.notificationRepository = notificationRepository;
         this.issueRepository = issueRepository;
         this.issueAttributeRepository = issueAttributeRepository;
         this.departmentRepository = departmentRepository;
@@ -303,7 +308,6 @@ public class WebClientServiceImpl implements WebClientService {
 
     }
 
-    
     public Issue setInProgress(Integer issueId, String displayName) {
         Issue issue = issueRepository.findById(issueId).orElse(null);
         Employee author = employeeRepository.findById(displayName).orElse(null);
@@ -507,6 +511,13 @@ public class WebClientServiceImpl implements WebClientService {
         issueRepository.save(issue);
 
         return issue;
+    }
+
+    public long getNotificationCount(Jwt jwt) {
+        String dispalyName = jwt.getClaimAsString("displayname");
+        QNotification notification = QNotification.notification;
+        Predicate predicate = notification.isRead.eq(false).and(notification.employee.displayName.eq(dispalyName));
+        return notificationRepository.count(predicate);
     }
 
 }
