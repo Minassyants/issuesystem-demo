@@ -72,6 +72,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                             xui.get(0).replace("Bearer ", ""));
                     Authentication user = jwtAuthenticationProvider.authenticate(token);
                     accessor.setUser(user);
+                    
+                    
                 }
                 return message;
             }

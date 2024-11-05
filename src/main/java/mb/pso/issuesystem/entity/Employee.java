@@ -13,6 +13,7 @@ public class Employee {
     private String sn;
     @Column(unique = true)
     private String mail;
+    private String sAMAccountName;
 
     public String getGivenName() {
         return givenName;
@@ -75,6 +76,22 @@ public class Employee {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public Employee(String displayName, String givenName, String sn, String mail, String sAMAccountName) {
+        this.displayName = displayName;
+        this.givenName = givenName;
+        this.sn = sn;
+        this.mail = mail;
+        this.sAMAccountName = sAMAccountName;
+    }
+
+    public String getsAMAccountName() {
+        return sAMAccountName;
+    }
+
+    public void setsAMAccountName(String sAMAccountName) {
+        this.sAMAccountName = sAMAccountName;
     }
 
 }

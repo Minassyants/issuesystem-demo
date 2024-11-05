@@ -7,7 +7,7 @@ create table client (id integer not null, address varchar(255), email varchar(25
 create table department (id integer not null, name varchar(255), primary key (id));
 create table department_feedback (id integer not null, feedback varchar(2000), author_display_name varchar(255), message_id integer, primary key (id));
 create table department_feedback_attached_files (department_feedback_id integer not null, attached_files_id integer not null);
-create table employee (display_name varchar(255) not null, given_name varchar(255), mail varchar(255), sn varchar(255), primary key (display_name));
+create table employee (display_name varchar(255) not null, given_name varchar(255), mail varchar(255), samaccount_name varchar(255), sn varchar(255), primary key (display_name));
 create table good (id integer not null, description varchar(2000), primary key (id));
 create table issue (id integer not null, doc_date timestamp(6), doc_number varchar(255), issue_description varchar(2000), issue_result varchar(2000), issued_demands varchar(2000), related_doc_from_sigma varchar(255) array, status varchar(255) check (status in ('NEW','INPROGRESS','PENDINGRESULT','CLOSED')), chat_issue_id integer, client_id integer, issued_department_id integer, subject_id integer, type_id integer, primary key (id));
 create table issue_additional_attributes (issue_id integer not null, additional_attributes_id integer not null);
@@ -24,7 +24,7 @@ create table message_content_attached_files (message_content_id integer not null
 create table message_status (id integer not null, notification_created boolean, status integer, employee_display_name varchar(255), message_id integer, primary key (id));
 create table notification (id integer not null, is_read boolean, is_sent boolean, policy varchar(255) check (policy in ('ONLYINAPP','INAPP','BOTH','ONLYMAIL')), ref_id integer, text varchar(255), type varchar(255) check (type in ('newIssue','issueStatusChanged','chatClosed','employeeAddedToIssue','departmentFeedbackAddedToIssue','internalInfoChanged','resultAdded','employeeAddedToChat','newMessageToChat')), employee_display_name varchar(255), primary key (id));
 create table surpressed_chat (id integer not null, chat_id integer, is_surpressed boolean, employee_display_name varchar(255), primary key (id));
-create table users (id integer not null, email varchar(255), password varchar(255), roles smallint array, username varchar(255), department_id integer, primary key (id));
+create table users (id integer not null, email varchar(255), password varchar(255), roles smallint array, samaccount_name varchar(255), username varchar(255), department_id integer, primary key (id));
 create table vehicle (id integer not null, description varchar(2000), vin varchar(255), primary key (id));
 alter table if exists additional_attribute_type drop constraint if exists UKgwbhi3act83kxlbf6guuwfydc;
 alter table if exists additional_attribute_type add constraint UKgwbhi3act83kxlbf6guuwfydc unique (name);

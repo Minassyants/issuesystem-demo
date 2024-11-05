@@ -25,9 +25,9 @@ public class Users {
     private Integer id;
 
     private String email;
-
     private String username;
     private String password;
+    private String sAMAccountName;
     @ManyToOne(cascade = CascadeType.ALL)
     private Department department;
     private List<Roles> roles;
@@ -102,6 +102,14 @@ public class Users {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getsAMAccountName() {
+        return sAMAccountName;
+    }
+
+    public void setsAMAccountName(String sAMAccountName) {
+        this.sAMAccountName = sAMAccountName;
     }
 
 }

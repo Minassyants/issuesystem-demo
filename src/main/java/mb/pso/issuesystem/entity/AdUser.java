@@ -18,6 +18,7 @@ public final class AdUser {
     private String mail;
     private String sn;
     private String displayName;
+    private String sAMAccountName;
 
     public String getDisplayName() {
         return displayName;
@@ -60,6 +61,14 @@ public final class AdUser {
     }
 
     public AdUser() {
+    }
+
+    public String getsAMAccountName() {
+        return sAMAccountName;
+    }
+
+    public void setsAMAccountName(String sAMAccountName) {
+        this.sAMAccountName = sAMAccountName;
     }
 
 }

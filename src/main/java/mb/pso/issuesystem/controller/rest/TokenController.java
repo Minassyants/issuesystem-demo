@@ -38,6 +38,7 @@ public class TokenController {
 		String displayName = userDetails.getDisplayName();
 		String givenName = userDetails.getGivenName();
 		String sn = userDetails.getSn();
+		String sAMAccountName = userDetails.getsAMAccountName();
 		JwtClaimsSet claims = JwtClaimsSet.builder()
 				.issuer("self")
 				.issuedAt(now)
@@ -46,6 +47,7 @@ public class TokenController {
 				.claim("scope", scope)
 				.claim("email", email)
 				.claim("displayname", displayName)
+				.claim("samaccountname", sAMAccountName)
 				.build();
 
 		AuthInfo authInfo = new AuthInfo();
@@ -53,6 +55,7 @@ public class TokenController {
 		authInfo.setGivenName(givenName);
 		authInfo.setSn(sn);
 		authInfo.setMail(email);
+		authInfo.setsAMAccountName(sAMAccountName);
 		authInfo.setToken(this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue());
 		authInfo.setUsername(authentication.getName());
 		authInfo.setScope(scope);

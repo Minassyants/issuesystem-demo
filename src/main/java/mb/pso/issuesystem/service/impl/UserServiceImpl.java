@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserDetailsService, UsersService {
         List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
                 .map(arg0 -> new SimpleGrantedAuthority(arg0.name().toLowerCase())).toList();
         return new AdUserDetails(user.getUsername(), user.getPassword(), authorities, user.getEmail(),
-                user.getUsername(), user.getUsername(), user.getUsername());
+                user.getUsername(), user.getUsername(), user.getUsername(), user.getsAMAccountName());
     }
 
     @Override

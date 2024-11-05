@@ -1,6 +1,7 @@
 package mb.pso.issuesystem.dto;
 
 public class AuthInfo {
+    private String sAMAccountName;
     private String displayName;
     private String givenName;
     private String sn;
@@ -65,8 +66,9 @@ public class AuthInfo {
         this.scope = scope;
     }
 
-    public AuthInfo(String displayName, String givenName, String sn, String mail, String username, String token,
-            String scope) {
+    public AuthInfo(String sAMAccountName, String displayName, String givenName, String sn, String mail,
+            String username, String token, String scope) {
+        this.sAMAccountName = sAMAccountName;
         this.displayName = displayName;
         this.givenName = givenName;
         this.sn = sn;
@@ -77,6 +79,14 @@ public class AuthInfo {
     }
 
     public AuthInfo() {
+    }
+
+    public String getsAMAccountName() {
+        return sAMAccountName;
+    }
+
+    public void setsAMAccountName(String sAMAccountName) {
+        this.sAMAccountName = sAMAccountName;
     }
 
 }

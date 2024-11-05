@@ -1,6 +1,7 @@
 package mb.pso.issuesystem.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -9,8 +10,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import mb.pso.issuesystem.entity.enums.NotificationPolicy;
 import mb.pso.issuesystem.entity.enums.NotificationType;
+import mb.pso.issuesystem.listeners.NotificationEntityListener;
 
 @Entity
+@EntityListeners(NotificationEntityListener.class)
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

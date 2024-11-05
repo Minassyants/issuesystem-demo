@@ -10,8 +10,7 @@ public class AdUserDetails extends User {
     private String displayName;
     private String givenName;
     private String sn;
-
-    
+    private String sAMAccountName;
 
     public AdUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities,
             String email, String displayName, String givenName, String sn) {
@@ -30,6 +29,27 @@ public class AdUserDetails extends User {
         this.displayName = displayName;
         this.givenName = givenName;
         this.sn = sn;
+    }
+
+    public AdUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities,
+            String email, String displayName, String givenName, String sn, String sAMAccountName) {
+        super(username, password, authorities);
+        this.email = email;
+        this.displayName = displayName;
+        this.givenName = givenName;
+        this.sn = sn;
+        this.sAMAccountName = sAMAccountName;
+    }
+
+    public AdUserDetails(String username, String password, boolean enabled, boolean accountNonExpired,
+            boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities,
+            String email, String displayName, String givenName, String sn, String sAMAccountName) {
+        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+        this.email = email;
+        this.displayName = displayName;
+        this.givenName = givenName;
+        this.sn = sn;
+        this.sAMAccountName = sAMAccountName;
     }
 
     public String getEmail() {
@@ -90,6 +110,14 @@ public class AdUserDetails extends User {
 
     public void setSn(String sn) {
         this.sn = sn;
+    }
+
+    public String getsAMAccountName() {
+        return sAMAccountName;
+    }
+
+    public void setsAMAccountName(String sAMAccountName) {
+        this.sAMAccountName = sAMAccountName;
     }
 
 }

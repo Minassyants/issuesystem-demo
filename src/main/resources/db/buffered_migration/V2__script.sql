@@ -1,3 +1,0 @@
-create table notification (id integer not null, is_read boolean, is_sent boolean, policy varchar(255) check (policy in ('ONLYINAPP','INAPP','BOTH','ONLYMAIL')), ref_id integer, text varchar(255), type varchar(255) check (type in ('newIssue','issueStatusChanged','chatClosed','employeeAddedToIssue','departmentFeedbackAddedToIssue','internalInfoChanged','resultAdded','employeeAddedToChat','newMessageToChat')), employee_display_name varchar(255), primary key (id));
-create sequence notification_seq start with 1 increment by 50;
-alter table if exists notification add constraint FKjr4rmbulqw0hpx425r4uy581q foreign key (employee_display_name) references employee;
