@@ -29,6 +29,7 @@ import mb.pso.issuesystem.entity.DepartmentFeedback;
 import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.IssueAttribute;
+import mb.pso.issuesystem.entity.Notification;
 import mb.pso.issuesystem.entity.Subject;
 import mb.pso.issuesystem.entity.Users;
 import mb.pso.issuesystem.entity.im.Chat;
@@ -231,6 +232,16 @@ public class WebClientController {
     @GetMapping("/notifications/count")
     public ResponseEntity<Long> getNotificationCount(@AuthenticationPrincipal Jwt jwt) {
         return ResponseEntity.ok(webClientServiceImpl.getNotificationCount(jwt));
+    }
+
+    @GetMapping("/notifications")
+    public ResponseEntity<Page<Notification>> getUserNotifications(@AuthenticationPrincipal Jwt jwt,
+            @RequestParam int page,
+            @RequestParam int size) {
+        PageRequest pageable = PageRequest.of(page, size, Sort.by(Direction.DESC, "isRead"));
+        Page<Notification> notifications = webClientServiceImpl.getUserNotifications(pageable, jwt);
+
+        return ResponseEntity.ok(notifications);
     }
 
     @GetMapping("/report")

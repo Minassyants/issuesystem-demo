@@ -1,5 +1,11 @@
 package mb.pso.issuesystem.entity;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
@@ -26,6 +32,9 @@ public class Notification {
     private Boolean isSent = false;
     @ManyToOne
     private Employee employee;
+    @CreationTimestamp
+     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    private LocalDateTime createdAt;
     private String text;
     private Integer refId;
 

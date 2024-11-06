@@ -7,6 +7,8 @@ import java.util.HashSet;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,6 +31,7 @@ public class Message {
     private Employee author;
     @Column(updatable = false)
     @CreationTimestamp
+     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
     @ManyToOne
     private Chat chat;

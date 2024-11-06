@@ -33,6 +33,7 @@ import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.IssueAttribute;
 import mb.pso.issuesystem.entity.IssueType;
+import mb.pso.issuesystem.entity.Notification;
 import mb.pso.issuesystem.entity.QAdUser;
 import mb.pso.issuesystem.entity.QEmployee;
 import mb.pso.issuesystem.entity.QIssue;
@@ -518,6 +519,14 @@ public class WebClientServiceImpl implements WebClientService {
         QNotification notification = QNotification.notification;
         Predicate predicate = notification.isRead.eq(false).and(notification.employee.displayName.eq(dispalyName));
         return notificationRepository.count(predicate);
+    }
+
+    public Page<Notification> getUserNotifications(Pageable pageable, Jwt jwt) {
+        String displayName = jwt.getClaimAsString("displayname");
+        QNotification notification = QNotification.notification;
+        Predicate predicate = notification.employee.displayName.eq(displayName);
+        Page<Notification> notifications = notificationRepository.findAll(predicate, pageable);
+        return notifications;
     }
 
 }
