@@ -20,6 +20,6 @@ public class NotificationEntityListener {
     @PostPersist
     public void handlePostPersist(Notification notification) {
         simpMessagingTemplate.convertAndSendToUser(notification.getEmployee().getsAMAccountName(),
-                "topic/notifications/count", new SocketMsg(SocketMsg.MsgType.NEWNOTIFICATION, 1));
+                "topic/notifications/count", new SocketMsg(SocketMsg.MsgType.NEWNOTIFICATION, notification));
     }
 }

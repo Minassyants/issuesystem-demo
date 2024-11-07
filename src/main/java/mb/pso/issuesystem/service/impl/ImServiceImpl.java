@@ -127,6 +127,7 @@ public class ImServiceImpl {
         notification.setIsRead(false);
         notification.setIsSent(false);
         notification.setText("Обращение № " + chatId.toString());
+        notification.setRefId(chat.getId());
         notificationRepository.save(notification);
 
         return employee;

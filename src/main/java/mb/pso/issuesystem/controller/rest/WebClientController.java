@@ -238,7 +238,8 @@ public class WebClientController {
     public ResponseEntity<Page<Notification>> getUserNotifications(@AuthenticationPrincipal Jwt jwt,
             @RequestParam int page,
             @RequestParam int size) {
-        PageRequest pageable = PageRequest.of(page, size, Sort.by(Direction.DESC, "isRead"));
+        PageRequest pageable = PageRequest.of(page, size,
+                Sort.by(Sort.Order.asc("isRead"), Sort.Order.desc("createdAt")));
         Page<Notification> notifications = webClientServiceImpl.getUserNotifications(pageable, jwt);
 
         return ResponseEntity.ok(notifications);
