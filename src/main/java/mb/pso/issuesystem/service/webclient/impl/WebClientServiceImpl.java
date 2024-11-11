@@ -16,7 +16,6 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.querydsl.core.BooleanBuilder;
@@ -27,7 +26,6 @@ import mb.pso.issuesystem.entity.AdditionalAttribute;
 import mb.pso.issuesystem.entity.AttachedFile;
 import mb.pso.issuesystem.entity.BasicReportRow;
 import mb.pso.issuesystem.entity.Client;
-import mb.pso.issuesystem.entity.Department;
 import mb.pso.issuesystem.entity.DepartmentFeedback;
 import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.Issue;
@@ -35,7 +33,6 @@ import mb.pso.issuesystem.entity.IssueAttribute;
 import mb.pso.issuesystem.entity.IssueType;
 import mb.pso.issuesystem.entity.Notification;
 import mb.pso.issuesystem.entity.QAdUser;
-import mb.pso.issuesystem.entity.QEmployee;
 import mb.pso.issuesystem.entity.QIssue;
 import mb.pso.issuesystem.entity.QIssueAttribute;
 import mb.pso.issuesystem.entity.QNotification;
@@ -48,7 +45,6 @@ import mb.pso.issuesystem.exceptions.IssueNotFoundException;
 import mb.pso.issuesystem.repository.AdditionalAttributeRepository;
 import mb.pso.issuesystem.repository.ClientRepository;
 import mb.pso.issuesystem.repository.DepartmentFeedbackRepository;
-import mb.pso.issuesystem.repository.DepartmentRepository;
 import mb.pso.issuesystem.repository.EmployeeRepository;
 import mb.pso.issuesystem.repository.IssueAttributeRepository;
 import mb.pso.issuesystem.repository.IssueRepository;
@@ -56,7 +52,6 @@ import mb.pso.issuesystem.repository.IssueTypeRepository;
 import mb.pso.issuesystem.repository.NotificationRepository;
 import mb.pso.issuesystem.repository.SubjectRepository;
 import mb.pso.issuesystem.repository.ldap.AdUserRepository;
-import mb.pso.issuesystem.service.notifications.impl.EmailNotificationServiceImpl;
 import mb.pso.issuesystem.service.s3.MinioService;
 import mb.pso.issuesystem.service.webclient.WebClientService;
 
@@ -65,7 +60,6 @@ public class WebClientServiceImpl implements WebClientService {
 
     private final IssueRepository issueRepository;
     private final IssueAttributeRepository issueAttributeRepository;
-    private final DepartmentRepository departmentRepository;
     private final DepartmentFeedbackRepository departmentFeedbackRepository;
     private final ClientRepository clientRepository;
     private final IssueTypeRepository issueTypeRepository;
@@ -73,13 +67,11 @@ public class WebClientServiceImpl implements WebClientService {
     private final AdditionalAttributeRepository additionalAttributeRepository;
     private final EmployeeRepository employeeRepository;
     private final AdUserRepository adUserRepository;
-    private final EmailNotificationServiceImpl emailNotificationServiceImpl;
     private final ElasticsearchOperations elasticsearchOperations;
     private final MinioService minioService;
     private final NotificationRepository notificationRepository;
 
-    public WebClientServiceImpl(IssueRepository issueRepository, DepartmentRepository departmentRepository,
-            EmailNotificationServiceImpl emailNotificationServiceImpl,
+    public WebClientServiceImpl(IssueRepository issueRepository,
             IssueAttributeRepository issueAttributeRepository, ClientRepository clientRepository,
             IssueTypeRepository issueTypeRepository, SubjectRepository subjectRepository,
             AdditionalAttributeRepository additionalAttributeRepository, EmployeeRepository employeeRepository,
@@ -89,7 +81,6 @@ public class WebClientServiceImpl implements WebClientService {
         this.notificationRepository = notificationRepository;
         this.issueRepository = issueRepository;
         this.issueAttributeRepository = issueAttributeRepository;
-        this.departmentRepository = departmentRepository;
         this.departmentFeedbackRepository = departmentFeedbackRepository;
         this.clientRepository = clientRepository;
         this.issueTypeRepository = issueTypeRepository;
@@ -97,7 +88,6 @@ public class WebClientServiceImpl implements WebClientService {
         this.additionalAttributeRepository = additionalAttributeRepository;
         this.employeeRepository = employeeRepository;
         this.adUserRepository = adUserRepository;
-        this.emailNotificationServiceImpl = emailNotificationServiceImpl;
         this.elasticsearchOperations = elasticsearchOperations;
         this.minioService = minioService;
 
@@ -155,14 +145,6 @@ public class WebClientServiceImpl implements WebClientService {
             // }
             // issue.setIssueAttributes(l);
             // }
-
-            // Ищем Department
-            if (issue.getIssuedDepartment() != null) {
-                Optional<Department> iDepartment = departmentRepository
-                        .findOne(Example.of(issue.getIssuedDepartment()));
-                if (iDepartment.isPresent())
-                    issue.setIssuedDepartment(iDepartment.get());
-            }
 
             // if (issue.getIssuedEmployee() != null) {
             // Optional<Employee> iEmployee =

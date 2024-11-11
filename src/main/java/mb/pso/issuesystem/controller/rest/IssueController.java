@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import mb.pso.issuesystem.entity.AdditionalAttribute;
 import mb.pso.issuesystem.entity.Client;
-import mb.pso.issuesystem.entity.Department;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.entity.IssueAttribute;
 import mb.pso.issuesystem.entity.IssueType;
@@ -48,7 +47,6 @@ public class IssueController {
             Subject subject = issue.getSubject();
             IssueType issueType = issue.getType();
             List<IssueAttribute> issueAttributes = issue.getIssueAttributes();
-            Department department = issue.getIssuedDepartment();
             List<AdditionalAttribute> additionalAttributes = issue.getAdditionalAttributes();
             IssueDocument issueDocument = new IssueDocument(
                     issue.getId(),
@@ -64,7 +62,6 @@ public class IssueController {
                     subject == null ? null : subject instanceof Vehicle ? "vehicle" : "good",
                     issueAttributes == null ? null : issueAttributes.stream().map(arg0 -> arg0.getName()).toList(),
                     issue.getIssueDescription(),
-                    department == null ? null : department.getName(),
                     issue.getIssuedEmployees().stream().map(t -> t.toString()).toList(),
                     issue.getDepartmentFeedbacks().stream().map(t -> t.getText()).toList(),
                     issue.getIssuedDemands(),

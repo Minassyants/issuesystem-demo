@@ -39,13 +39,13 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Users user = new Users("alexandr.minassyants@mercedes-benz.kz", "admin",
-                "$2a$10$bUo1HZovBZKHDbSbZGQdee392mH9NLMzbGBcKvUtVWsoAPDb094Qa", null);
+                "$2a$10$bUo1HZovBZKHDbSbZGQdee392mH9NLMzbGBcKvUtVWsoAPDb094Qa");
         user.setsAMAccountName("admin");
         List<Roles> roles = new ArrayList<Roles>();
         roles.add(Roles.ADMIN);
         roles.add(Roles.USER);
         user.setRoles(roles);
-        if (userRepository.findOne(Example.of(new Users(null, "admin", null, null))).isEmpty()) {
+        if (userRepository.findOne(Example.of(new Users(null, "admin", null))).isEmpty()) {
             userRepository.save(user);
 
         } else {

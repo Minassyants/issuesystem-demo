@@ -7,9 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.user.SimpUser;
-import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.types.Predicate;
 
 import io.vertx.core.json.JsonObject;
-import mb.pso.issuesystem.dto.webSocket.SocketMsg;
 import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.Notification;
 import mb.pso.issuesystem.entity.QNotification;
@@ -39,21 +35,17 @@ import mb.pso.issuesystem.service.notifications.impl.EmailNotificationServiceImp
 @Service
 public class ScheduledTasksServiceImpl {
 
-    private SimpUserRegistry simpUserRegistry;
-    private SimpMessagingTemplate simpMessagingTemplate;
     private NotificationRepository notificationRepository;
     private EmployeeRepository employeeRepository;
     private EmailNotificationServiceImpl emailNotificationServiceImpl;
     private MessageStatusRepository messageStatusRepository;
     private SurpressedChatRepository surpressedChatRepository;
 
-    public ScheduledTasksServiceImpl(SimpUserRegistry simpUserRegistry, SimpMessagingTemplate simpMessagingTemplate,
-            NotificationRepository notificationRepository, EmployeeRepository employeeRepository,
+    public ScheduledTasksServiceImpl(NotificationRepository notificationRepository,
+            EmployeeRepository employeeRepository,
             MessageStatusRepository messageStatusRepository,
             EmailNotificationServiceImpl emailNotificationServiceImpl,
             SurpressedChatRepository surpressedChatRepository) {
-        this.simpUserRegistry = simpUserRegistry;
-        this.simpMessagingTemplate = simpMessagingTemplate;
         this.notificationRepository = notificationRepository;
         this.employeeRepository = employeeRepository;
         this.emailNotificationServiceImpl = emailNotificationServiceImpl;

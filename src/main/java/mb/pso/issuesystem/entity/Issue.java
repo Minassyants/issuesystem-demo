@@ -48,8 +48,6 @@ public class Issue {
     @Column(length = 2000)
     private String issueDescription;
     private List<String> relatedDocFromSigma;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Department issuedDepartment;
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Employee> issuedEmployees = Collections.emptySet();
     @Column(length = 2000)
@@ -67,7 +65,7 @@ public class Issue {
 
     public Issue(Integer id, IssueStatus status, String docNumber, Date docDate, Client client, IssueType type,
             Subject subject, List<IssueAttribute> issueAttributes, String issueDescription,
-            List<String> relatedDocFromSigma, Department issuedDepartment, Set<Employee> issuedEmployees,
+            List<String> relatedDocFromSigma, Set<Employee> issuedEmployees,
             String issuedDemands, List<AdditionalAttribute> additionalAttributes,
             Set<DepartmentFeedback> departmentFeedbacks, String issueResult, List<AttachedFile> attachedFiles,
             Chat chat) {
@@ -81,7 +79,6 @@ public class Issue {
         this.issueAttributes = issueAttributes;
         this.issueDescription = issueDescription;
         this.relatedDocFromSigma = relatedDocFromSigma;
-        this.issuedDepartment = issuedDepartment;
         this.issuedEmployees = issuedEmployees;
         this.issuedDemands = issuedDemands;
         this.additionalAttributes = additionalAttributes;
@@ -113,7 +110,7 @@ public class Issue {
         return "Issue [id=" + id + ", status=" + status + ", docNumber=" + docNumber + ", docDate=" + docDate
                 + ", client=" + client + ", type=" + type + ", subject=" + subject + ", issueAttributes="
                 + issueAttributes + ", issueDescription=" + issueDescription + ", relatedDocFromSigma="
-                + relatedDocFromSigma + ", issuedDepartment=" + issuedDepartment + ", issuedEmployees="
+                + relatedDocFromSigma + ", issuedEmployees="
                 + issuedEmployees + ", issuedDemands=" + issuedDemands + ", additionalAttributes="
                 + additionalAttributes + ", departmentFeedbacks=" + departmentFeedbacks + ", issueResult=" + issueResult
                 + ", attachedFiles=" + attachedFiles + ", chat=" + chat + "]";
@@ -195,13 +192,6 @@ public class Issue {
         this.relatedDocFromSigma = relatedDocFromSigma;
     }
 
-    public Department getIssuedDepartment() {
-        return issuedDepartment;
-    }
-
-    public void setIssuedDepartment(Department issuedDepartment) {
-        this.issuedDepartment = issuedDepartment;
-    }
 
     public String getIssuedDemands() {
         return issuedDemands;
@@ -227,9 +217,6 @@ public class Issue {
         this.issueResult = issueResult;
     }
 
-    public boolean hasDepartment() {
-        return this.issuedDepartment != null && !this.issuedDepartment.isEmpty();
-    }
 
     public Integer getId() {
         return id;

@@ -6,12 +6,10 @@ import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import mb.pso.issuesystem.entity.enums.Roles;
@@ -28,8 +26,6 @@ public class Users {
     private String username;
     private String password;
     private String sAMAccountName;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Department department;
     private List<Roles> roles;
 
     public List<Roles> getRoles() {
@@ -42,8 +38,7 @@ public class Users {
 
     @Override
     public String toString() {
-        return "Users [id=" + id + ", email=" + email + ", username=" + username + ", password=" + password
-                + ", department=" + department + "]";
+        return "Users [id=" + id + ", email=" + email + ", username=" + username + ", password=" + password + "]";
     }
 
     public Collection<GrantedAuthority> getAuthorities() {
@@ -57,11 +52,10 @@ public class Users {
 
     }
 
-    public Users(String email, String username, String password, Department department) {
+    public Users(String email, String username, String password) {
         this.email = email;
         this.username = username;
         this.password = password;
-        this.department = department;
     }
 
     public String getEmail() {
@@ -86,14 +80,6 @@ public class Users {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
     }
 
     public Integer getId() {

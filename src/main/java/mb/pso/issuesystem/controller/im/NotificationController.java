@@ -1,7 +1,5 @@
 package mb.pso.issuesystem.controller.im;
 
-import java.util.Optional;
-
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;

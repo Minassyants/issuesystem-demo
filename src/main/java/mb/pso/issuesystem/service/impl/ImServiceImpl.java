@@ -1,7 +1,6 @@
 package mb.pso.issuesystem.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -11,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.types.Predicate;
 
-import io.vertx.core.json.JsonObject;
 import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.Notification;
 import mb.pso.issuesystem.entity.enums.NotificationPolicy;
@@ -22,8 +20,6 @@ import mb.pso.issuesystem.entity.im.MessageStatus;
 import mb.pso.issuesystem.entity.im.QMessage;
 import mb.pso.issuesystem.entity.im.QMessageStatus;
 import mb.pso.issuesystem.entity.im.QSurpressedChat;
-import mb.pso.issuesystem.entity.im.SurpressedChat;
-import mb.pso.issuesystem.entity.utility.EmailNotification;
 import mb.pso.issuesystem.exceptions.ChatNotFoundException;
 import mb.pso.issuesystem.exceptions.EmployeeNotFoundException;
 import mb.pso.issuesystem.exceptions.IllegalActionException;

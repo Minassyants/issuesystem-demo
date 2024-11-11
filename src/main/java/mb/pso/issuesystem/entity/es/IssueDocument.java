@@ -46,37 +46,19 @@ public class IssueDocument {
     @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String issueDescription;
     @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
-    private String issuedDepartment;
-
-    /** @deprecated */
-    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
-    private String issuedEmployeeGivenName;
-    /** @deprecated */
-    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
-    private String issuedEmployeeSn;
-    /** @deprecated */
-    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
-    private String issuedEmployeeMail;
-
-    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private List<String> issuedEmployees;
-
     @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private List<String> departmentFeedbacks;
-
     @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String issuedDemands;
     @Field(type = FieldType.Keyword)
     private List<String> additionalAttributes;
-    /** @deprecated */
-    @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
-    private String departmentFeedback;
     @Field(type = FieldType.Text, analyzer = "my_index_analyzer")
     private String issueResult;
 
     public IssueDocument(Integer id, IssueStatus status, Date docDate, String clientName, String clientAdress,
             String clientEmail, String clientPhoneNumber, String type, String subjectDescription, String subjectVin,
-            String subjectType, List<String> issueAttributes, String issueDescription, String issuedDepartment,
+            String subjectType, List<String> issueAttributes, String issueDescription,
             List<String> issuedEmployees, List<String> departmentFeedbacks, String issuedDemands,
             List<String> additionalAttributes, String issueResult) {
         this.id = id;
@@ -92,7 +74,6 @@ public class IssueDocument {
         this.subjectType = subjectType;
         this.issueAttributes = issueAttributes;
         this.issueDescription = issueDescription;
-        this.issuedDepartment = issuedDepartment;
         this.issuedEmployees = issuedEmployees;
         this.departmentFeedbacks = departmentFeedbacks;
         this.issuedDemands = issuedDemands;
@@ -204,38 +185,6 @@ public class IssueDocument {
         this.issueDescription = issueDescription;
     }
 
-    public String getIssuedDepartment() {
-        return issuedDepartment;
-    }
-
-    public void setIssuedDepartment(String issuedDepartment) {
-        this.issuedDepartment = issuedDepartment;
-    }
-
-    public String getIssuedEmployeeGivenName() {
-        return issuedEmployeeGivenName;
-    }
-
-    public void setIssuedEmployeeGivenName(String issuedEmployeeGivenName) {
-        this.issuedEmployeeGivenName = issuedEmployeeGivenName;
-    }
-
-    public String getIssuedEmployeeSn() {
-        return issuedEmployeeSn;
-    }
-
-    public void setIssuedEmployeeSn(String issuedEmployeeSn) {
-        this.issuedEmployeeSn = issuedEmployeeSn;
-    }
-
-    public String getIssuedEmployeeMail() {
-        return issuedEmployeeMail;
-    }
-
-    public void setIssuedEmployeeMail(String issuedEmployeeMail) {
-        this.issuedEmployeeMail = issuedEmployeeMail;
-    }
-
     public List<String> getIssuedEmployees() {
         return issuedEmployees;
     }
@@ -266,14 +215,6 @@ public class IssueDocument {
 
     public void setAdditionalAttributes(List<String> additionalAttributes) {
         this.additionalAttributes = additionalAttributes;
-    }
-
-    public String getDepartmentFeedback() {
-        return departmentFeedback;
-    }
-
-    public void setDepartmentFeedback(String departmentFeedback) {
-        this.departmentFeedback = departmentFeedback;
     }
 
     public String getIssueResult() {
