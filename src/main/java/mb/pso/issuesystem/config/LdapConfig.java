@@ -6,7 +6,7 @@ import org.springframework.data.ldap.repository.config.EnableLdapRepositories;
 import org.springframework.ldap.core.ContextSource;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
-
+//[ ] REFACTOR
 @Configuration
 @EnableLdapRepositories("mb.pso.issuesystem.repository.*")
 public class LdapConfig {

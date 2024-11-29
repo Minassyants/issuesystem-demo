@@ -1,5 +1,5 @@
 package mb.pso.issuesystem.dto.webSocket;
-
+//[ ] REFACTOR
 public class SocketMsg {
 
     public enum MsgType {

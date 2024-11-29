@@ -1,5 +1,5 @@
 package mb.pso.issuesystem.dto;
-
+//[ ] REFACTOR
 public class FileInfo {
     private String url;
     private String contentType;

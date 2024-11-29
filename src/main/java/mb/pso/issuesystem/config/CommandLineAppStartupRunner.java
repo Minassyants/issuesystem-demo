@@ -20,6 +20,8 @@ import mb.pso.issuesystem.repository.UserRepository;
 import mb.pso.issuesystem.repository.es.IssueDocumentRepository;
 import mb.pso.issuesystem.repository.EmployeeRepository;
 
+//[ ] REFACTOR
+
 @Component
 public class CommandLineAppStartupRunner implements CommandLineRunner {
     private final UserRepository userRepository;

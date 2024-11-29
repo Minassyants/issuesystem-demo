@@ -8,7 +8,7 @@ import mb.pso.issuesystem.entity.Vehicle;
 import mb.pso.issuesystem.repository.SubjectRepository;
 import mb.pso.issuesystem.service.GoodService;
 import mb.pso.issuesystem.service.VehicleService;
-
+//[ ] REFACTOR
 public class SubjectServiceImpl implements VehicleService, GoodService {
 
     private final SubjectRepository subjectRepository;

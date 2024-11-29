@@ -9,7 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import mb.pso.issuesystem.entity.Employee;
-
+//[ ] REFACTOR
 @Entity
 public class MessageStatus {
     @Id

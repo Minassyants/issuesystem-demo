@@ -3,7 +3,7 @@ package mb.pso.issuesystem.service;
 import java.util.Optional;
 
 import mb.pso.issuesystem.entity.AdditionalAttributeType;
-
+//[ ] REFACTOR
 public interface AdditionalAttributeTypeService {
     public AdditionalAttributeType create(AdditionalAttributeType additionalAttributeType);
 

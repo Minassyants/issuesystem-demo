@@ -2,7 +2,7 @@ package mb.pso.issuesystem.service;
 
 import mb.pso.issuesystem.entity.Good;
 import mb.pso.issuesystem.entity.Subject;
-
+//[ ] REFACTOR
 public interface GoodService {
     public Good create(Good good);
 

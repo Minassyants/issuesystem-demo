@@ -12,7 +12,7 @@ import mb.pso.issuesystem.dto.webSocket.SocketMsg;
 import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.im.Message;
 import mb.pso.issuesystem.service.impl.ImServiceImpl;
-
+//[ ] REFACTOR
 @Controller
 public class ChatController {
 

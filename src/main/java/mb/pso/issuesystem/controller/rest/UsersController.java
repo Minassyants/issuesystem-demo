@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import mb.pso.issuesystem.entity.Users;
 import mb.pso.issuesystem.service.impl.UserServiceImpl;
-
+//[ ] REFACTOR
 @RestController
 @RequestMapping("/api/user")
 @CrossOrigin(origins = "*")

@@ -7,19 +7,24 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
+//[x] REFACTOR
+
+/**
+ * Not implemented.
+ * 
+ * @see AdditionalAttributeType
+ */
 @Entity
 public class AdditionalAttribute {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private AdditionalAttributeType type;
-    private String stringValue;
 
-    @Override
-    public String toString() {
-        return "AdditionalAttribute [id=" + id + ", type=" + type + ", value=" + stringValue + "]";
-    }
+    private String stringValue;
 
     public AdditionalAttribute() {
     }
@@ -27,6 +32,11 @@ public class AdditionalAttribute {
     public AdditionalAttribute(AdditionalAttributeType type, String value) {
         this.type = type;
         this.stringValue = value;
+    }
+
+    @Override
+    public String toString() {
+        return "AdditionalAttribute [id=" + id + ", type=" + type + ", value=" + stringValue + "]";
     }
 
     public AdditionalAttributeType getType() {

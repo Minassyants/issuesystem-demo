@@ -3,7 +3,7 @@ package mb.pso.issuesystem.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-
+//[ ] REFACTOR
 @Entity
 /* Should always match AdUser */
 public class Employee {

@@ -5,7 +5,7 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 
 import mb.pso.issuesystem.entity.AdUser;
-
+//[ ] REFACTOR
 public interface AdUserRepository extends LdapRepository<AdUser>, QuerydslPredicateExecutor<AdUser> {
 
 }

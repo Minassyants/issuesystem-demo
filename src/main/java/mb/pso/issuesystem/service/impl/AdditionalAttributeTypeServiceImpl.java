@@ -5,7 +5,7 @@ import java.util.Optional;
 import mb.pso.issuesystem.entity.AdditionalAttributeType;
 import mb.pso.issuesystem.repository.AdditionalAttributeTypeRepository;
 import mb.pso.issuesystem.service.AdditionalAttributeTypeService;
-
+//[ ] REFACTOR
 public class AdditionalAttributeTypeServiceImpl implements AdditionalAttributeTypeService {
 
     private final AdditionalAttributeTypeRepository additionalAttributeTypeRepository;

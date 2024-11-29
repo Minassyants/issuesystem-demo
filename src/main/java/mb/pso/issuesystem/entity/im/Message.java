@@ -18,7 +18,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import mb.pso.issuesystem.entity.Employee;
-
+//[ ] REFACTOR
 @Entity
 public class Message {
     @Id

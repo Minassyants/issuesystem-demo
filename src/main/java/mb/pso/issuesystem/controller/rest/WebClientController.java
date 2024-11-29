@@ -37,7 +37,7 @@ import mb.pso.issuesystem.entity.im.Message;
 import mb.pso.issuesystem.service.impl.ImServiceImpl;
 import mb.pso.issuesystem.service.impl.UserServiceImpl;
 import mb.pso.issuesystem.service.webclient.impl.WebClientServiceImpl;
-
+//[ ] REFACTOR
 @RestController
 @CrossOrigin(originPatterns = "*", origins = "*")
 public class WebClientController {

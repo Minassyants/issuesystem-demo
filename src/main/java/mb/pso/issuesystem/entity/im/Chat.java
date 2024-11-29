@@ -15,7 +15,7 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.Issue;
-
+//[ ] REFACTOR
 @Entity
 public class Chat {
     @Id

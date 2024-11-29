@@ -13,7 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import mb.pso.issuesystem.entity.enums.Roles;
-
+//[ ] REFACTOR
 @Entity
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = { "email", "username" }) })

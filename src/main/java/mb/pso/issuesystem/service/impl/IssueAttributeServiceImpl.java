@@ -5,7 +5,7 @@ import java.util.Optional;
 import mb.pso.issuesystem.entity.IssueAttribute;
 import mb.pso.issuesystem.repository.IssueAttributeRepository;
 import mb.pso.issuesystem.service.IssueAttributeService;
-
+//[ ] REFACTOR
 public class IssueAttributeServiceImpl implements IssueAttributeService {
     private final IssueAttributeRepository issueAttributeRepository;
 

@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 import mb.pso.issuesystem.entity.Issue;
-
+//[ ] REFACTOR
 public interface WebClientService {
 
     public Issue registerNewIssue(Issue issue);

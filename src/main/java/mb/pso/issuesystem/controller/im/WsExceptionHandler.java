@@ -10,7 +10,7 @@ import mb.pso.issuesystem.exceptions.EmployeeNotFoundException;
 import mb.pso.issuesystem.exceptions.IllegalActionException;
 import mb.pso.issuesystem.exceptions.IssueNotFoundException;
 import mb.pso.issuesystem.exceptions.MessageNotFoundException;
-
+//[ ] REFACTOR
 @ControllerAdvice
 public class WsExceptionHandler {
 

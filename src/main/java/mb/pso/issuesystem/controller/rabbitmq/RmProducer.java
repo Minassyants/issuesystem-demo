@@ -5,7 +5,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
 import mb.pso.issuesystem.entity.im.Message;
-
+//[ ] REFACTOR
 @Component
 public class RmProducer {
     private final RabbitTemplate rabbitTemplate;

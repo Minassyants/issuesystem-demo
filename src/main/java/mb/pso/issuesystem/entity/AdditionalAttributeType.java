@@ -6,8 +6,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+//[x] REFACTOR
+/**
+ * Not implemented.
+ */
 @Entity
 public class AdditionalAttributeType {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -15,16 +20,16 @@ public class AdditionalAttributeType {
     @Column(unique = true)
     private String name;
 
-    @Override
-    public String toString() {
-        return "AdditionalAttributeType [id=" + id + ", name=" + name + "]";
-    }
-
     public AdditionalAttributeType() {
     }
 
     public AdditionalAttributeType(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "AdditionalAttributeType [id=" + id + ", name=" + name + "]";
     }
 
     public String getName() {

@@ -3,7 +3,7 @@ package mb.pso.issuesystem.service;
 import java.util.Optional;
 
 import mb.pso.issuesystem.entity.IssueType;
-
+//[ ] REFACTOR
 public interface IssueTypeService {
     public IssueType create(IssueType issueType);
 

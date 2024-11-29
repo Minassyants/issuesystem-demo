@@ -14,7 +14,7 @@ import mb.pso.issuesystem.entity.AdUserDetails;
 import mb.pso.issuesystem.entity.Users;
 import mb.pso.issuesystem.repository.UserRepository;
 import mb.pso.issuesystem.service.UsersService;
-
+//[ ] REFACTOR
 @Service
 public class UserServiceImpl implements UserDetailsService, UsersService {
     private final UserRepository userRepository;

@@ -21,7 +21,7 @@ import mb.pso.issuesystem.dto.FileInfo;
 import mb.pso.issuesystem.entity.AttachedFile;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.repository.AttachedFileRepository;
-
+//[ ] REFACTOR
 @Service
 public class MinioService {
     // [ ] эти все штуки надо выводить в env переменные

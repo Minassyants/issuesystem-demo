@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.repository.IssueRepository;
 import mb.pso.issuesystem.service.IssueService;
-
+//[ ] REFACTOR
 @Service
 public class IssueServiceImpl implements IssueService {
 

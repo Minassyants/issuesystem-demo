@@ -13,7 +13,7 @@ import mb.pso.issuesystem.entity.enums.NotificationType;
 import mb.pso.issuesystem.exceptions.EmployeeNotFoundException;
 import mb.pso.issuesystem.repository.EmployeeRepository;
 import mb.pso.issuesystem.repository.NotificationRepository;
-
+//[ ] REFACTOR
 @Component
 public class IssueEntityNotificationListener {
 

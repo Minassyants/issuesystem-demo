@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import mb.pso.issuesystem.entity.Notification;
 import mb.pso.issuesystem.exceptions.IllegalActionException;
 import mb.pso.issuesystem.repository.NotificationRepository;
-
+//[ ] REFACTOR
 @Controller
 public class NotificationController {
 

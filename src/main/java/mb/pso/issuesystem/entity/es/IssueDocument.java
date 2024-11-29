@@ -11,7 +11,7 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 
 import jakarta.persistence.Id;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
-
+//[ ] REFACTOR
 @Document(indexName = "#{@environment.getProperty('es.issue.index-name')}")
 @Setting(settingPath = "/es_settings/pso_issue/settings.json")
 public class IssueDocument {

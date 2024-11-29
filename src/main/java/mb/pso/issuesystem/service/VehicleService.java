@@ -2,7 +2,7 @@ package mb.pso.issuesystem.service;
 
 import mb.pso.issuesystem.entity.Subject;
 import mb.pso.issuesystem.entity.Vehicle;
-
+//[ ] REFACTOR
 public interface VehicleService {
     public Vehicle create(Vehicle vehicle);
 

@@ -30,7 +30,7 @@ import mb.pso.issuesystem.repository.NotificationRepository;
 import mb.pso.issuesystem.repository.im.ChatRepository;
 import mb.pso.issuesystem.repository.im.MessageRepository;
 import mb.pso.issuesystem.repository.im.SurpressedChatRepository;
-
+//[ ] REFACTOR
 @Service
 // [ ] extract interface
 public class ImServiceImpl {

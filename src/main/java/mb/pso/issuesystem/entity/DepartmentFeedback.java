@@ -13,7 +13,14 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import mb.pso.issuesystem.entity.im.Message;
-
+//[ ] REFACTOR
+/**
+ * Represents a feedback from employees, associated with the issue.
+ * <p>
+ * This class contains feedback, attached files (such as photos and videos), and optionally reference to a message from a chat, if present.
+ * It serves as a record to be included in issue history for further archiving.
+ * </p>
+ */
 @Entity
 public class DepartmentFeedback {
     @Id

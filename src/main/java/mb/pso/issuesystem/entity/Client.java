@@ -8,16 +8,58 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+//[x] REFACTOR
+/**
+ * Represents a client who raised the issue.
+ * <p>
+ * This class contains important information such as name, address, phone number, email.
+ * </p>
+ */
 @Entity
 public class Client {
+
+    /**
+     * Unique ID.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    /**
+     * Name of the client (e.g. Ivanov Ivan Ivanovich).
+     */
     private String name;
+
+    /**
+     * Physical address of the client.
+     */
     private String address;
+
+    /**
+     * Phone number of the client.
+     * <p>
+     * The phone number must be unique across all clients to persist in the
+     * database.
+     * This constraint ensures that no two clients can have the same phone number.
+     * </p>
+     */
     @Column(unique = true)
     private String phoneNumber;
+
+    /**
+     * Email of the client.
+     */
     private String email;
+
+    public Client() {
+    }
+
+    public Client(String name, String address, String phoneNumber, String email) {
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -31,16 +73,6 @@ public class Client {
         if (Objects.equals(this.name, other.name) & (Objects.equals(this.email, other.email)))
             return true;
         return false;
-    }
-
-    public Client() {
-    }
-
-    public Client(String name, String address, String phoneNumber, String email) {
-        this.name = name;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
     }
 
     public String getName() {

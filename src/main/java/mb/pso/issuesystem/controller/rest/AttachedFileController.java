@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import mb.pso.issuesystem.dto.FileInfo;
 import mb.pso.issuesystem.service.s3.MinioService;
-
+//[ ] REFACTOR
 @Controller
 @RequestMapping("/api/file")
 @CrossOrigin(origins = "*")

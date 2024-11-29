@@ -11,7 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import mb.pso.issuesystem.entity.AttachedFile;
-
+//[ ] REFACTOR
 @Entity
 public class MessageContent  {
     @Id

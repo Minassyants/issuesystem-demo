@@ -19,7 +19,7 @@ import com.querydsl.core.types.Predicate;
 import mb.pso.issuesystem.entity.IssueType;
 import mb.pso.issuesystem.entity.QIssueType;
 import mb.pso.issuesystem.service.impl.IssueTypeServiceImpl;
-
+//[ ] REFACTOR
 @RestController
 @RequestMapping("/api/issuetype")
 @CrossOrigin(origins = "*")

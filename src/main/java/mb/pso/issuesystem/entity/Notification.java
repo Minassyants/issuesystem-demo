@@ -17,7 +17,7 @@ import jakarta.persistence.ManyToOne;
 import mb.pso.issuesystem.entity.enums.NotificationPolicy;
 import mb.pso.issuesystem.entity.enums.NotificationType;
 import mb.pso.issuesystem.listeners.NotificationEntityListener;
-
+//[ ] REFACTOR
 @Entity
 @EntityListeners(NotificationEntityListener.class)
 public class Notification {

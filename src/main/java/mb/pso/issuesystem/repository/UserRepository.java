@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import mb.pso.issuesystem.entity.Users;
 import java.util.List;
 
-
+//[ ] REFACTOR
 @Repository
 public interface UserRepository extends JpaRepository<Users, Integer> {
     List<Users> findByUsername(String username);

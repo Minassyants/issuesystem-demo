@@ -10,7 +10,7 @@ import mb.pso.issuesystem.exceptions.ChatNotFoundException;
 import mb.pso.issuesystem.exceptions.EmployeeNotFoundException;
 import mb.pso.issuesystem.exceptions.IllegalActionException;
 import mb.pso.issuesystem.exceptions.IssueNotFoundException;
-
+//[ ] REFACTOR
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 

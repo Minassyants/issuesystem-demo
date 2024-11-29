@@ -5,11 +5,24 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+//[x] REFACTOR
+/**
+ * Represents an Active Directory user information during authorization.
+ * 
+ * For more details, see {@link AdUser}.
+ * 
+ * @see AdUser
+ */
 public class AdUserDetails extends User {
+
     private String email;
+
     private String displayName;
+
     private String givenName;
+
     private String sn;
+
     private String sAMAccountName;
 
     public AdUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities,
@@ -52,39 +65,39 @@ public class AdUserDetails extends User {
         this.sAMAccountName = sAMAccountName;
     }
 
+    public AdUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities,
+            String email, String displayName) {
+        super(username, password, authorities);
+        this.email = email;
+        this.displayName = displayName;
+    }
+
+    public AdUserDetails(String username, String password, boolean enabled, boolean accountNonExpired,
+            boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities,
+            String email, String displayName) {
+        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+        this.email = email;
+        this.displayName = displayName;
+    }
+
+    public AdUserDetails(String username, String password, boolean enabled, boolean accountNonExpired,
+            boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities,
+            String email) {
+        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+        this.email = email;
+    }
+
+    public AdUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities,
+            String email) {
+        super(username, password, authorities);
+        this.email = email;
+    }
+
     public String getEmail() {
         return email;
     }
 
-    public AdUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities,
-            String email, String displayName) {
-        super(username, password, authorities);
-        this.email = email;
-        this.displayName = displayName;
-    }
-
-    public AdUserDetails(String username, String password, boolean enabled, boolean accountNonExpired,
-            boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities,
-            String email, String displayName) {
-        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-        this.email = email;
-        this.displayName = displayName;
-    }
-
     public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public AdUserDetails(String username, String password, boolean enabled, boolean accountNonExpired,
-            boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities,
-            String email) {
-        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-        this.email = email;
-    }
-
-    public AdUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities,
-            String email) {
-        super(username, password, authorities);
         this.email = email;
     }
 

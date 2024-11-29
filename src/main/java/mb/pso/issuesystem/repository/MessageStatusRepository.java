@@ -5,7 +5,7 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
 import mb.pso.issuesystem.entity.im.MessageStatus;
-
+//[ ] REFACTOR
 @Repository
 public interface MessageStatusRepository
         extends JpaRepository<MessageStatus, Integer>, QuerydslPredicateExecutor<MessageStatus> {

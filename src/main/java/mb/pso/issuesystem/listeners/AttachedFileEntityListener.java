@@ -6,7 +6,7 @@ import io.minio.MinioClient;
 import io.minio.RemoveObjectArgs;
 import jakarta.persistence.PostRemove;
 import mb.pso.issuesystem.entity.AttachedFile;
-
+//[ ] REFACTOR
 @Component
 public class AttachedFileEntityListener {
 

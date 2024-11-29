@@ -31,7 +31,7 @@ import mb.pso.issuesystem.repository.MessageStatusRepository;
 import mb.pso.issuesystem.repository.NotificationRepository;
 import mb.pso.issuesystem.repository.im.SurpressedChatRepository;
 import mb.pso.issuesystem.service.notifications.impl.EmailNotificationServiceImpl;
-
+//[ ] REFACTOR
 @Service
 public class ScheduledTasksServiceImpl {
 

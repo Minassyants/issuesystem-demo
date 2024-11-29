@@ -45,7 +45,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import mb.pso.issuesystem.service.impl.AdUserDetailsContextMapper;
 import mb.pso.issuesystem.service.impl.UserServiceImpl;
-
+//[ ] REFACTOR
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity

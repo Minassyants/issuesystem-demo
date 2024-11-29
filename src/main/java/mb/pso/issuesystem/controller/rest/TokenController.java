@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import mb.pso.issuesystem.dto.AuthInfo;
 import mb.pso.issuesystem.entity.AdUserDetails;
-
+//[ ] REFACTOR
 @RestController
 @CrossOrigin("*")
 public class TokenController {

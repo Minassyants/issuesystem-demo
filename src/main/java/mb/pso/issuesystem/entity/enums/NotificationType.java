@@ -1,5 +1,5 @@
 package mb.pso.issuesystem.entity.enums;
-
+//[ ] REFACTOR
 public enum NotificationType {
     newIssue,
     issueStatusChanged,

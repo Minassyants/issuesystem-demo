@@ -16,7 +16,7 @@ import mb.pso.issuesystem.entity.Subject;
 import mb.pso.issuesystem.entity.Vehicle;
 import mb.pso.issuesystem.entity.es.IssueDocument;
 import mb.pso.issuesystem.repository.es.IssueDocumentRepository;
-
+//[ ] REFACTOR
 @Component
 public class IssueEntityListener {
     private IssueDocumentRepository issueDocumentRepository;

@@ -5,7 +5,7 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
 import mb.pso.issuesystem.entity.im.SurpressedChat;
-
+//[ ] REFACTOR
 @Repository
 public interface SurpressedChatRepository
         extends JpaRepository<SurpressedChat, Integer>, QuerydslPredicateExecutor<SurpressedChat> {

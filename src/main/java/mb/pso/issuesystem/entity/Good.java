@@ -1,7 +1,7 @@
 package mb.pso.issuesystem.entity;
 
 import jakarta.persistence.Entity;
-
+//[ ] REFACTOR
 @Entity
 public class Good extends Subject {
 

@@ -9,7 +9,7 @@ import com.querydsl.core.types.Predicate;
 import mb.pso.issuesystem.entity.IssueType;
 import mb.pso.issuesystem.repository.IssueTypeRepository;
 import mb.pso.issuesystem.service.IssueTypeService;
-
+//[ ] REFACTOR
 @Service
 public class IssueTypeServiceImpl implements IssueTypeService {
     private final IssueTypeRepository issueTypeRepository;

@@ -19,7 +19,7 @@ import mb.pso.issuesystem.entity.es.IssueDocument;
 import mb.pso.issuesystem.repository.es.IssueDocumentRepository;
 import mb.pso.issuesystem.service.impl.IssueServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
-
+//[ ] REFACTOR
 @RestController
 @RequestMapping("/api/issue")
 public class IssueController {

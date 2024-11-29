@@ -54,7 +54,7 @@ import mb.pso.issuesystem.repository.SubjectRepository;
 import mb.pso.issuesystem.repository.ldap.AdUserRepository;
 import mb.pso.issuesystem.service.s3.MinioService;
 import mb.pso.issuesystem.service.webclient.WebClientService;
-
+//[ ] REFACTOR
 @Service
 public class WebClientServiceImpl implements WebClientService {
 
@@ -262,7 +262,7 @@ public class WebClientServiceImpl implements WebClientService {
             throw new IllegalActionException("Employee can be added only while INPROGRESS");
 
         Employee foundEmployee = employeeRepository.findOne(Example.of(employee)).orElse(employee);
-        issue.addIssuedEmployee(foundEmployee);
+        issue.addIssuedEmployees(foundEmployee);
         issueRepository.save(issue);
 
         return issue;
@@ -490,7 +490,7 @@ public class WebClientServiceImpl implements WebClientService {
         List<AttachedFile> attachedFiles = List.of(files).stream()
                 .map(arg0 -> minioService.uploadFileToIssue(issue, arg0))
                 .toList();
-        issue.addAllAttachedFile(attachedFiles);
+        issue.addAttachedFiles(attachedFiles);
         issueRepository.save(issue);
 
         return issue;

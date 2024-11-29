@@ -1,7 +1,7 @@
 package mb.pso.issuesystem.entity.utility;
 
 import io.vertx.core.json.JsonObject;
-
+//[ ] REFACTOR
 public class EmailNotification {
 
     private String prefix;

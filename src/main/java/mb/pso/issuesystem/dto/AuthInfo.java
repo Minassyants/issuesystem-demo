@@ -1,5 +1,5 @@
 package mb.pso.issuesystem.dto;
-
+//[ ] REFACTOR
 public class AuthInfo {
     private String sAMAccountName;
     private String displayName;

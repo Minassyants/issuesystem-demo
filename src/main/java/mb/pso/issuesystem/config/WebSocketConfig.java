@@ -25,7 +25,7 @@ import org.springframework.web.socket.client.standard.WebSocketContainerFactoryB
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-
+//[ ] REFACTOR
 @Order(Ordered.HIGHEST_PRECEDENCE + 99)
 @Configuration
 @EnableWebSocketMessageBroker

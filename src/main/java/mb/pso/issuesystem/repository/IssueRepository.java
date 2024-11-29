@@ -8,9 +8,14 @@ import org.springframework.stereotype.Repository;
 
 import mb.pso.issuesystem.entity.BasicReportRow;
 import mb.pso.issuesystem.entity.Issue;
-
+//[ ] REFACTOR
 @Repository
 public interface IssueRepository extends JpaRepository<Issue, Integer>, QuerydslPredicateExecutor<Issue> {
+    /**
+     * @param start
+     * @param end
+     * @return
+     */
     @Query(nativeQuery = true, value = """
             WITH temp_total AS (
             SELECT t1.type_id, count(t1.id) as total_issues

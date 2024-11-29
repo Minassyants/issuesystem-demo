@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import jakarta.persistence.PostPersist;
 import mb.pso.issuesystem.dto.webSocket.SocketMsg;
 import mb.pso.issuesystem.entity.Notification;
-
+//[ ] REFACTOR
 @Component
 public class NotificationEntityListener {
 

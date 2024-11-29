@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import mb.pso.issuesystem.entity.Employee;
-
+//[ ] REFACTOR
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
