@@ -13,19 +13,31 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import mb.pso.issuesystem.entity.enums.Roles;
-//[ ] REFACTOR
+
+//[x] REFACTOR
+/**
+ * Represents internal user, stored in the database.
+ * <p>
+ * This class is pretty much useless, as I'm planning to control user roles via Active Directory.
+ * </p>
+ */
 @Entity
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = { "email", "username" }) })
 public class Users {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     private String email;
+
     private String username;
+
     private String password;
+
     private String sAMAccountName;
+
     private List<Roles> roles;
 
     public List<Roles> getRoles() {

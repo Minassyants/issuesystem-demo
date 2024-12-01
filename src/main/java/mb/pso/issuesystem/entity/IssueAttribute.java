@@ -5,27 +5,45 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-//[ ] REFACTOR
-@Entity
 
+//[x] REFACTOR
+/**
+ * Represents a specific flag that describes the issue (e.g., "Ненадлежащее
+ * качество товара").
+ * <p>
+ * This class is used to group issues by generalizing their main problem.
+ * </p>
+ */
+@Entity
 public class IssueAttribute {
+    /**
+     * Unique ID.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    /**
+     * Name of a issue attribute.
+     */
     @Column(unique = true)
     private String name;
-    private Boolean isDeprecated = false;
 
-    @Override
-    public String toString() {
-        return "IssueAttribute [id=" + id + ", name=" + name + "]";
-    }
+    /**
+     * Not implemented.
+     */
+    private Boolean isDeprecated = false;
 
     public IssueAttribute() {
     }
 
     public IssueAttribute(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "IssueAttribute [id=" + id + ", name=" + name + "]";
     }
 
     public String getName() {

@@ -17,25 +17,75 @@ import jakarta.persistence.ManyToOne;
 import mb.pso.issuesystem.entity.enums.NotificationPolicy;
 import mb.pso.issuesystem.entity.enums.NotificationType;
 import mb.pso.issuesystem.listeners.NotificationEntityListener;
-//[ ] REFACTOR
+
+//[x] REFACTOR
+/**
+ * Represents a notification entity used for delivering information to
+ * employees.
+ * <p>
+ * Notifications contain details such as type, policy, recipient, read/sent
+ * status,
+ * and an optional reference to a related entity (e.g., issue or chat).
+ * </p>
+ * 
+ * <p>
+ * Notifications are automatically timestamped upon creation.
+ * </p>
+ */
 @Entity
 @EntityListeners(NotificationEntityListener.class)
 public class Notification {
+    /**
+     * Unique ID.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    /**
+     * The type of notification, defining its context (e.g. newIssue,
+     * issueStatusChanged, chatClosed).
+     */
     @Enumerated(EnumType.STRING)
     private NotificationType type;
+
+    /**
+     * The delivery policy for the notification (e.g. ONLYINAPP, ONLYMAIL).
+     */
     @Enumerated(EnumType.STRING)
     private NotificationPolicy policy;
+
+    /**
+     * Indicates whether the notification has been read by the recipient.
+     */
     private Boolean isRead = false;
+
+    /**
+     * Indicates whether the notification has been sent to the recipient via mail.
+     */
     private Boolean isSent = false;
+
+    /**
+     * Recipient of the notification.
+     */
     @ManyToOne
     private Employee employee;
+
+    /**
+     * Timestamp marking when the notification was created.
+     */
     @CreationTimestamp
-     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
+
+    /**
+     * Content of the notification.
+     */
     private String text;
+
+    /**
+     * Reference ID to an issue or chat, associated with the notification.
+     */
     private Integer refId;
 
     public Notification() {

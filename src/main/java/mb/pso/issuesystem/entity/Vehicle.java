@@ -1,12 +1,21 @@
 package mb.pso.issuesystem.entity;
 
 import jakarta.persistence.Entity;
-//[ ] REFACTOR
+
+//[x] REFACTOR
+/**
+ * {@inheritDoc}
+ * <p>
+ * This class extends Subject and contains information about VIN code.
+ * </p>
+ */
 @Entity
 public class Vehicle extends Subject {
-    private String vin;
 
-    
+    /**
+     * VIN code of the vehicle.
+     */
+    private String vin;
 
     public Vehicle() {
         super();
