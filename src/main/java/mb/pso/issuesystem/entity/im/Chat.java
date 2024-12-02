@@ -2,6 +2,7 @@ package mb.pso.issuesystem.entity.im;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,21 +16,44 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.Issue;
-//[ ] REFACTOR
+
+//[x] REFACTOR
+/**
+ * Represents a discussion of the issue.
+ * <p>
+ * The chat's ID is mapped to the corresponding issue.
+ * This entity includes members participating in the discussion
+ * and tracks whether the chat is closed.
+ * </p>
+ */
 @Entity
 public class Chat {
+
     @Id
-    // @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    /**
+     * Indicates whether the chat is closed.
+     * Defaults to {@code false}.
+     */
     private Boolean isClosed = false;
-    // [ ] Fetch type lazy +
-    // https://stackoverflow.com/questions/28746584/how-to-avoid-lazy-fetch-in-json-serialization-using-spring-data-jpa-spring-web
+
+    /**
+     * The issue associated with this chat.
+     * Fetched lazily to optimize performance.
+     * Ignored in JSON serialization to prevent recursive relationships.
+     */
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JsonIgnore
     private Issue issue;
+
+    /**
+     * The members of the chat.
+     * Changes to this collection cascade to related entities.
+     */
     @ManyToMany(cascade = CascadeType.ALL)
-    private Set<Employee> members = new HashSet<Employee>();
+    private Set<Employee> members = new HashSet<>();
 
     public Chat() {
     }
@@ -38,22 +62,28 @@ public class Chat {
         this.issue = issue;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null)
-            return false;
-        if (obj.getClass() != this.getClass()) {
-            return false;
-        }
-        final Chat other = (Chat) obj;
-        return this.id.equals(other.id);
-    }
-
     public Chat(Integer id, Boolean isClosed, Issue issue, Set<Employee> members) {
         this.id = id;
         this.isClosed = isClosed;
         this.issue = issue;
         this.members = members;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Chat other = (Chat) obj;
+        return Objects.equals(id, other.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public Integer getId() {

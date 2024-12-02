@@ -9,18 +9,27 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import mb.pso.issuesystem.entity.Employee;
+
 //[ ] REFACTOR
+/**
+ * 
+ */
 @Entity
 public class MessageStatus {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
     @ManyToOne
     @JsonIgnore
     private Message message;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private Employee employee;
+
     private Integer status = 0;
+
     private Boolean notificationCreated = false;
 
     public MessageStatus(Integer id, Message message, Employee employee, Integer status) {
@@ -39,6 +48,21 @@ public class MessageStatus {
     }
 
     public MessageStatus() {
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final MessageStatus other = (MessageStatus) obj;
+        if (this.id == null || other.id == null)
+            return false;
+        return this.id == other.id;
     }
 
     public Integer getId() {
@@ -71,19 +95,6 @@ public class MessageStatus {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null)
-            return false;
-        if (obj.getClass() != this.getClass()) {
-            return false;
-        }
-        final MessageStatus other = (MessageStatus) obj;
-        if (this.id == null || other.id == null)
-            return false;
-        return this.id == other.id;
     }
 
     public Boolean getNotificationCreated() {

@@ -18,22 +18,48 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import mb.pso.issuesystem.entity.Employee;
-//[ ] REFACTOR
+
+//[x] REFACTOR
+/**
+ * Represents a message in the chat.
+ * <p>
+ * This class contains information about content, message status, etc.
+ * </p>
+ * <p>
+ * Messages are automatically timestamped upon creation.
+ * </p>
+ */
 @Entity
 public class Message {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    /** Reference to the message content (such as text, attached files). */
     @OneToOne(cascade = CascadeType.ALL)
     private MessageContent content;
+
+    /** Author of the message. */
     @ManyToOne(cascade = CascadeType.MERGE)
     private Employee author;
+
+    /**
+     * Timestamp marking when the message was created.
+     */
     @Column(updatable = false)
     @CreationTimestamp
-     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
+
     @ManyToOne
     private Chat chat;
+
+    /**
+     * Contains a set of employees that can read this message.
+     * 
+     * @see MessageStatus
+     */
     @OneToMany(cascade = CascadeType.ALL)
     private Set<MessageStatus> statuses = new HashSet<MessageStatus>();
 
@@ -102,7 +128,5 @@ public class Message {
     public void addToStatuses(MessageStatus status) {
         this.statuses.add(status);
     }
-
-    
 
 }
