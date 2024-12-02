@@ -65,3 +65,22 @@ logging:
 es:
     issue:
         index-name: pso_issue_gzk_test
+
+app:
+  admin-user:
+    email: alexandr.minassyants@mercedes-benz.kz
+    username: admin
+    password: $2a$10$bUo1HZovBZKHDbSbZGQdee392mH9NLMzbGBcKvUtVWsoAPDb094Qa
+    roles:
+        - ADMIN
+        - USER
+
+elasticsearch:
+  host: 192.168.50.18
+  port: 7000
+
+ldap:
+    url: ldap://192.168.50.5:389
+    user-dn: 1C_Redmine@ukravto.ua
+    password: R*123456
+    base: OU=Kazakhstan,OU=Remote Users,DC=ukravto,DC=loc

@@ -6,35 +6,40 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import mb.pso.issuesystem.entity.Employee;
-//[ ] REFACTOR
+
+//[x] REFACTOR
+/**
+ * Represents the suppression status of a chat for a specific employee.
+ * <p>
+ * Tracks whether a chat is suppressed for notifications.
+ * </p>
+ */
 @Entity
 public class SurpressedChat {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
     @ManyToOne
     private Employee employee;
+
     private Integer chatId;
-    private Boolean isSurpressed = false;
+
+    private Boolean isSuppressed = false;
 
     public SurpressedChat() {
     }
 
-    
-
-    public SurpressedChat(Employee employee, Integer chatId, Boolean isSurpressed) {
-        this.employee = employee;
-        this.chatId = chatId;
-        this.isSurpressed = isSurpressed;
+    public SurpressedChat(Employee employee, Integer chatId, Boolean isSuppressed) {
+        this(null, employee, chatId, isSuppressed);
     }
-
-
 
     public SurpressedChat(Integer id, Employee employee, Integer chatId, Boolean isSurpressed) {
         this.id = id;
         this.employee = employee;
         this.chatId = chatId;
-        this.isSurpressed = isSurpressed;
+        this.isSuppressed = isSurpressed;
     }
 
     public Integer getId() {
@@ -61,12 +66,12 @@ public class SurpressedChat {
         this.chatId = chatId;
     }
 
-    public Boolean getIsSurpressed() {
-        return isSurpressed;
+    public Boolean getIsSuppressed() {
+        return isSuppressed;
     }
 
-    public void setIsSurpressed(Boolean isSurpressed) {
-        this.isSurpressed = isSurpressed;
+    public void setIsSuppressed(Boolean isSurpressed) {
+        this.isSuppressed = isSurpressed;
     }
 
 }

@@ -10,9 +10,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import mb.pso.issuesystem.entity.Employee;
 
-//[ ] REFACTOR
+//[x] REFACTOR
 /**
- * 
+ * Represents the status of a message for a specific employee.
+ * <p>
+ * Tracks the read status, associated notification, and the employee to whom the
+ * status belongs.
+ * </p>
  */
 @Entity
 public class MessageStatus {
@@ -28,15 +32,20 @@ public class MessageStatus {
     @ManyToOne(cascade = CascadeType.ALL)
     private Employee employee;
 
+    /**
+     * Read status.
+     * <ul>
+     * <li><strong>0</strong> - message has not been read.</li>
+     * <li><strong>1</strong> - message has been read.</li>
+     * </ul>
+     */
     private Integer status = 0;
 
+    /** Indicates whether email notification was sent. */
     private Boolean notificationCreated = false;
 
     public MessageStatus(Integer id, Message message, Employee employee, Integer status) {
-        this.id = id;
-        this.message = message;
-        this.employee = employee;
-        this.status = status;
+        this(id, message, employee, status, false);
     }
 
     public MessageStatus(Integer id, Message message, Employee employee, Integer status, Boolean notificationCreated) {

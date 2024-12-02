@@ -169,7 +169,7 @@ public class ScheduledTasksServiceImpl {
                         .and(qSurpressedChat.chatId.eq(t.getId()));
                 SurpressedChat surpressedChat = surpressedChatRepository.findOne(surpressedPredicate)
                         .orElse(new SurpressedChat(employee, t.getId(), false));
-                if (!surpressedChat.getIsSurpressed()) {
+                if (!surpressedChat.getIsSuppressed()) {
                     Notification n = new Notification();
                     n.setEmployee(employee);
                     n.setPolicy(NotificationPolicy.INAPP);
@@ -179,7 +179,7 @@ public class ScheduledTasksServiceImpl {
                     n.setIsRead(false);
                     n.setIsSent(false);
                     newNotifications.add(n);
-                    surpressedChat.setIsSurpressed(true);
+                    surpressedChat.setIsSuppressed(true);
                     surpressedChatRepository.save(surpressedChat);
                 }
             }

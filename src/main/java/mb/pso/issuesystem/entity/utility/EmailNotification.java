@@ -1,23 +1,33 @@
 package mb.pso.issuesystem.entity.utility;
 
 import io.vertx.core.json.JsonObject;
-//[ ] REFACTOR
+
+//[x] REFACTOR
+/**
+ * Represents an email notification with metadata for sending messages via an
+ * email service.
+ * <p>
+ * Contains details such as recipient, subject, template name, and optional body
+ * data.
+ * </p>
+ */
 public class EmailNotification {
 
     private String prefix;
+
     private String to;
+
     private String templateName;
+
     private String subject;
+
     private JsonObject body;
 
     public EmailNotification() {
     }
 
     public EmailNotification(String prefix, String to, String templateName, String subject) {
-        this.prefix = prefix;
-        this.to = to;
-        this.templateName = templateName;
-        this.subject = subject;
+        this(prefix, to, templateName, subject, null);
     }
 
     public EmailNotification(String prefix, String to, String templateName, String subject, JsonObject body) {
@@ -26,6 +36,12 @@ public class EmailNotification {
         this.templateName = templateName;
         this.subject = subject;
         this.body = body;
+    }
+
+    @Override
+    public String toString() {
+        return "EmailNotification [prefix=" + prefix + ", to=" + to + ", templateName=" + templateName + ", subject="
+                + subject + ", body=" + body + "]";
     }
 
     public String getPrefix() {
@@ -66,12 +82,6 @@ public class EmailNotification {
 
     public void setBody(JsonObject body) {
         this.body = body;
-    }
-
-    @Override
-    public String toString() {
-        return "EmailNotification [prefix=" + prefix + ", to=" + to + ", templateName=" + templateName + ", subject="
-                + subject + ", body=" + body + "]";
     }
 
 }

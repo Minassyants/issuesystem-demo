@@ -177,7 +177,7 @@ public class ImServiceImpl {
         QSurpressedChat surpressedChat = QSurpressedChat.surpressedChat;
         Predicate predicate = surpressedChat.employee.displayName.eq(displayName).and(surpressedChat.chatId.eq(chatId));
         surpressedChatRepository.findOne(predicate).ifPresentOrElse(t -> {
-            t.setIsSurpressed(false);
+            t.setIsSuppressed(false);
             surpressedChatRepository.save(t);
         }, () -> {
         });
