@@ -1,16 +1,16 @@
 package mb.pso.issuesystem.repository;
 
 import java.time.LocalDate;
-import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
 import mb.pso.issuesystem.entity.BasicReportRow;
 import mb.pso.issuesystem.entity.Issue;
-//[ ] REFACTOR
+
+//[x] REFACTOR
 @Repository
-public interface IssueRepository extends JpaRepository<Issue, Integer>, QuerydslPredicateExecutor<Issue> {
+public interface IssueRepository extends CombinedRepository<Issue, Integer> {
     /**
      * @param start
      * @param end

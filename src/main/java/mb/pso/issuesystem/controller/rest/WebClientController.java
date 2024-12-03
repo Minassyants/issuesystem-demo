@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,18 +36,19 @@ import mb.pso.issuesystem.entity.Users;
 import mb.pso.issuesystem.entity.im.Chat;
 import mb.pso.issuesystem.entity.im.Message;
 import mb.pso.issuesystem.service.impl.ImServiceImpl;
-import mb.pso.issuesystem.service.impl.UserServiceImpl;
+import mb.pso.issuesystem.service.impl.core.UserService;
 import mb.pso.issuesystem.service.webclient.impl.WebClientServiceImpl;
+
 //[ ] REFACTOR
 @RestController
 @CrossOrigin(originPatterns = "*", origins = "*")
 public class WebClientController {
 
     private final WebClientServiceImpl webClientServiceImpl;
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userServiceImpl;
     private final ImServiceImpl imServiceImpl;
 
-    public WebClientController(WebClientServiceImpl webClientServiceImpl, UserServiceImpl userServiceImpl,
+    public WebClientController(WebClientServiceImpl webClientServiceImpl, UserService userServiceImpl,
             ImServiceImpl imServiceImpl) {
         this.webClientServiceImpl = webClientServiceImpl;
         this.userServiceImpl = userServiceImpl;
@@ -94,9 +96,11 @@ public class WebClientController {
     // BUG: Это полная ...
     @GetMapping("/auth")
     public ResponseEntity<Users> auth(@RequestParam String username) {
-        Optional<Users> user = userServiceImpl.getByName(username);
-        assert user.isPresent();
-        return ResponseEntity.ok(user.get());
+        Users user = userServiceImpl.getByName(username);
+        if (user == null) {
+            throw new UsernameNotFoundException(username);
+        }
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/issue/{id}/setclosed")

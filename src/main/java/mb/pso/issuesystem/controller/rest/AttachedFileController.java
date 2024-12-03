@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.constraints.NotBlank;
 import mb.pso.issuesystem.dto.FileInfo;
-import mb.pso.issuesystem.service.s3.MinioService;
+import mb.pso.issuesystem.service.impl.external.MinioService;
 
 //[x] REFACTOR
 //[ ] SWAGGER VEZDE?

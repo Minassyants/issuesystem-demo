@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import mb.pso.issuesystem.entity.Users;
-import mb.pso.issuesystem.service.impl.UserServiceImpl;
+import mb.pso.issuesystem.service.impl.core.UserService;
 //[ ] REFACTOR
 @RestController
 @RequestMapping("/api/user")
 @CrossOrigin(origins = "*")
 public class UsersController {
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userServiceImpl;
 
-    public UsersController(UserServiceImpl userServiceImpl) {
+    public UsersController(UserService userServiceImpl) {
         this.userServiceImpl = userServiceImpl;
     }
 

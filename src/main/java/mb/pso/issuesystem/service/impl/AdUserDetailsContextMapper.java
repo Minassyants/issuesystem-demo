@@ -9,7 +9,8 @@ import org.springframework.security.ldap.userdetails.LdapUserDetailsMapper;
 import org.springframework.stereotype.Service;
 
 import mb.pso.issuesystem.entity.AdUserDetails;
-//[ ] REFACTOR
+
+//[x] REFACTOR
 @Service
 public class AdUserDetailsContextMapper extends LdapUserDetailsMapper {
 
@@ -18,8 +19,9 @@ public class AdUserDetailsContextMapper extends LdapUserDetailsMapper {
             Collection<? extends GrantedAuthority> authorities) {
         UserDetails userDetails = super.mapUserFromContext(ctx, username, authorities);
         AdUserDetails user = new AdUserDetails(userDetails.getUsername(), "",
-                userDetails.getAuthorities(), ctx.getStringAttribute("mail"),ctx.getStringAttribute("displayName"),ctx.getStringAttribute("givenName"),ctx.getStringAttribute("sn"),ctx.getStringAttribute("sAMAccountName"));
-                
+                userDetails.getAuthorities(), ctx.getStringAttribute("mail"), ctx.getStringAttribute("displayName"),
+                ctx.getStringAttribute("givenName"), ctx.getStringAttribute("sn"),
+                ctx.getStringAttribute("sAMAccountName"));
 
         return user;
     }

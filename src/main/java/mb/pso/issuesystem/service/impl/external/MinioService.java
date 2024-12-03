@@ -1,10 +1,12 @@
-package mb.pso.issuesystem.service.s3;
+package mb.pso.issuesystem.service.impl.external;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,22 +19,29 @@ import io.minio.RemoveObjectArgs;
 import io.minio.StatObjectArgs;
 import io.minio.StatObjectResponse;
 import io.minio.http.Method;
+import mb.pso.issuesystem.config.properties.MinioProperties;
 import mb.pso.issuesystem.dto.FileInfo;
 import mb.pso.issuesystem.entity.AttachedFile;
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.repository.AttachedFileRepository;
-//[ ] REFACTOR
+
+//[x] REFACTOR
 @Service
 public class MinioService {
-    // [ ] эти все штуки надо выводить в env переменные
+
+    private static final Logger logger = LoggerFactory.getLogger(MinioService.class);
+
     private final MinioClient minioClient;
-    // [ ] bucketName в env
-    private final String bucketName = "issuesystem";
+
+    private final String bucketName;
+
     private final AttachedFileRepository attachedFileRepository;
 
-    public MinioService(AttachedFileRepository attachedFileRepository) {
-        minioClient = MinioClient.builder().endpoint("kz-alm-bsk-ws01.ukravto.loc", 7012, false)
-                .credentials("XyZg4T3MWqxCeQ6XL2UY", "aKtOTSyLXJezqPwllmLlJQSzBNtx4nVYXajPV38K").build();
+    public MinioService(AttachedFileRepository attachedFileRepository, MinioProperties minioProperties) {
+        minioClient = MinioClient.builder()
+                .endpoint(minioProperties.getHost(), minioProperties.getPort(), minioProperties.isSecure())
+                .credentials(minioProperties.getAccessKey(), minioProperties.getSecretKey()).build();
+        this.bucketName = minioProperties.getBucketName();
         this.attachedFileRepository = attachedFileRepository;
         try {
             boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
@@ -40,8 +49,7 @@ public class MinioService {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
             }
         } catch (Exception e) {
-            // [ ] Auto-generated catch block
-            e.printStackTrace();
+            logger.error("Exception occurred while creating minio bucket", e);
         }
     }
 
@@ -67,8 +75,7 @@ public class MinioService {
             return attachedFile;
 
         } catch (Exception e) {
-            // [ ] Auto-generated catch block
-            e.printStackTrace();
+            logger.error("Exception occurred while uploading a file", e);
         }
         return null;
     }
@@ -77,8 +84,7 @@ public class MinioService {
         try {
             minioClient.removeObject(RemoveObjectArgs.builder().bucket(bucketName).object(file.getFilePath()).build());
         } catch (Exception e) {
-            // [ ] Auto-generated catch block
-            e.printStackTrace();
+            logger.error("Exception occurred while deleting a file", e);
         }
     }
 
@@ -94,8 +100,7 @@ public class MinioService {
             return fileInfo;
 
         } catch (Exception e) {
-            // [ ] Auto-generated catch block
-            e.printStackTrace();
+            logger.error("Exception occurred while retrieving a file info", e);
             return null;
         }
     }

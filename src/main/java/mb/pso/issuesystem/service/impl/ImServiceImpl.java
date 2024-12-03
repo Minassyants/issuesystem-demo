@@ -146,7 +146,7 @@ public class ImServiceImpl {
     }
 
     // [x] sendMessage
-    // [ ] добавить индикацую успешности отправки сообщения
+    // [ ] добавить индикацию успешности отправки сообщения
     @Transactional
     public Message sendMessage(Message message) {
         Chat chat = chatRepository.findById(message.getChat().getId()).orElse(null);

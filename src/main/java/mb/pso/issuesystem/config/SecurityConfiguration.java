@@ -44,7 +44,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 
 import mb.pso.issuesystem.service.impl.AdUserDetailsContextMapper;
-import mb.pso.issuesystem.service.impl.UserServiceImpl;
+import mb.pso.issuesystem.service.impl.core.UserService;
 
 //[x] REFACTOR
 @Configuration
@@ -67,9 +67,9 @@ public class SecurityConfiguration {
     @Value("${ldap.base}")
     private String ldapSearchBase;
 
-    final UserServiceImpl userServiceImpl;
+    final UserService userServiceImpl;
 
-    public SecurityConfiguration(UserServiceImpl userServiceImpl) {
+    public SecurityConfiguration(UserService userServiceImpl) {
         this.userServiceImpl = userServiceImpl;
     }
 

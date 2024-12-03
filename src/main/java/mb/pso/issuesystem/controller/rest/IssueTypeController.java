@@ -18,38 +18,38 @@ import com.querydsl.core.types.Predicate;
 
 import mb.pso.issuesystem.entity.IssueType;
 import mb.pso.issuesystem.entity.QIssueType;
-import mb.pso.issuesystem.service.impl.IssueTypeServiceImpl;
+import mb.pso.issuesystem.service.impl.core.IssueTypeService;
 //[ ] REFACTOR
 @RestController
 @RequestMapping("/api/issuetype")
 @CrossOrigin(origins = "*")
 public class IssueTypeController {
 
-    private final IssueTypeServiceImpl issueTypeServiceImpl;
+    private final IssueTypeService issueTypeService;
 
-    public IssueTypeController(IssueTypeServiceImpl issueTypeServiceImpl) {
-        this.issueTypeServiceImpl = issueTypeServiceImpl;
+    public IssueTypeController(IssueTypeService issueTypeService) {
+        this.issueTypeService = issueTypeService;
     }
 
     @PostMapping
     public ResponseEntity<IssueType> create(@RequestBody IssueType issueType) {
-        return ResponseEntity.ok(issueTypeServiceImpl.create(issueType));
+        return ResponseEntity.ok(issueTypeService.create(issueType));
     }
 
     @GetMapping
     public ResponseEntity<Iterable<IssueType>> getAll(@RequestParam Optional<String> q) {
         if (q.isEmpty())
-            return ResponseEntity.ok(issueTypeServiceImpl.getAll());
+            return ResponseEntity.ok(issueTypeService.getAll());
         QIssueType issueType = QIssueType.issueType;
         Predicate predicate = issueType.name.like("*".concat(q.get()).concat("*"));
-        return ResponseEntity.ok(issueTypeServiceImpl.getAll(predicate));
+        return ResponseEntity.ok(issueTypeService.getAll(predicate));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable Integer id) {
         try {
 
-            issueTypeServiceImpl.deleteById(id);
+            issueTypeService.deleteById(id);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
@@ -58,7 +58,7 @@ public class IssueTypeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<IssueType> getById(@PathVariable Integer id) {
-        Optional<IssueType> issueType = issueTypeServiceImpl.get(id);
+        Optional<IssueType> issueType = issueTypeService.get(id);
         if (issueType.isEmpty())
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(issueType.get());
@@ -66,7 +66,7 @@ public class IssueTypeController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<IssueType> update(@RequestBody IssueType issueType) {
-        return ResponseEntity.ok(issueTypeServiceImpl.update(issueType));
+        return ResponseEntity.ok(issueTypeService.update(issueType));
     }
 
 }

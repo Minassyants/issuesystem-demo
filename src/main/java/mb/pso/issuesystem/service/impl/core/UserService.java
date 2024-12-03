@@ -1,4 +1,4 @@
-package mb.pso.issuesystem.service.impl;
+package mb.pso.issuesystem.service.impl.core;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,15 +12,17 @@ import org.springframework.stereotype.Service;
 
 import mb.pso.issuesystem.entity.AdUserDetails;
 import mb.pso.issuesystem.entity.Users;
+import mb.pso.issuesystem.repository.CombinedRepository;
 import mb.pso.issuesystem.repository.UserRepository;
-import mb.pso.issuesystem.service.UsersService;
-//[ ] REFACTOR
-@Service
-public class UserServiceImpl implements UserDetailsService, UsersService {
-    private final UserRepository userRepository;
+import mb.pso.issuesystem.service.AbstractCrudService;
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+//[x] REFACTOR
+@Service
+public class UserService extends AbstractCrudService<Users, Integer> implements UserDetailsService {
+    private final UserRepository repository;
+
+    public UserService(UserRepository repository) {
+        this.repository = repository;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class UserServiceImpl implements UserDetailsService, UsersService {
         Users exUser = new Users();
         exUser.setUsername(username);
 
-        Optional<Users> _user = userRepository.findOne(Example.of(exUser));
+        Optional<Users> _user = repository.findOne(Example.of(exUser));
         if (!_user.isPresent()) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -40,42 +42,18 @@ public class UserServiceImpl implements UserDetailsService, UsersService {
     }
 
     @Override
-    public Users create(Users user) {
-        return userRepository.save(user);
+    protected Integer getId(Users entity) {
+        return entity.getId();
     }
 
     @Override
-    public void delete(Users user) {
-        userRepository.delete(user);
-
+    protected CombinedRepository<Users, Integer> getRepository() {
+        return repository;
     }
 
-    @Override
-    public void deleteById(Integer id) {
-        userRepository.deleteById(id);
-    }
+    public Users getByName(String name) {
 
-    @Override
-    public Optional<Users> getByName(String name) {
-
-        return Optional.of(userRepository.findByUsername(name).get(0));
-    }
-
-    @Override
-    public Optional<Users> get(Integer id) {
-        return userRepository.findById(id);
-    }
-
-    @Override
-    public Iterable<Users> getAll() {
-        return userRepository.findAll();
-    }
-
-    @Override
-    public Users update(Users user) {
-        Optional<Users> u = userRepository.findById(user.getId());
-        assert u.isPresent();
-        return userRepository.save(user);
+        return repository.findByUsername(name);
     }
 
 }

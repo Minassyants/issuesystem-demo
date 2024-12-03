@@ -1,4 +1,4 @@
-package mb.pso.issuesystem.config;
+package mb.pso.issuesystem.config.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

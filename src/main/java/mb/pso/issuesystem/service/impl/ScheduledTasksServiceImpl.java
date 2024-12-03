@@ -30,21 +30,21 @@ import mb.pso.issuesystem.repository.EmployeeRepository;
 import mb.pso.issuesystem.repository.MessageStatusRepository;
 import mb.pso.issuesystem.repository.NotificationRepository;
 import mb.pso.issuesystem.repository.im.SuppressedChatRepository;
-import mb.pso.issuesystem.service.notifications.impl.EmailNotificationServiceImpl;
+import mb.pso.issuesystem.service.impl.external.EmailNotificationService;
 //[ ] REFACTOR
 @Service
 public class ScheduledTasksServiceImpl {
 
     private NotificationRepository notificationRepository;
     private EmployeeRepository employeeRepository;
-    private EmailNotificationServiceImpl emailNotificationServiceImpl;
+    private EmailNotificationService emailNotificationServiceImpl;
     private MessageStatusRepository messageStatusRepository;
     private SuppressedChatRepository surpressedChatRepository;
 
     public ScheduledTasksServiceImpl(NotificationRepository notificationRepository,
             EmployeeRepository employeeRepository,
             MessageStatusRepository messageStatusRepository,
-            EmailNotificationServiceImpl emailNotificationServiceImpl,
+            EmailNotificationService emailNotificationServiceImpl,
             SuppressedChatRepository surpressedChatRepository) {
         this.notificationRepository = notificationRepository;
         this.employeeRepository = employeeRepository;

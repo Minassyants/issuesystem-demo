@@ -9,6 +9,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
+import mb.pso.issuesystem.config.properties.AdminUserProperties;
 import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.IssueAttribute;
 import mb.pso.issuesystem.entity.IssueType;

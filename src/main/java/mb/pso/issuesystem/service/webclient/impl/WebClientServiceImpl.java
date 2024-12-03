@@ -52,8 +52,9 @@ import mb.pso.issuesystem.repository.IssueTypeRepository;
 import mb.pso.issuesystem.repository.NotificationRepository;
 import mb.pso.issuesystem.repository.SubjectRepository;
 import mb.pso.issuesystem.repository.ldap.AdUserRepository;
-import mb.pso.issuesystem.service.s3.MinioService;
+import mb.pso.issuesystem.service.impl.external.MinioService;
 import mb.pso.issuesystem.service.webclient.WebClientService;
+
 //[ ] REFACTOR
 @Service
 public class WebClientServiceImpl implements WebClientService {
@@ -78,6 +79,7 @@ public class WebClientServiceImpl implements WebClientService {
             AdUserRepository adUserRepository, ElasticsearchOperations elasticsearchOperations,
             MinioService minioService, DepartmentFeedbackRepository departmentFeedbackRepository,
             NotificationRepository notificationRepository) {
+
         this.notificationRepository = notificationRepository;
         this.issueRepository = issueRepository;
         this.issueAttributeRepository = issueAttributeRepository;
