@@ -38,7 +38,7 @@
         {
             "name": "ldap.url",
             "type": "java.lang.String",
-            "description": "Url to LDAP server"
+            "description": "Url for LDAP server"
         },
         {
             "name": "ldap.user-dn",
@@ -54,6 +54,11 @@
             "name": "ldap.base",
             "type": "java.lang.String",
             "description": "base suffix for all operations"
+        },
+        {
+            "name": "ldap.domain",
+            "type": "java.lang.String",
+            "description": "Domain for LDAP server"
         }
     ]
 }

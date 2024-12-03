@@ -15,7 +15,7 @@ import mb.pso.issuesystem.entity.Employee;
  * </p>
  */
 @Entity
-public class SurpressedChat {
+public class SuppressedChat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,14 +28,14 @@ public class SurpressedChat {
 
     private Boolean isSuppressed = false;
 
-    public SurpressedChat() {
+    public SuppressedChat() {
     }
 
-    public SurpressedChat(Employee employee, Integer chatId, Boolean isSuppressed) {
+    public SuppressedChat(Employee employee, Integer chatId, Boolean isSuppressed) {
         this(null, employee, chatId, isSuppressed);
     }
 
-    public SurpressedChat(Integer id, Employee employee, Integer chatId, Boolean isSurpressed) {
+    public SuppressedChat(Integer id, Employee employee, Integer chatId, Boolean isSurpressed) {
         this.id = id;
         this.employee = employee;
         this.chatId = chatId;

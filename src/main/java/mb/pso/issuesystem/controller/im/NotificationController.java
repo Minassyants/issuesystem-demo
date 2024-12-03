@@ -4,28 +4,20 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 
-import mb.pso.issuesystem.entity.Notification;
-import mb.pso.issuesystem.exceptions.IllegalActionException;
-import mb.pso.issuesystem.repository.NotificationRepository;
-//[ ] REFACTOR
+import mb.pso.issuesystem.service.notifications.NotificationService;
+
+//[x] REFACTOR
 @Controller
 public class NotificationController {
 
-    // FIXME extract to service
-    private final NotificationRepository notificationRepository;
+    private final NotificationService notificationService;
 
-    public NotificationController(NotificationRepository notificationRepository) {
-        this.notificationRepository = notificationRepository;
+    public NotificationController(NotificationService notificationService) {
+        this.notificationService = notificationService;
     }
 
     @MessageMapping("/notifications/{id}")
     public void markAsRead(@DestinationVariable Integer id) {
-        Notification notification = notificationRepository.findById(id).orElse(null);
-        if (notification == null) {
-            // FIXME выделить отдельный класс для исключения
-            throw new IllegalActionException("notification not found");
-        }
-        notification.setIsRead(true);
-        notificationRepository.save(notification);
+        notificationService.markAsRead(id);
     }
 }

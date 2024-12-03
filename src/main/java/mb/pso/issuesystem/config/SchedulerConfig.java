@@ -2,7 +2,7 @@ package mb.pso.issuesystem.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
-//[ ] REFACTOR
+//[x] REFACTOR
 @Configuration
 @EnableScheduling
 public class SchedulerConfig {

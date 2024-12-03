@@ -80,6 +80,7 @@ elasticsearch:
   port: 7000
 
 ldap:
+    domain: ukravto.ua
     url: ldap://192.168.50.5:389
     user-dn: 1C_Redmine@ukravto.ua
     password: R*123456

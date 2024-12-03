@@ -25,14 +25,15 @@ import org.springframework.web.socket.client.standard.WebSocketContainerFactoryB
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-//[ ] REFACTOR
+
+//[x] REFACTOR
 @Order(Ordered.HIGHEST_PRECEDENCE + 99)
 @Configuration
 @EnableWebSocketMessageBroker
 
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    private JwtDecoder jwtDecoder;
+    private final JwtDecoder jwtDecoder;
 
     public WebSocketConfig(JwtDecoder jwtDecoder) {
         this.jwtDecoder = jwtDecoder;
@@ -51,6 +52,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         ThreadPoolTaskScheduler pingScheduler = new ThreadPoolTaskScheduler();
         pingScheduler.initialize();
+
         registry.enableSimpleBroker("/topic")
                 .setHeartbeatValue(new long[] { 7000, 7000 })
                 .setTaskScheduler(pingScheduler);
@@ -58,32 +60,39 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 
     @Override
-    public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new ChannelInterceptor() {
-            @Override
-            public Message<?> preSend(Message<?> message, MessageChannel channel) {
-
-                StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-                if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-                    List<String> xui = accessor.getNativeHeader(HttpHeaders.AUTHORIZATION);
-                    JwtAuthenticationProvider jwtAuthenticationProvider = new JwtAuthenticationProvider(jwtDecoder);
-                    jwtAuthenticationProvider.setJwtAuthenticationConverter(new JwtAuthenticationConverter());
-                    BearerTokenAuthenticationToken token = new BearerTokenAuthenticationToken(
-                            xui.get(0).replace("Bearer ", ""));
-                    Authentication user = jwtAuthenticationProvider.authenticate(token);
-                    accessor.setUser(user);
-                    
-                    
-                }
-                return message;
-            }
-
-        });
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/ws").setAllowedOriginPatterns("*");
     }
 
     @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").setAllowedOriginPatterns("*");
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(new ChannelInterceptorImplementation());
+    }
+
+    private final class ChannelInterceptorImplementation implements ChannelInterceptor {
+        @Override
+        public Message<?> preSend(Message<?> message, MessageChannel channel) {
+
+            StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+            if (StompCommand.CONNECT.equals(accessor.getCommand())) {
+                authenticateUser(accessor);
+            }
+            return message;
+        }
+    }
+
+    private void authenticateUser(StompHeaderAccessor accessor) {
+        List<String> authHeaders = accessor.getNativeHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeaders.get(0).replace("Bearer ", "");
+
+        JwtAuthenticationProvider jwtAuthenticationProvider = new JwtAuthenticationProvider(jwtDecoder);
+        jwtAuthenticationProvider.setJwtAuthenticationConverter(new JwtAuthenticationConverter());
+
+        BearerTokenAuthenticationToken authenticationToken = new BearerTokenAuthenticationToken(
+                token);
+        Authentication user = jwtAuthenticationProvider.authenticate(authenticationToken);
+
+        accessor.setUser(user);
     }
 
 }

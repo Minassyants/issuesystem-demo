@@ -19,7 +19,7 @@ import mb.pso.issuesystem.entity.im.Message;
 import mb.pso.issuesystem.entity.im.MessageStatus;
 import mb.pso.issuesystem.entity.im.QMessage;
 import mb.pso.issuesystem.entity.im.QMessageStatus;
-import mb.pso.issuesystem.entity.im.QSurpressedChat;
+import mb.pso.issuesystem.entity.im.QSuppressedChat;
 import mb.pso.issuesystem.exceptions.ChatNotFoundException;
 import mb.pso.issuesystem.exceptions.EmployeeNotFoundException;
 import mb.pso.issuesystem.exceptions.IllegalActionException;
@@ -29,7 +29,8 @@ import mb.pso.issuesystem.repository.MessageStatusRepository;
 import mb.pso.issuesystem.repository.NotificationRepository;
 import mb.pso.issuesystem.repository.im.ChatRepository;
 import mb.pso.issuesystem.repository.im.MessageRepository;
-import mb.pso.issuesystem.repository.im.SurpressedChatRepository;
+import mb.pso.issuesystem.repository.im.SuppressedChatRepository;
+
 //[ ] REFACTOR
 @Service
 // [ ] extract interface
@@ -39,18 +40,18 @@ public class ImServiceImpl {
     private final EmployeeRepository employeeRepository;
     private final MessageStatusRepository messageStatusRepository;
     private final NotificationRepository notificationRepository;
-    private final SurpressedChatRepository surpressedChatRepository;
+    private final SuppressedChatRepository suppressedChatRepository;
 
     public ImServiceImpl(MessageRepository messageRepository, ChatRepository chatRepository,
             EmployeeRepository employeeRepository,
             MessageStatusRepository messageStatusRepository, NotificationRepository notificationRepository,
-            SurpressedChatRepository surpressedChatRepository) {
+            SuppressedChatRepository suppressedChatRepository) {
         this.messageRepository = messageRepository;
         this.chatRepository = chatRepository;
         this.employeeRepository = employeeRepository;
         this.messageStatusRepository = messageStatusRepository;
         this.notificationRepository = notificationRepository;
-        this.surpressedChatRepository = surpressedChatRepository;
+        this.suppressedChatRepository = suppressedChatRepository;
     }
 
     public Message markAsRead(Integer messageId, String displayName) {
@@ -173,12 +174,12 @@ public class ImServiceImpl {
 
     }
 
-    public void unsurpressChat(Integer chatId, String displayName) {
-        QSurpressedChat surpressedChat = QSurpressedChat.surpressedChat;
-        Predicate predicate = surpressedChat.employee.displayName.eq(displayName).and(surpressedChat.chatId.eq(chatId));
-        surpressedChatRepository.findOne(predicate).ifPresentOrElse(t -> {
+    public void unsuppressChat(Integer chatId, String displayName) {
+        QSuppressedChat suppressedChat = QSuppressedChat.suppressedChat;
+        Predicate predicate = suppressedChat.employee.displayName.eq(displayName).and(suppressedChat.chatId.eq(chatId));
+        suppressedChatRepository.findOne(predicate).ifPresentOrElse(t -> {
             t.setIsSuppressed(false);
-            surpressedChatRepository.save(t);
+            suppressedChatRepository.save(t);
         }, () -> {
         });
 

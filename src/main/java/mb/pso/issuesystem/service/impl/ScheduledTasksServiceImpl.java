@@ -23,13 +23,13 @@ import mb.pso.issuesystem.entity.im.Chat;
 import mb.pso.issuesystem.entity.im.MessageStatus;
 import mb.pso.issuesystem.entity.im.QMessageStatus;
 import mb.pso.issuesystem.entity.im.QSurpressedChat;
-import mb.pso.issuesystem.entity.im.SurpressedChat;
+import mb.pso.issuesystem.entity.im.SuppressedChat;
 import mb.pso.issuesystem.entity.utility.EmailNotification;
 import mb.pso.issuesystem.exceptions.EmployeeNotFoundException;
 import mb.pso.issuesystem.repository.EmployeeRepository;
 import mb.pso.issuesystem.repository.MessageStatusRepository;
 import mb.pso.issuesystem.repository.NotificationRepository;
-import mb.pso.issuesystem.repository.im.SurpressedChatRepository;
+import mb.pso.issuesystem.repository.im.SuppressedChatRepository;
 import mb.pso.issuesystem.service.notifications.impl.EmailNotificationServiceImpl;
 //[ ] REFACTOR
 @Service
@@ -39,13 +39,13 @@ public class ScheduledTasksServiceImpl {
     private EmployeeRepository employeeRepository;
     private EmailNotificationServiceImpl emailNotificationServiceImpl;
     private MessageStatusRepository messageStatusRepository;
-    private SurpressedChatRepository surpressedChatRepository;
+    private SuppressedChatRepository surpressedChatRepository;
 
     public ScheduledTasksServiceImpl(NotificationRepository notificationRepository,
             EmployeeRepository employeeRepository,
             MessageStatusRepository messageStatusRepository,
             EmailNotificationServiceImpl emailNotificationServiceImpl,
-            SurpressedChatRepository surpressedChatRepository) {
+            SuppressedChatRepository surpressedChatRepository) {
         this.notificationRepository = notificationRepository;
         this.employeeRepository = employeeRepository;
         this.emailNotificationServiceImpl = emailNotificationServiceImpl;
@@ -167,8 +167,8 @@ public class ScheduledTasksServiceImpl {
             for (Employee employee : t.getMembers()) {
                 Predicate surpressedPredicate = qSurpressedChat.employee.eq(employee)
                         .and(qSurpressedChat.chatId.eq(t.getId()));
-                SurpressedChat surpressedChat = surpressedChatRepository.findOne(surpressedPredicate)
-                        .orElse(new SurpressedChat(employee, t.getId(), false));
+                SuppressedChat surpressedChat = surpressedChatRepository.findOne(surpressedPredicate)
+                        .orElse(new SuppressedChat(employee, t.getId(), false));
                 if (!surpressedChat.getIsSuppressed()) {
                     Notification n = new Notification();
                     n.setEmployee(employee);

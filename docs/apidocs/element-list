@@ -1,7 +1,6 @@
 mb.pso.issuesystem
 mb.pso.issuesystem.config
 mb.pso.issuesystem.controller.im
-mb.pso.issuesystem.controller.rabbitmq
 mb.pso.issuesystem.controller.rest
 mb.pso.issuesystem.dto
 mb.pso.issuesystem.dto.webSocket

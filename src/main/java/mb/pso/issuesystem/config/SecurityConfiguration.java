@@ -45,17 +45,27 @@ import org.springframework.beans.factory.annotation.Value;
 
 import mb.pso.issuesystem.service.impl.AdUserDetailsContextMapper;
 import mb.pso.issuesystem.service.impl.UserServiceImpl;
-//[ ] REFACTOR
+
+//[x] REFACTOR
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
     @Value("classpath:keys/public")
-    RSAPublicKey key;
+    private RSAPublicKey publicKey;
 
     @Value("classpath:keys/private")
-    RSAPrivateKey priv;
+    private RSAPrivateKey privateKey;
+
+    @Value("${ldap.url}")
+    private String ldapUrl;
+
+    @Value("${ldap.domain}")
+    private String ldapDomain;
+
+    @Value("${ldap.base}")
+    private String ldapSearchBase;
 
     final UserServiceImpl userServiceImpl;
 
@@ -63,36 +73,18 @@ public class SecurityConfiguration {
         this.userServiceImpl = userServiceImpl;
     }
 
-    // [ ] Добавить исключение для клиентской формы принятия жалоб
     @Bean
     @Order(50)
-    SecurityFilterChain BasicfilterChain(HttpSecurity http, AdUserDetailsContextMapper adUserDetailsContextMapper
-    // ,
-    // ActiveDirectoryLdapAuthenticationProvider
-    // activeDirectoryLdapAuthenticationProvider,
-    // DaoAuthenticationProvider daoAuthenticationProvider
-    ) throws Exception {
+    SecurityFilterChain BasicfilterChain(HttpSecurity http, AdUserDetailsContextMapper adUserDetailsContextMapper)
+            throws Exception {
         http.securityMatcher("/token")
                 .authorizeHttpRequests(t -> t.requestMatchers("/token").permitAll())
                 .csrf(t -> t.disable())
                 .httpBasic(withDefaults())
-                .authenticationManager(new ProviderManager(
-                        List.of(daoAuthenticationProvider(), authenticationProvider(adUserDetailsContextMapper))))
-                // .authenticationProvider(daoAuthenticationProvider)
-                // .authenticationProvider(activeDirectoryLdapAuthenticationProvider)
-                // .authenticationManager(new ProviderManager(
-                // List.of(daoAuthenticationProvider,
-                // activeDirectoryLdapAuthenticationProvider)))
-                // .authenticationManager(authentication -> {
-                // Authentication x;
-                // try {
-                // x = daoAuthenticationProvider.authenticate(authentication);
-                // assert x != null;
-                // } catch (Exception e) {
-                // x = activeDirectoryLdapAuthenticationProvider.authenticate(authentication);
-                // }
-                // return x;
-                // })
+                .authenticationManager(
+                        new ProviderManager(
+                                List.of(daoAuthenticationProvider(),
+                                        authenticationProvider(adUserDetailsContextMapper))))
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
 
@@ -113,6 +105,7 @@ public class SecurityConfiguration {
 
     }
 
+    // [ ] Check if this func is needed.
     public String tokenExtractor(HttpServletRequest request) {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (header != null)
@@ -125,12 +118,12 @@ public class SecurityConfiguration {
 
     @Bean
     JwtDecoder jwtDecoder() {
-        return NimbusJwtDecoder.withPublicKey(this.key).build();
+        return NimbusJwtDecoder.withPublicKey(this.publicKey).build();
     }
 
     @Bean
     JwtEncoder jwtEncoder() {
-        JWK jwk = new RSAKey.Builder(this.key).privateKey(this.priv).build();
+        JWK jwk = new RSAKey.Builder(this.publicKey).privateKey(this.privateKey).build();
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
     }
@@ -142,13 +135,11 @@ public class SecurityConfiguration {
 
     ActiveDirectoryLdapAuthenticationProvider authenticationProvider(
             AdUserDetailsContextMapper adUserDetailsContextMapper) {
-        ActiveDirectoryLdapAuthenticationProvider ad = new ActiveDirectoryLdapAuthenticationProvider("ukravto.ua",
-                "ldap://192.168.50.5:389", "OU=Kazakhstan,OU=Remote Users,DC=ukravto,DC=loc");
+        ActiveDirectoryLdapAuthenticationProvider ad = new ActiveDirectoryLdapAuthenticationProvider(ldapDomain,
+                ldapUrl, ldapSearchBase);
         ad.setConvertSubErrorCodesToExceptions(true);
         ad.setAuthoritiesPopulator((userData, username) -> List.of(new SimpleGrantedAuthority("employee")));
         ad.setUserDetailsContextMapper(adUserDetailsContextMapper);
-        // DefaultActiveDirectoryAuthoritiesPopulator
-        // ad.setUseAuthenticationRequestCredentials(true);
         return ad;
     }
 
@@ -164,17 +155,5 @@ public class SecurityConfiguration {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
                 .build();
     }
-
-    // @Bean
-    // public AuthenticationManager authenticationManager(HttpSecurity http,
-    // DaoAuthenticationProvider daoAuthenticationProvider,
-    // ActiveDirectoryLdapAuthenticationProvider
-    // activeDirectoryLdapAuthenticationProvider) throws Exception {
-    // AuthenticationManagerBuilder authenticationManagerBuilder = http
-    // .getSharedObject(AuthenticationManagerBuilder.class);
-    // return
-    // authenticationManagerBuilder.authenticationProvider(daoAuthenticationProvider)
-    // .authenticationProvider(activeDirectoryLdapAuthenticationProvider).build();
-    // }
 
 }

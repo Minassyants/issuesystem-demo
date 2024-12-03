@@ -12,53 +12,66 @@ import mb.pso.issuesystem.dto.webSocket.SocketMsg;
 import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.im.Message;
 import mb.pso.issuesystem.service.impl.ImServiceImpl;
-//[ ] REFACTOR
+
+//[x] REFACTOR
 @Controller
 public class ChatController {
 
-    private final SimpMessagingTemplate simpMessagingTemplate;
-    private final ImServiceImpl imServiceImpl;
+    private final SimpMessagingTemplate messagingTemplate;
+    private final ImServiceImpl imService;
 
-    public ChatController(SimpMessagingTemplate simpMessagingTemplate, ImServiceImpl imServiceImpl) {
-        this.simpMessagingTemplate = simpMessagingTemplate;
-        this.imServiceImpl = imServiceImpl;
+    public ChatController(SimpMessagingTemplate messagingTemplate, ImServiceImpl imService) {
+        this.messagingTemplate = messagingTemplate;
+        this.imService = imService;
     }
 
-    @MessageMapping("/chat/{chatId}/unsurpress")
+    @MessageMapping("/chat/{chatId}/unsuppress")
     public void unsurpressChat(@DestinationVariable Integer chatId, JwtAuthenticationToken jwt) {
-        String displayName = ((Jwt) jwt.getPrincipal()).getClaimAsString("displayname");
-        imServiceImpl.unsurpressChat(chatId, displayName);
+        String displayName = extractDisplayName(jwt);
+        imService.unsuppressChat(chatId, displayName);
     }
 
     @MessageMapping("/chat/sendmessage")
     public void sendMessage(Message message) {
-        Message msg = imServiceImpl.sendMessage(message);
-        simpMessagingTemplate.convertAndSend("/topic/chat/" + msg.getChat().getId().toString(),
-                new SocketMsg(SocketMsg.MsgType.NEWMESSAGE, msg));
+        Message savedMessage = imService.sendMessage(message);
+        sendToChatTopic(savedMessage.getChat().getId(), SocketMsg.MsgType.NEWMESSAGE, savedMessage);
     }
 
     @MessageMapping("/chat/{chatId}/addmembertochat")
     public void addMemberToChat(@DestinationVariable Integer chatId, Employee employee) {
-        Employee addedEmployee = imServiceImpl.addMemberToChat(chatId, employee);
-        simpMessagingTemplate.convertAndSend("/topic/chat/" + chatId + "/addmember",
-                new SocketMsg(SocketMsg.MsgType.ADDEDMEMBER, addedEmployee));
+        Employee addedEmployee = imService.addMemberToChat(chatId, employee);
+        sendToChatTopic(chatId, SocketMsg.MsgType.ADDEDMEMBER, addedEmployee);
     }
 
     @MessageMapping("/chat/{chatId}/deletememberfromchat")
     public void deleteMemberFromChat(@DestinationVariable Integer chatId, Employee employee) {
-        Employee deletedEmployee = imServiceImpl.deleteMemberFromChat(chatId, employee);
-        simpMessagingTemplate.convertAndSend("/topic/chat/" + chatId + "/deletemember",
-                new SocketMsg(SocketMsg.MsgType.DELETEDMEMBER, deletedEmployee));
+        Employee removedEmployee = imService.deleteMemberFromChat(chatId, employee);
+        sendToChatTopic(chatId, SocketMsg.MsgType.DELETEDMEMBER, removedEmployee);
     }
 
     @MessageMapping("/message/{id}/markasread")
     @Transactional
     public void markAsRead(@DestinationVariable Integer id, JwtAuthenticationToken jwt) {
-        String displayName = ((Jwt) jwt.getPrincipal()).getClaimAsString("displayname");
-        Message msg = imServiceImpl.markAsRead(id, displayName);
+        String displayName = extractDisplayName(jwt);
+        Message readMessage = imService.markAsRead(id, displayName);
+        sendToChatTopic(readMessage.getChat().getId(), SocketMsg.MsgType.READ, readMessage);
+    }
 
-        simpMessagingTemplate.convertAndSend("/topic/chat/" + msg.getChat().getId().toString(),
-                new SocketMsg(SocketMsg.MsgType.READ, msg));
+    /**
+     * Extracts the display name of the user from the JWT token.
+     */
+    private String extractDisplayName(JwtAuthenticationToken jwt) {
+        Jwt principal = (Jwt) jwt.getPrincipal();
+        return principal.getClaimAsString("displayname");
+    }
+
+    /**
+     * Sends a message to a specific chat topic.
+     */
+    private void sendToChatTopic(Integer chatId, SocketMsg.MsgType msgType, Object payload) {
+        messagingTemplate.convertAndSend(
+                String.format("/topic/chat/%d", chatId),
+                new SocketMsg(msgType, payload));
     }
 
 }

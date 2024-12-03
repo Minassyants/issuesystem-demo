@@ -4,10 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
-import mb.pso.issuesystem.entity.im.SurpressedChat;
+import mb.pso.issuesystem.entity.im.SuppressedChat;
 //[ ] REFACTOR
 @Repository
-public interface SurpressedChatRepository
-        extends JpaRepository<SurpressedChat, Integer>, QuerydslPredicateExecutor<SurpressedChat> {
+public interface SuppressedChatRepository
+        extends JpaRepository<SuppressedChat, Integer>, QuerydslPredicateExecutor<SuppressedChat> {
 
 }

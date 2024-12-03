@@ -10,17 +10,27 @@ import mb.pso.issuesystem.exceptions.EmployeeNotFoundException;
 import mb.pso.issuesystem.exceptions.IllegalActionException;
 import mb.pso.issuesystem.exceptions.IssueNotFoundException;
 import mb.pso.issuesystem.exceptions.MessageNotFoundException;
-//[ ] REFACTOR
+
+//[x] REFACTOR
 @ControllerAdvice
 public class WsExceptionHandler {
 
-    @MessageExceptionHandler({ IllegalActionException.class, ChatNotFoundException.class,
+    @MessageExceptionHandler({
+            IllegalActionException.class,
+            ChatNotFoundException.class,
             MessageNotFoundException.class,
-            IssueNotFoundException.class, EmployeeNotFoundException.class })
-
+            IssueNotFoundException.class,
+            EmployeeNotFoundException.class
+    })
     @SendToUser("topic/errors")
-    protected SocketMsg handleIllegalActionException(Exception ex) {
-        return new SocketMsg(SocketMsg.MsgType.ERROR, ex.getLocalizedMessage());
+    protected SocketMsg handleBusinessExceptions(Exception ex) {
+        return new SocketMsg(SocketMsg.MsgType.ERROR, ex.getMessage());
+    }
+
+    @MessageExceptionHandler(Exception.class)
+    @SendToUser("/topic/errors")
+    public SocketMsg handleGeneralExceptions(Exception ex) {
+        return new SocketMsg(SocketMsg.MsgType.ERROR, "An unexpected error occurred: " + ex.getMessage());
     }
 
 }
