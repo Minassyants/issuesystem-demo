@@ -93,5 +93,10 @@
     "name": "minio.bucket-name",
     "type": "java.lang.String",
     "description": "Name for a bucket in minio instance"
+  },
+  {
+    "name": "ldap.operator-group-name",
+    "type": "java.lang.String",
+    "description": "Group name of operators"
   }
 ]}

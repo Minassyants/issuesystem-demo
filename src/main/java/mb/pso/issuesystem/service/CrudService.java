@@ -16,6 +16,10 @@ public interface CrudService<T, ID> {
 
     Optional<T> get(ID id);
 
+    T getOrThrow(ID id);
+
+    T getOrCreate(T entity);
+
     Iterable<T> getAll();
 
     Iterable<T> getAll(Predicate predicate);

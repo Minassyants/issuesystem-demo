@@ -1,5 +1,12 @@
 package mb.pso.issuesystem.config;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -12,7 +19,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
@@ -34,15 +40,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-
-import static org.springframework.security.config.Customizer.withDefaults;
-
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Value;
-
+import mb.pso.issuesystem.service.impl.AdUserAuthoritiesPopulator;
 import mb.pso.issuesystem.service.impl.AdUserDetailsContextMapper;
 import mb.pso.issuesystem.service.impl.core.UserService;
 
@@ -75,7 +73,8 @@ public class SecurityConfiguration {
 
     @Bean
     @Order(50)
-    SecurityFilterChain BasicfilterChain(HttpSecurity http, AdUserDetailsContextMapper adUserDetailsContextMapper)
+    SecurityFilterChain BasicfilterChain(HttpSecurity http, AdUserDetailsContextMapper adUserDetailsContextMapper,
+            AdUserAuthoritiesPopulator adUserAuthoritiesPopulator)
             throws Exception {
         http.securityMatcher("/token")
                 .authorizeHttpRequests(t -> t.requestMatchers("/token").permitAll())
@@ -84,7 +83,8 @@ public class SecurityConfiguration {
                 .authenticationManager(
                         new ProviderManager(
                                 List.of(daoAuthenticationProvider(),
-                                        authenticationProvider(adUserDetailsContextMapper))))
+                                        authenticationProvider(adUserDetailsContextMapper,
+                                                adUserAuthoritiesPopulator))))
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
 
@@ -134,11 +134,12 @@ public class SecurityConfiguration {
     }
 
     ActiveDirectoryLdapAuthenticationProvider authenticationProvider(
-            AdUserDetailsContextMapper adUserDetailsContextMapper) {
+            AdUserDetailsContextMapper adUserDetailsContextMapper,
+            AdUserAuthoritiesPopulator adUserAuthoritiesPopulator) {
         ActiveDirectoryLdapAuthenticationProvider ad = new ActiveDirectoryLdapAuthenticationProvider(ldapDomain,
                 ldapUrl, ldapSearchBase);
         ad.setConvertSubErrorCodesToExceptions(true);
-        ad.setAuthoritiesPopulator((userData, username) -> List.of(new SimpleGrantedAuthority("employee")));
+        ad.setAuthoritiesPopulator(adUserAuthoritiesPopulator);
         ad.setUserDetailsContextMapper(adUserDetailsContextMapper);
         return ad;
     }

@@ -11,41 +11,49 @@ import org.springframework.transaction.annotation.Transactional;
 import mb.pso.issuesystem.dto.webSocket.SocketMsg;
 import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.im.Message;
-import mb.pso.issuesystem.service.impl.ImServiceImpl;
+import mb.pso.issuesystem.service.impl.im.ChatService;
+import mb.pso.issuesystem.service.impl.im.MessageService;
+import mb.pso.issuesystem.service.impl.im.SuppressedChatService;
 
 //[x] REFACTOR
 @Controller
 public class ChatController {
 
     private final SimpMessagingTemplate messagingTemplate;
-    private final ImServiceImpl imService;
+    private final SuppressedChatService suppressedChatService;
+    private final MessageService messageService;
+    private final ChatService chatService;
 
-    public ChatController(SimpMessagingTemplate messagingTemplate, ImServiceImpl imService) {
+    public ChatController(SimpMessagingTemplate messagingTemplate, SuppressedChatService suppressedChatService,
+            ChatService chatService,
+            MessageService messageService) {
         this.messagingTemplate = messagingTemplate;
-        this.imService = imService;
+        this.suppressedChatService = suppressedChatService;
+        this.messageService = messageService;
+        this.chatService = chatService;
     }
 
     @MessageMapping("/chat/{chatId}/unsuppress")
     public void unsurpressChat(@DestinationVariable Integer chatId, JwtAuthenticationToken jwt) {
         String displayName = extractDisplayName(jwt);
-        imService.unsuppressChat(chatId, displayName);
+        suppressedChatService.unsuppressChat(chatId, displayName);
     }
 
     @MessageMapping("/chat/sendmessage")
     public void sendMessage(Message message) {
-        Message savedMessage = imService.sendMessage(message);
+        Message savedMessage = messageService.sendMessage(message);
         sendToChatTopic(savedMessage.getChat().getId(), SocketMsg.MsgType.NEWMESSAGE, savedMessage);
     }
 
     @MessageMapping("/chat/{chatId}/addmembertochat")
     public void addMemberToChat(@DestinationVariable Integer chatId, Employee employee) {
-        Employee addedEmployee = imService.addMemberToChat(chatId, employee);
+        Employee addedEmployee = chatService.addMemberToChat(chatId, employee);
         sendToChatTopic(chatId, SocketMsg.MsgType.ADDEDMEMBER, addedEmployee);
     }
 
     @MessageMapping("/chat/{chatId}/deletememberfromchat")
     public void deleteMemberFromChat(@DestinationVariable Integer chatId, Employee employee) {
-        Employee removedEmployee = imService.deleteMemberFromChat(chatId, employee);
+        Employee removedEmployee = chatService.deleteMemberFromChat(chatId, employee);
         sendToChatTopic(chatId, SocketMsg.MsgType.DELETEDMEMBER, removedEmployee);
     }
 
@@ -53,7 +61,7 @@ public class ChatController {
     @Transactional
     public void markAsRead(@DestinationVariable Integer id, JwtAuthenticationToken jwt) {
         String displayName = extractDisplayName(jwt);
-        Message readMessage = imService.markAsRead(id, displayName);
+        Message readMessage = messageService.markAsRead(id, displayName);
         sendToChatTopic(readMessage.getChat().getId(), SocketMsg.MsgType.READ, readMessage);
     }
 

@@ -85,6 +85,7 @@ ldap:
     user-dn: 1C_Redmine@ukravto.ua
     password: R*123456
     base: OU=Kazakhstan,OU=Remote Users,DC=ukravto,DC=loc
+    operator-group-name: KZ_ALM_BS_Operators_PSO
 
 email-service:
     url: http://kz-alm-bsk-ws01.ukravto.loc:7008

@@ -56,6 +56,11 @@ public class MessageStatus {
         this.notificationCreated = notificationCreated;
     }
 
+    public MessageStatus(Message message, Employee employee) {
+        this.message = message;
+        this.employee = employee;
+    }
+
     public MessageStatus() {
     }
 

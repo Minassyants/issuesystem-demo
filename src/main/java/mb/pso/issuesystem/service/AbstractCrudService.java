@@ -14,7 +14,7 @@ import mb.pso.issuesystem.repository.CombinedRepository;
  * {@code id}.
  * <p>
  * <strong>
- * If the entity does not auto-generates IDs, this behavior should be
+ * If the entity does not auto-generate IDs, this behavior should be
  * overridden.
  * </strong>
  * </p>
@@ -69,6 +69,21 @@ public abstract class AbstractCrudService<T, ID> implements CrudService<T, ID> {
             throw new IllegalArgumentException("ID cannot be null");
         }
         return getRepository().findById(id);
+    }
+
+    @Override
+    public T getOrThrow(ID id) {
+
+        return getRepository()
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("%s: entity with ID %d not found", getRepository().getClass().toString(), id)));
+    }
+
+    @Override
+    public T getOrCreate(T entity) {
+        ID id = getId(entity);
+        return getRepository().findById(id).orElse(getRepository().save(entity));
     }
 
     @Override

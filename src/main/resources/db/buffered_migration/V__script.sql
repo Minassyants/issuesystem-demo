@@ -1,0 +1,12 @@
+create table suppressed_chat (id integer not null, chat_id integer, is_suppressed boolean, employee_display_name varchar(255), primary key (id));
+create sequence suppressed_chat_seq start with 1 increment by 50;
+alter table if exists suppressed_chat add constraint FK3l1q11tvum0vfnjlkd68sewlg foreign key (employee_display_name) references employee;
+create table suppressed_chat (id integer not null, chat_id integer, is_suppressed boolean, employee_display_name varchar(255), primary key (id));
+create sequence suppressed_chat_seq start with 1 increment by 50;
+alter table if exists suppressed_chat add constraint FK3l1q11tvum0vfnjlkd68sewlg foreign key (employee_display_name) references employee;
+create table suppressed_chat (id integer not null, chat_id integer, is_suppressed boolean, employee_display_name varchar(255), primary key (id));
+create sequence suppressed_chat_seq start with 1 increment by 50;
+alter table if exists suppressed_chat add constraint FK3l1q11tvum0vfnjlkd68sewlg foreign key (employee_display_name) references employee;
+create table suppressed_chat (id integer not null, chat_id integer, is_suppressed boolean, employee_display_name varchar(255), primary key (id));
+create sequence suppressed_chat_seq start with 1 increment by 50;
+alter table if exists suppressed_chat add constraint FK3l1q11tvum0vfnjlkd68sewlg foreign key (employee_display_name) references employee;

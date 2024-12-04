@@ -70,8 +70,8 @@ public class SuppressedChat {
         return isSuppressed;
     }
 
-    public void setIsSuppressed(Boolean isSurpressed) {
-        this.isSuppressed = isSurpressed;
+    public void setIsSuppressed(Boolean isSuppressed) {
+        this.isSuppressed = isSuppressed;
     }
 
 }

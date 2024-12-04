@@ -35,8 +35,9 @@ import mb.pso.issuesystem.entity.Subject;
 import mb.pso.issuesystem.entity.Users;
 import mb.pso.issuesystem.entity.im.Chat;
 import mb.pso.issuesystem.entity.im.Message;
-import mb.pso.issuesystem.service.impl.ImServiceImpl;
 import mb.pso.issuesystem.service.impl.core.UserService;
+import mb.pso.issuesystem.service.impl.im.ChatService;
+import mb.pso.issuesystem.service.impl.im.MessageService;
 import mb.pso.issuesystem.service.webclient.impl.WebClientServiceImpl;
 
 //[ ] REFACTOR
@@ -46,34 +47,22 @@ public class WebClientController {
 
     private final WebClientServiceImpl webClientServiceImpl;
     private final UserService userServiceImpl;
-    private final ImServiceImpl imServiceImpl;
+    private final ChatService chatService;
+    private final MessageService messageService;
 
     public WebClientController(WebClientServiceImpl webClientServiceImpl, UserService userServiceImpl,
-            ImServiceImpl imServiceImpl) {
+            MessageService messageService,
+            ChatService chatService) {
         this.webClientServiceImpl = webClientServiceImpl;
         this.userServiceImpl = userServiceImpl;
-        this.imServiceImpl = imServiceImpl;
+        this.chatService = chatService;
+        this.messageService = messageService;
+
     }
-
-    // // раскидать по сервисам????
-    // @PostMapping("/chat/{chatId}/deleteMember")
-    // public ResponseEntity<Chat> deleteMemberFromChat(@PathVariable Integer
-    // chatId, @RequestBody Employee employee) {
-    // Chat chat = imServiceImpl.deleteMemberFromChat(chatId, employee);
-    // return ResponseEntity.ok(chat);
-    // }
-
-    // @PostMapping("/chat/{chatId}/addmember")
-    // public ResponseEntity<Chat> addMemberToChat(@PathVariable Integer chatId,
-    // @RequestBody Employee employee) {
-
-    // Chat chat = imServiceImpl.addMemberToChat(chatId, employee);
-    // return ResponseEntity.ok(chat);
-    // }
 
     @GetMapping("/chat/{id}")
     public ResponseEntity<Chat> getChatById(@PathVariable Integer id) {
-        return ResponseEntity.ok(imServiceImpl.getChatById(id));
+        return ResponseEntity.ok(chatService.getOrThrow(id));
     }
 
     @GetMapping("/chat/messages/{id}")
@@ -83,15 +72,10 @@ public class WebClientController {
         Integer _page = page.orElse(0);
         Integer _size = size.orElse(10);
 
-        return ResponseEntity.ok(imServiceImpl.getMessagesByChatIdPageable(id,
+        return ResponseEntity.ok(messageService.getAllByChatIdPageable(id,
                 PageRequest.of(_page, _size, Sort.by(Direction.DESC, "createdAt"))));
 
     }
-
-    // @PostMapping("/chat/send")
-    // public void sendMessage(@RequestBody Message message) {
-    // imServiceImpl.sendMessage(message);
-    // }
 
     // BUG: Это полная ...
     @GetMapping("/auth")
