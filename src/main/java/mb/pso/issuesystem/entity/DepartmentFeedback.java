@@ -36,7 +36,7 @@ public class DepartmentFeedback {
     /**
      * Author of a department feedback.
      */
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Employee author;
 
     /**

@@ -4,7 +4,7 @@ package mb.pso.issuesystem.entity;
 /**
  * Represents a single line of the report.
  * 
- * @see mb.pso.issuesystem.repository.IssueRepository#fetchReport
+ * @see mb.pso.issuesystem.repository.core.IssueRepository#fetchReport
  */
 public interface BasicReportRow {
 

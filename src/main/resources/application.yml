@@ -67,17 +67,20 @@ es:
         index-name: pso_issue_gzk_test
 
 app:
-  admin-user:
-    email: alexandr.minassyants@mercedes-benz.kz
-    username: admin
-    password: $2a$10$bUo1HZovBZKHDbSbZGQdee392mH9NLMzbGBcKvUtVWsoAPDb094Qa
-    roles:
-        - ADMIN
-        - USER
+    admin-user:
+        email: alexandr.minassyants@mercedes-benz.kz
+        username: admin
+        password: $2a$10$bUo1HZovBZKHDbSbZGQdee392mH9NLMzbGBcKvUtVWsoAPDb094Qa
+        roles:
+            - ADMIN
+            - USER
+    cors:
+        allowed-origins: "*"
 
 elasticsearch:
   host: 192.168.50.18
   port: 7000
+  index: pso_issue_gzk
 
 ldap:
     domain: ukravto.ua

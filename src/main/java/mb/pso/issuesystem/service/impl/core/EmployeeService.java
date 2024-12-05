@@ -3,8 +3,8 @@ package mb.pso.issuesystem.service.impl.core;
 import org.springframework.stereotype.Service;
 
 import mb.pso.issuesystem.entity.Employee;
-import mb.pso.issuesystem.repository.CombinedRepository;
-import mb.pso.issuesystem.repository.EmployeeRepository;
+import mb.pso.issuesystem.repository.core.CombinedRepository;
+import mb.pso.issuesystem.repository.core.EmployeeRepository;
 import mb.pso.issuesystem.service.AbstractCrudService;
 
 //[ ] REFACTOR

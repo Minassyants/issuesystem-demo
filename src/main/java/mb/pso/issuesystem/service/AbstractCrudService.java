@@ -2,9 +2,11 @@ package mb.pso.issuesystem.service;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Example;
+
 import com.querydsl.core.types.Predicate;
 
-import mb.pso.issuesystem.repository.CombinedRepository;
+import mb.pso.issuesystem.repository.core.CombinedRepository;
 
 //[ ] REFACTOR
 /**
@@ -69,6 +71,11 @@ public abstract class AbstractCrudService<T, ID> implements CrudService<T, ID> {
             throw new IllegalArgumentException("ID cannot be null");
         }
         return getRepository().findById(id);
+    }
+
+    @Override
+    public Optional<T> get(Example<T> example) {
+        return getRepository().findOne(example);
     }
 
     @Override

@@ -2,6 +2,8 @@ package mb.pso.issuesystem.service;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Example;
+
 import com.querydsl.core.types.Predicate;
 
 //[ ] REFACTOR
@@ -15,6 +17,8 @@ public interface CrudService<T, ID> {
     void deleteById(ID id);
 
     Optional<T> get(ID id);
+
+    Optional<T> get(Example<T> example);
 
     T getOrThrow(ID id);
 

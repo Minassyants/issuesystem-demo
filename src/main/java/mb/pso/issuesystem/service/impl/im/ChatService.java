@@ -9,7 +9,7 @@ import mb.pso.issuesystem.entity.enums.NotificationPolicy;
 import mb.pso.issuesystem.entity.enums.NotificationType;
 import mb.pso.issuesystem.entity.im.Chat;
 import mb.pso.issuesystem.exceptions.IllegalActionException;
-import mb.pso.issuesystem.repository.CombinedRepository;
+import mb.pso.issuesystem.repository.core.CombinedRepository;
 import mb.pso.issuesystem.repository.im.ChatRepository;
 import mb.pso.issuesystem.service.AbstractCrudService;
 import mb.pso.issuesystem.service.impl.core.EmployeeService;

@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import mb.pso.issuesystem.entity.AdUserDetails;
 import mb.pso.issuesystem.entity.Users;
-import mb.pso.issuesystem.repository.CombinedRepository;
-import mb.pso.issuesystem.repository.UserRepository;
+import mb.pso.issuesystem.repository.core.CombinedRepository;
+import mb.pso.issuesystem.repository.core.UserRepository;
 import mb.pso.issuesystem.service.AbstractCrudService;
 
 //[x] REFACTOR

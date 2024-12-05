@@ -29,9 +29,6 @@ public class IssueAttribute {
     @Column(unique = true)
     private String name;
 
-    /**
-     * Not implemented.
-     */
     private Boolean isDeprecated = false;
 
     public IssueAttribute() {

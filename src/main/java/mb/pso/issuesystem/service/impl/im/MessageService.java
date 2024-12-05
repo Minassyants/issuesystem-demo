@@ -14,7 +14,7 @@ import mb.pso.issuesystem.entity.im.Chat;
 import mb.pso.issuesystem.entity.im.Message;
 import mb.pso.issuesystem.entity.im.MessageStatus;
 import mb.pso.issuesystem.entity.im.QMessage;
-import mb.pso.issuesystem.repository.CombinedRepository;
+import mb.pso.issuesystem.repository.core.CombinedRepository;
 import mb.pso.issuesystem.repository.im.MessageRepository;
 import mb.pso.issuesystem.service.AbstractCrudService;
 import mb.pso.issuesystem.service.impl.core.EmployeeService;

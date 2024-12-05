@@ -23,7 +23,7 @@ import mb.pso.issuesystem.config.properties.MinioProperties;
 import mb.pso.issuesystem.dto.FileInfo;
 import mb.pso.issuesystem.entity.AttachedFile;
 import mb.pso.issuesystem.entity.Issue;
-import mb.pso.issuesystem.repository.AttachedFileRepository;
+import mb.pso.issuesystem.repository.core.AttachedFileRepository;
 
 //[x] REFACTOR
 @Service

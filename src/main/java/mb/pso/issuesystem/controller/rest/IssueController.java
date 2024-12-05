@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import mb.pso.issuesystem.entity.Issue;
 import mb.pso.issuesystem.service.impl.core.IssueDocumentService;
-import mb.pso.issuesystem.service.impl.core.IssueService;
+import mb.pso.issuesystem.service.impl.core.issue.IssueService;
 
 //[ ] REFACTOR
 @RestController

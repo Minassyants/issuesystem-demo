@@ -7,7 +7,7 @@ import com.querydsl.core.types.Predicate;
 import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.im.QSuppressedChat;
 import mb.pso.issuesystem.entity.im.SuppressedChat;
-import mb.pso.issuesystem.repository.CombinedRepository;
+import mb.pso.issuesystem.repository.core.CombinedRepository;
 import mb.pso.issuesystem.repository.im.SuppressedChatRepository;
 import mb.pso.issuesystem.service.AbstractCrudService;
 

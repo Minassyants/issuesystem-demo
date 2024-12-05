@@ -8,8 +8,8 @@ import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.im.Message;
 import mb.pso.issuesystem.entity.im.MessageStatus;
 import mb.pso.issuesystem.entity.im.QMessageStatus;
-import mb.pso.issuesystem.repository.CombinedRepository;
-import mb.pso.issuesystem.repository.MessageStatusRepository;
+import mb.pso.issuesystem.repository.core.CombinedRepository;
+import mb.pso.issuesystem.repository.core.MessageStatusRepository;
 import mb.pso.issuesystem.service.AbstractCrudService;
 
 //[x] REFACTOR

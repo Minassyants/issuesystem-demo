@@ -98,5 +98,15 @@
     "name": "ldap.operator-group-name",
     "type": "java.lang.String",
     "description": "Group name of operators"
+  },
+  {
+    "name": "elasticsearch.index",
+    "type": "java.lang.String",
+    "description": "Index for elasticsearch instance"
+  },
+  {
+    "name": "app.cors.allowed-origins",
+    "type": "java.lang.String",
+    "description": "Allowed origins (CORS)"
   }
 ]}

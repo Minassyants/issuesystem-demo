@@ -1,8 +1,8 @@
 package mb.pso.issuesystem.service.impl.core;
 
 import mb.pso.issuesystem.entity.AdditionalAttributeType;
-import mb.pso.issuesystem.repository.AdditionalAttributeTypeRepository;
-import mb.pso.issuesystem.repository.CombinedRepository;
+import mb.pso.issuesystem.repository.core.AdditionalAttributeTypeRepository;
+import mb.pso.issuesystem.repository.core.CombinedRepository;
 import mb.pso.issuesystem.service.AbstractCrudService;
 
 //[x] REFACTOR

@@ -40,9 +40,9 @@ import com.nimbusds.jose.proc.SecurityContext;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import mb.pso.issuesystem.service.impl.AdUserAuthoritiesPopulator;
-import mb.pso.issuesystem.service.impl.AdUserDetailsContextMapper;
 import mb.pso.issuesystem.service.impl.core.UserService;
+import mb.pso.issuesystem.service.impl.ldap.AdUserAuthoritiesPopulator;
+import mb.pso.issuesystem.service.impl.ldap.AdUserDetailsContextMapper;
 
 //[x] REFACTOR
 @Configuration

@@ -26,9 +26,9 @@ import mb.pso.issuesystem.entity.im.QSurpressedChat;
 import mb.pso.issuesystem.entity.im.SuppressedChat;
 import mb.pso.issuesystem.entity.utility.EmailNotification;
 import mb.pso.issuesystem.exceptions.EmployeeNotFoundException;
-import mb.pso.issuesystem.repository.EmployeeRepository;
-import mb.pso.issuesystem.repository.MessageStatusRepository;
-import mb.pso.issuesystem.repository.NotificationRepository;
+import mb.pso.issuesystem.repository.core.EmployeeRepository;
+import mb.pso.issuesystem.repository.core.MessageStatusRepository;
+import mb.pso.issuesystem.repository.core.NotificationRepository;
 import mb.pso.issuesystem.repository.im.SuppressedChatRepository;
 import mb.pso.issuesystem.service.impl.external.EmailNotificationService;
 //[ ] REFACTOR

@@ -11,8 +11,8 @@ import mb.pso.issuesystem.entity.Notification;
 import mb.pso.issuesystem.entity.enums.NotificationPolicy;
 import mb.pso.issuesystem.entity.enums.NotificationType;
 import mb.pso.issuesystem.exceptions.EmployeeNotFoundException;
-import mb.pso.issuesystem.repository.EmployeeRepository;
-import mb.pso.issuesystem.repository.NotificationRepository;
+import mb.pso.issuesystem.repository.core.EmployeeRepository;
+import mb.pso.issuesystem.repository.core.NotificationRepository;
 //[ ] REFACTOR
 @Component
 public class IssueEntityNotificationListener {

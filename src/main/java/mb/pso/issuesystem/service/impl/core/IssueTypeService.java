@@ -2,9 +2,12 @@ package mb.pso.issuesystem.service.impl.core;
 
 import org.springframework.stereotype.Service;
 
+import com.querydsl.core.types.Predicate;
+
 import mb.pso.issuesystem.entity.IssueType;
-import mb.pso.issuesystem.repository.CombinedRepository;
-import mb.pso.issuesystem.repository.IssueTypeRepository;
+import mb.pso.issuesystem.entity.QIssueType;
+import mb.pso.issuesystem.repository.core.CombinedRepository;
+import mb.pso.issuesystem.repository.core.IssueTypeRepository;
 import mb.pso.issuesystem.service.AbstractCrudService;
 
 //[x] REFACTOR
@@ -25,6 +28,11 @@ public class IssueTypeService extends AbstractCrudService<IssueType, Integer> {
     @Override
     protected CombinedRepository<IssueType, Integer> getRepository() {
         return repository;
+    }
+
+    public Iterable<IssueType> getAvailableIssueTypes() {
+        Predicate predicate = QIssueType.issueType.isDeprecated.eq(false);
+        return repository.findAll(predicate);
     }
 
 }

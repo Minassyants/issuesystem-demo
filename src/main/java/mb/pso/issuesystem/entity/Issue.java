@@ -109,7 +109,7 @@ public class Issue {
     /**
      * Not implemented.
      */
-    private List<String> relatedDocFromSigma;
+    private List<String> relatedDocFromSigma = new ArrayList<>();
 
     /**
      * Set of {@link Employee} involved in causing the issue.
@@ -128,7 +128,7 @@ public class Issue {
      * Not implemented.
      */
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<AdditionalAttribute> additionalAttributes;
+    private List<AdditionalAttribute> additionalAttributes = new ArrayList<>();
 
     /**
      * Feedback provided by employees involved in the issue.
@@ -290,8 +290,17 @@ public class Issue {
         return relatedDocFromSigma;
     }
 
-    public void setRelatedDocFromSigma(List<String> relatedDocFromSigma) {
-        this.relatedDocFromSigma = relatedDocFromSigma;
+    public void addRelatedDocFromSigma(String relatedDocFromSigma) {
+        this.relatedDocFromSigma.add(relatedDocFromSigma);
+    }
+
+    public void addRelatedDocFromSigma(Collection<String> relatedDocsFromSigma) {
+        this.relatedDocFromSigma.addAll(relatedDocsFromSigma);
+    }
+
+    public void setRelatedDocFromSigma(Collection<String> relatedDocFromSigma) {
+        this.relatedDocFromSigma.clear();
+        this.relatedDocFromSigma.addAll(relatedDocFromSigma);
     }
 
     public String getIssuedDemands() {
@@ -306,8 +315,17 @@ public class Issue {
         return additionalAttributes;
     }
 
-    public void setAdditionalAttributes(List<AdditionalAttribute> additionalAttributes) {
-        this.additionalAttributes = additionalAttributes;
+    public void addAdditionalAttributes(AdditionalAttribute additionalAttribute) {
+        this.additionalAttributes.add(additionalAttribute);
+    }
+
+    public void addAdditionalAttributes(Collection<AdditionalAttribute> additionalAttributes) {
+        this.additionalAttributes.addAll(additionalAttributes);
+    }
+
+    public void setAdditionalAttributes(Collection<AdditionalAttribute> additionalAttributes) {
+        this.additionalAttributes.clear();
+        this.additionalAttributes.addAll(additionalAttributes);
     }
 
     public String getIssueResult() {

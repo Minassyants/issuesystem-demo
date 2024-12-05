@@ -1,7 +1,13 @@
 package mb.pso.issuesystem.service.impl.core;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.elasticsearch.client.elc.NativeQuery;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.stereotype.Service;
 
 import mb.pso.issuesystem.entity.AdditionalAttribute;
@@ -21,8 +27,14 @@ public class IssueDocumentService {
 
     private final IssueDocumentRepository repository;
 
-    public IssueDocumentService(IssueDocumentRepository repository) {
+    private final ElasticsearchOperations elasticsearchOperations;
+
+    @Value("${elasticsearch.index}")
+    private String elasticIndex;
+
+    public IssueDocumentService(IssueDocumentRepository repository, ElasticsearchOperations elasticsearchOperations) {
         this.repository = repository;
+        this.elasticsearchOperations = elasticsearchOperations;
     }
 
     public void convertAndSave(Issue issue) {
@@ -70,4 +82,28 @@ public class IssueDocumentService {
 
         repository.save(issueDocument);
     }
+
+    public List<Integer> searchIssueIds(String q, Optional<List<String>> searchFields) {
+        NativeQuery query = buildQuery(q, searchFields);
+        SearchHits<IssueDocument> searchHits = elasticsearchOperations.search(query, IssueDocument.class,
+                IndexCoordinates.of(elasticIndex));
+        return searchHits.map(hit -> hit.getContent().getId()).toList();
+
+    }
+
+    private NativeQuery buildQuery(String q, Optional<List<String>> searchFields) {
+        NativeQuery query = NativeQuery.builder()
+                .withQuery(arg0 -> arg0.queryString(arg1 -> arg1.fuzziness("auto").query(q)))
+                .build();
+
+        if (searchFields.isPresent() && !searchFields.get().isEmpty()) {
+            query = NativeQuery.builder()
+                    .withQuery(arg0 -> arg0.multiMatch(arg1 -> arg1
+                            .fields(searchFields.get())
+                            .query(q)))
+                    .build();
+        }
+        return query;
+    }
+
 }
