@@ -20,7 +20,7 @@ import mb.pso.issuesystem.entity.QIssueType;
 import mb.pso.issuesystem.service.impl.core.IssueTypeService;
 //[ ] REFACTOR
 @RestController
-@RequestMapping("/api/issuetype")
+@RequestMapping("/issue-types")
 public class IssueTypeController {
 
     private final IssueTypeService issueTypeService;

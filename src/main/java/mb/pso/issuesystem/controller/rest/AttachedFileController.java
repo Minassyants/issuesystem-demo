@@ -14,7 +14,7 @@ import mb.pso.issuesystem.service.impl.external.MinioService;
 //[x] REFACTOR
 //[ ] SWAGGER VEZDE?
 @RestController
-@RequestMapping("/api/file")
+@RequestMapping("/attached-files")
 public class AttachedFileController {
 
     private final MinioService minioService;

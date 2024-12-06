@@ -84,4 +84,42 @@ public class EmailNotification {
         this.body = body;
     }
 
+    public static class Builder {
+        private String prefix;
+        private String to;
+        private String templateName;
+        private String subject;
+        private JsonObject body = new JsonObject();
+
+        public Builder prefix(String prefix) {
+            this.prefix = prefix;
+            return this;
+        }
+
+        public Builder to(String to) {
+            this.to = to;
+            return this;
+        }
+
+        public Builder templateName(String templateName) {
+            this.templateName = templateName;
+            return this;
+        }
+
+        public Builder subject(String subject) {
+            this.subject = subject;
+            return this;
+        }
+
+        public Builder with(String key, Object value) {
+            this.body.put(key, value);
+            return this;
+        }
+
+        public EmailNotification build() {
+            return new EmailNotification(prefix, to, templateName, subject, body);
+        }
+
+    }
+
 }

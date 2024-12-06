@@ -1,12 +1,16 @@
 package mb.pso.issuesystem.service.impl.external;
 
+import java.util.HashMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import mb.pso.issuesystem.config.properties.EmailServiceProperties;
+import mb.pso.issuesystem.entity.Employee;
 import mb.pso.issuesystem.entity.utility.EmailNotification;
 
 //[x] REFACTOR
@@ -16,6 +20,9 @@ public class EmailNotificationService {
     private static final Logger logger = LoggerFactory.getLogger(EmailNotificationService.class);
 
     private final WebClient webClient;
+
+    @Value("${email-service.default-prefix}")
+    private String defaultPrefix;
 
     public EmailNotificationService(EmailServiceProperties emailServiceProperties, WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.baseUrl(emailServiceProperties.getUrl()).build();
@@ -42,6 +49,21 @@ public class EmailNotificationService {
         } catch (Exception e) {
             logger.error("Exception occurred while sending email", e);
         }
+
+    }
+
+    public void sendEmailNotifications(HashMap<Employee, String> notifications, String title, String templateId) {
+        notifications.forEach((employee, text) -> {
+            EmailNotification emailNotification = new EmailNotification.Builder()
+                    .prefix(defaultPrefix)
+                    .to(employee.getMail())
+                    .templateName(templateId)
+                    .subject(title)
+                    .with("title", title)
+                    .with("text", text)
+                    .build();
+            sendEmail(emailNotification);
+        });
 
     }
 

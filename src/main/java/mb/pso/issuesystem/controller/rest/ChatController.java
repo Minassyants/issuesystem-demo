@@ -20,7 +20,7 @@ import mb.pso.issuesystem.service.impl.im.MessageService;
 
 //[ ] REFACTOR
 @RestController
-@RequestMapping("/chat")
+@RequestMapping("/chats")
 public class ChatController {
 
     private final ChatService chatService;

@@ -1,6 +1,7 @@
 package mb.pso.issuesystem.service.impl.core;
 
 import java.time.LocalDate;
+import java.util.Collection;
 
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ public class ReportingService {
         this.issueRepository = issueRepository;
     }
 
-    public Iterable<BasicReportRow> getReport(LocalDate start, LocalDate end) {
+    public Collection<BasicReportRow> getReport(LocalDate start, LocalDate end) {
         end = end.plusDays(1);
         return issueRepository.fetchReport(start, end);
     }

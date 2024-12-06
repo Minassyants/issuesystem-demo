@@ -92,6 +92,7 @@ ldap:
 
 email-service:
     url: http://kz-alm-bsk-ws01.ukravto.loc:7008
+    default-prefix: bsk1c
 
 minio:
     host: kz-alm-bsk-ws01.ukravto.loc

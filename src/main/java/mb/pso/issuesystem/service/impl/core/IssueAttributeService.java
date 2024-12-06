@@ -1,5 +1,7 @@
 package mb.pso.issuesystem.service.impl.core;
 
+import java.util.List;
+
 import com.querydsl.core.types.Predicate;
 
 import mb.pso.issuesystem.entity.IssueAttribute;
@@ -26,7 +28,7 @@ public class IssueAttributeService extends AbstractCrudService<IssueAttribute, I
         return repository;
     }
 
-    public Iterable<IssueAttribute> getAvailableIssueAttributes() {
+    public List<IssueAttribute> getAvailableIssueAttributes() {
         Predicate predicate = QIssueAttribute.issueAttribute.isDeprecated.eq(false);
         return repository.findAll(predicate);
     }

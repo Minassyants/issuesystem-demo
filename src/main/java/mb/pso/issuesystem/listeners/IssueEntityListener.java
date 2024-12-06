@@ -15,6 +15,7 @@ import mb.pso.issuesystem.entity.IssueType;
 import mb.pso.issuesystem.entity.Subject;
 import mb.pso.issuesystem.entity.Vehicle;
 import mb.pso.issuesystem.entity.es.IssueDocument;
+import mb.pso.issuesystem.entity.es.IssueDocument.Builder;
 import mb.pso.issuesystem.repository.es.IssueDocumentRepository;
 //[ ] REFACTOR
 @Component
@@ -30,10 +31,28 @@ public class IssueEntityListener {
     public void handlePostPersistOrPostUpdate(Issue issue) {
         Client client = issue.getClient();
         Subject subject = issue.getSubject();
-        IssueType issueType = issue.getType();
+        
         List<IssueAttribute> issueAttributes = issue.getIssueAttributes();
         List<AdditionalAttribute> additionalAttributes = issue.getAdditionalAttributes();
-        IssueDocument issueDocument = new IssueDocument(
+
+        Builder builder = new IssueDocument.Builder()
+        .id(issue.getId())
+        .status(issue.getStatus())
+        .docDate(issue.getDocDate())
+        .clientName(client.getName())
+        .clientAddress(client.getAddress())
+        .clientEmail(client.getAddress())
+        .clientPhoneNumber(client.getPhoneNumber())
+        .type(issue.getType().getName())
+        .subjectDescription(subject.getDescription())
+        .subjectType(subject.getClass().getSimpleName())
+        .subjectVin(subject instanceof Vehicle ? ((Vehicle) subject).getVin() : null)
+        .issueAttributes(issueAttributes.stream().map(attribute -> attribute.getName()).toList())
+        .issueDescription(issue.getIssueDescription())
+        .
+        
+
+        IssueDocument issueDocument1 = new IssueDocument(
                 issue.getId(),
                 issue.getStatus(),
                 issue.getDocDate(),

@@ -1,6 +1,7 @@
 package mb.pso.issuesystem.repository.core;
 
 import java.time.LocalDate;
+import java.util.Collection;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -47,5 +48,5 @@ public interface IssueRepository extends CombinedRepository<Issue, Integer> {
             LEFT JOIN temp_closed t2 ON it.id = t2.type_id
             LEFT JOIN temp_working t3 ON it.id = t3.type_id
             """)
-    Iterable<BasicReportRow> fetchReport(LocalDate start, LocalDate end);
+    Collection<BasicReportRow> fetchReport(LocalDate start, LocalDate end);
 }

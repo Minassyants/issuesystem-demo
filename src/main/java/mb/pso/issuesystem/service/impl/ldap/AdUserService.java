@@ -1,5 +1,7 @@
 package mb.pso.issuesystem.service.impl.ldap;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.querydsl.core.types.Predicate;
@@ -25,7 +27,7 @@ public class AdUserService {
 
     }
 
-    public Iterable<AdUser> findAllByGivenNameSn(String queryString) {
+    public List<AdUser> findAllByGivenNameSn(String queryString) {
         QAdUser adUser = QAdUser.adUser;
         queryString = queryString.replace(" ", "*");
         Predicate predicate = adUser.mail.isNotNull().and(adUser.sn.isNotNull()).and(adUser.givenName.isNotNull())

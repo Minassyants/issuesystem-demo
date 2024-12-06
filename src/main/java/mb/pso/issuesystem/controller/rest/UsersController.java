@@ -13,7 +13,7 @@ import mb.pso.issuesystem.entity.Users;
 import mb.pso.issuesystem.service.impl.core.UserService;
 //[ ] REFACTOR
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/users")
 public class UsersController {
     private final UserService userServiceImpl;
 
