@@ -4,14 +4,14 @@ import org.springframework.stereotype.Service;
 
 import com.querydsl.core.types.Predicate;
 
-import mb.pso.issuesystem.entity.Employee;
+import mb.pso.issuesystem.entity.core.Employee;
 import mb.pso.issuesystem.entity.im.QSuppressedChat;
 import mb.pso.issuesystem.entity.im.SuppressedChat;
 import mb.pso.issuesystem.repository.core.CombinedRepository;
 import mb.pso.issuesystem.repository.im.SuppressedChatRepository;
 import mb.pso.issuesystem.service.AbstractCrudService;
 
-//[x] REFACTOR
+
 /**
  * Service for managing suppressed chats.
  * Handles suppressing and unsuppressing chats for specific employees.
@@ -33,6 +33,13 @@ public class SuppressedChatService extends AbstractCrudService<SuppressedChat, I
     @Override
     protected CombinedRepository<SuppressedChat, Integer> getRepository() {
         return repository;
+    }
+
+    public SuppressedChat getOrCreate(Employee employee, Integer chatId) {
+        QSuppressedChat suppressedChat = QSuppressedChat.suppressedChat;
+        Predicate predicate = suppressedChat.employee.eq(employee)
+                .and(suppressedChat.chatId.eq(chatId));
+        return repository.findOne(predicate).orElse(new SuppressedChat(employee, chatId, null));
     }
 
     /**

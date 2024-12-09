@@ -10,13 +10,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import mb.pso.issuesystem.entity.AdUserDetails;
-import mb.pso.issuesystem.entity.Users;
+import mb.pso.issuesystem.entity.core.AdUserDetails;
+import mb.pso.issuesystem.entity.core.Users;
 import mb.pso.issuesystem.repository.core.CombinedRepository;
 import mb.pso.issuesystem.repository.core.UserRepository;
 import mb.pso.issuesystem.service.AbstractCrudService;
 
-//[x] REFACTOR
+
 @Service
 public class UserService extends AbstractCrudService<Users, Integer> implements UserDetailsService {
     private final UserRepository repository;

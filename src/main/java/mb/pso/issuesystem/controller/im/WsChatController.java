@@ -7,15 +7,15 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
-import mb.pso.issuesystem.dto.webSocket.SocketMsg;
-import mb.pso.issuesystem.entity.Employee;
+import mb.pso.issuesystem.dto.ws.SocketMsg;
+import mb.pso.issuesystem.entity.core.Employee;
 import mb.pso.issuesystem.entity.im.Message;
 import mb.pso.issuesystem.service.impl.im.ChatService;
 import mb.pso.issuesystem.service.impl.im.MessageService;
 import mb.pso.issuesystem.service.impl.im.SuppressedChatService;
 import mb.pso.issuesystem.utils.JwtUtils;
 
-//[x] REFACTOR
+
 @Controller
 public class WsChatController {
 

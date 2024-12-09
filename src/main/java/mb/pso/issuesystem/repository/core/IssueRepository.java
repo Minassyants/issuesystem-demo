@@ -6,10 +6,10 @@ import java.util.Collection;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import mb.pso.issuesystem.entity.BasicReportRow;
-import mb.pso.issuesystem.entity.Issue;
+import mb.pso.issuesystem.entity.core.BasicReportRow;
+import mb.pso.issuesystem.entity.core.Issue;
 
-//[x] REFACTOR
+
 @Repository
 public interface IssueRepository extends CombinedRepository<Issue, Integer> {
     /**

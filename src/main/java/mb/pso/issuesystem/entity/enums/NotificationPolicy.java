@@ -1,6 +1,6 @@
 package mb.pso.issuesystem.entity.enums;
 
-//[ ] REFACTOR
+
 /**
  * Defines the notification delivery policies within the system.
  * <strong>Not yet implemented.</strong>

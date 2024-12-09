@@ -6,42 +6,35 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import jakarta.persistence.PrePersist;
-import mb.pso.issuesystem.entity.Issue;
-import mb.pso.issuesystem.entity.Notification;
+import mb.pso.issuesystem.entity.core.Issue;
+import mb.pso.issuesystem.entity.core.Notification;
 import mb.pso.issuesystem.entity.enums.NotificationPolicy;
 import mb.pso.issuesystem.entity.enums.NotificationType;
-import mb.pso.issuesystem.exceptions.EmployeeNotFoundException;
-import mb.pso.issuesystem.repository.core.EmployeeRepository;
-import mb.pso.issuesystem.repository.core.NotificationRepository;
-//[ ] REFACTOR
+import mb.pso.issuesystem.service.impl.core.EmployeeService;
+import mb.pso.issuesystem.service.impl.core.NotificationService;
+
 @Component
 public class IssueEntityNotificationListener {
 
-    private NotificationRepository notificationRepository;
-    private EmployeeRepository employeeRepository;
+    private NotificationService notificationService;
+    private EmployeeService employeeService;
 
-    public IssueEntityNotificationListener(@Lazy NotificationRepository notificationRepository,
-            @Lazy EmployeeRepository employeeRepository) {
-        this.notificationRepository = notificationRepository;
-        this.employeeRepository = employeeRepository;
+    public IssueEntityNotificationListener(@Lazy NotificationService notificationService,
+            @Lazy EmployeeService employeeService) {
+        this.notificationService = notificationService;
+        this.employeeService = employeeService;
     }
 
+    // [ ] Переделать админ на роль оператор
     @PrePersist
     public void handlePostPersist(Issue issue) {
-        Notification notification = new Notification();
-        notification.setPolicy(NotificationPolicy.BOTH);
-        notification.setType(NotificationType.newIssue);
-        notification.setIsRead(false);
-        notification.setIsSent(false);
-        notification.setRefId(issue.getId());
-        notification.setText("№ " + issue.getId().toString() + " от "
-                + DateFormat.getDateTimeInstance().format(issue.getDocDate()));
-        employeeRepository.findById("admin").ifPresentOrElse(t -> {
-            notification.setEmployee(t);
-        }, () -> {
-            throw new EmployeeNotFoundException("admin");
-        });
-        notificationRepository.save(notification);
+        Notification notification = new Notification(NotificationType.newIssue, NotificationPolicy.BOTH,
+                employeeService.getOrThrow("admin"),
+                "№ " + issue.getId().toString() + " от "
+                        + DateFormat.getDateTimeInstance().format(issue.getDocDate()),
+                issue.getId());
+
+        notificationService.create(notification);
     }
 
 }

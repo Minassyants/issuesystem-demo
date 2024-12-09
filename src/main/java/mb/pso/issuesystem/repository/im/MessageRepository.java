@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import mb.pso.issuesystem.entity.im.Message;
 import mb.pso.issuesystem.repository.core.CombinedRepository;
 
-//[ ] REFACTOR
+
 @Repository
 public interface MessageRepository extends CombinedRepository<Message, Integer> {
 

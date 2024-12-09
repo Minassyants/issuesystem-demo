@@ -14,10 +14,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
-import mb.pso.issuesystem.entity.Employee;
-import mb.pso.issuesystem.entity.Issue;
+import mb.pso.issuesystem.entity.core.Employee;
+import mb.pso.issuesystem.entity.core.Issue;
 
-//[x] REFACTOR
+
 /**
  * Represents a discussion of the issue.
  * <p>

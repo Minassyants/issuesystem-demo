@@ -3,9 +3,13 @@ mb.pso.issuesystem.config
 mb.pso.issuesystem.config.properties
 mb.pso.issuesystem.controller.im
 mb.pso.issuesystem.controller.rest
+mb.pso.issuesystem.controller.rest.issue
 mb.pso.issuesystem.dto
-mb.pso.issuesystem.dto.webSocket
+mb.pso.issuesystem.dto.core
+mb.pso.issuesystem.dto.im
+mb.pso.issuesystem.dto.ws
 mb.pso.issuesystem.entity
+mb.pso.issuesystem.entity.core
 mb.pso.issuesystem.entity.enums
 mb.pso.issuesystem.entity.es
 mb.pso.issuesystem.entity.im

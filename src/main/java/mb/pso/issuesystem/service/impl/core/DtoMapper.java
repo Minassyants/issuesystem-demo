@@ -4,20 +4,21 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
-import mb.pso.issuesystem.dto.GoodDto;
-import mb.pso.issuesystem.dto.SubjectDto;
-import mb.pso.issuesystem.dto.VehicleDto;
-import mb.pso.issuesystem.entity.Good;
-import mb.pso.issuesystem.entity.Subject;
-import mb.pso.issuesystem.entity.Vehicle;
+import mb.pso.issuesystem.dto.core.GoodDto;
+import mb.pso.issuesystem.dto.core.SubjectDto;
+import mb.pso.issuesystem.dto.core.VehicleDto;
+import mb.pso.issuesystem.entity.core.Good;
+import mb.pso.issuesystem.entity.core.Subject;
+import mb.pso.issuesystem.entity.core.Vehicle;
 
-//[ ] REFACTOR
+
 @Component
 public class DtoMapper {
     private final ModelMapper mapper;
@@ -55,6 +56,11 @@ public class DtoMapper {
         return entities.stream()
                 .map(entity -> mapper.map(entity, dtoClass))
                 .collect(Collectors.toSet());
+    }
+
+    public <T, U> Iterable<T> toDtoIterable(Iterable<U> entities, Class<T> dtoClass) {
+
+        return StreamSupport.stream(entities.spliterator(), false).map(entity -> mapper.map(entity, dtoClass)).toList();
     }
 
     public <T, U> Page<T> toDtoPage(Page<U> entities, Class<T> dtoClass) {

@@ -1,5 +1,6 @@
 package mb.pso.issuesystem.dto;
-//[ ] REFACTOR
+
+
 public class AuthInfo {
     private String sAMAccountName;
     private String displayName;
@@ -9,6 +10,21 @@ public class AuthInfo {
     private String username;
     private String token;
     private String scope;
+
+    public AuthInfo(String sAMAccountName, String displayName, String givenName, String sn, String mail,
+            String username, String token, String scope) {
+        this.sAMAccountName = sAMAccountName;
+        this.displayName = displayName;
+        this.givenName = givenName;
+        this.sn = sn;
+        this.mail = mail;
+        this.username = username;
+        this.token = token;
+        this.scope = scope;
+    }
+
+    public AuthInfo() {
+    }
 
     public String getDisplayName() {
         return displayName;
@@ -64,21 +80,6 @@ public class AuthInfo {
 
     public void setScope(String scope) {
         this.scope = scope;
-    }
-
-    public AuthInfo(String sAMAccountName, String displayName, String givenName, String sn, String mail,
-            String username, String token, String scope) {
-        this.sAMAccountName = sAMAccountName;
-        this.displayName = displayName;
-        this.givenName = givenName;
-        this.sn = sn;
-        this.mail = mail;
-        this.username = username;
-        this.token = token;
-        this.scope = scope;
-    }
-
-    public AuthInfo() {
     }
 
     public String getsAMAccountName() {

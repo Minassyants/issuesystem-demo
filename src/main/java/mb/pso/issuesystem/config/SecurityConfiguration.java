@@ -44,7 +44,7 @@ import mb.pso.issuesystem.service.impl.core.UserService;
 import mb.pso.issuesystem.service.impl.ldap.AdUserAuthoritiesPopulator;
 import mb.pso.issuesystem.service.impl.ldap.AdUserDetailsContextMapper;
 
-//[x] REFACTOR
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity

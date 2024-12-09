@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import mb.pso.issuesystem.config.properties.EmailServiceProperties;
-import mb.pso.issuesystem.entity.Employee;
+import mb.pso.issuesystem.entity.core.Employee;
 import mb.pso.issuesystem.entity.utility.EmailNotification;
 
-//[x] REFACTOR
+
 @Service
 public class EmailNotificationService {
 

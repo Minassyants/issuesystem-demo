@@ -2,12 +2,12 @@ package mb.pso.issuesystem.service.impl.core;
 
 import org.springframework.stereotype.Service;
 
-import mb.pso.issuesystem.entity.DepartmentFeedback;
+import mb.pso.issuesystem.entity.core.DepartmentFeedback;
 import mb.pso.issuesystem.repository.core.CombinedRepository;
 import mb.pso.issuesystem.repository.core.DepartmentFeedbackRepository;
 import mb.pso.issuesystem.service.AbstractCrudService;
 
-//[ ] REFACTOR
+
 @Service
 public class DepartmentFeedbackService extends AbstractCrudService<DepartmentFeedback, Integer> {
 

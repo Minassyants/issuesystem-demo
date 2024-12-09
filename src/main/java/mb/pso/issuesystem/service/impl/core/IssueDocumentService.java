@@ -10,18 +10,18 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.stereotype.Service;
 
-import mb.pso.issuesystem.entity.AdditionalAttribute;
-import mb.pso.issuesystem.entity.Client;
-import mb.pso.issuesystem.entity.Issue;
-import mb.pso.issuesystem.entity.IssueAttribute;
-import mb.pso.issuesystem.entity.IssueType;
-import mb.pso.issuesystem.entity.Subject;
-import mb.pso.issuesystem.entity.Vehicle;
+import mb.pso.issuesystem.entity.core.AdditionalAttribute;
+import mb.pso.issuesystem.entity.core.Client;
+import mb.pso.issuesystem.entity.core.Issue;
+import mb.pso.issuesystem.entity.core.IssueAttribute;
+import mb.pso.issuesystem.entity.core.IssueType;
+import mb.pso.issuesystem.entity.core.Subject;
+import mb.pso.issuesystem.entity.core.Vehicle;
 import mb.pso.issuesystem.entity.es.IssueDocument;
 import mb.pso.issuesystem.entity.es.IssueDocument.Builder;
 import mb.pso.issuesystem.repository.es.IssueDocumentRepository;
 
-//[x] REFACTOR
+
 @Service
 public class IssueDocumentService {
 
@@ -81,6 +81,10 @@ public class IssueDocumentService {
         IssueDocument issueDocument = issueDocumentBuilder.build();
 
         repository.save(issueDocument);
+    }
+
+    public void deleteById(Integer id) {
+        repository.deleteById(id);
     }
 
     public List<Integer> searchIssueIds(String q, Optional<List<String>> searchFields) {

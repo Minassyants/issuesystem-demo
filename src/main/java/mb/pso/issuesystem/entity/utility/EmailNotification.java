@@ -2,7 +2,7 @@ package mb.pso.issuesystem.entity.utility;
 
 import io.vertx.core.json.JsonObject;
 
-//[x] REFACTOR
+
 /**
  * Represents an email notification with metadata for sending messages via an
  * email service.

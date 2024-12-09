@@ -5,42 +5,83 @@
         - pso
           - issuesystem
             - config
-              - AdminUserProperties.java
               - CommandLineAppStartupRunner.java
               - ElasticsearchClientConfig.java
               - FlywayConfig.java
               - LdapConfig.java
+              - properties
+                - AdminUserProperties.java
+                - EmailServiceProperties.java
+                - MinioProperties.java
               - SchedulerConfig.java
               - SecurityConfiguration.java
+              - WebConfig.java
               - WebSocketConfig.java
             - controller
               - im
-                - ChatController.java
-                - NotificationController.java
+                - WsChatController.java
                 - WsExceptionHandler.java
+                - WsNotificationController.java
               - rest
                 - AttachedFileController.java
-                - IssueController.java
+                - ChatController.java
+                - EmployeeController.java
+                - issue
+                  - IssueController.java
+                  - IssueEmployeeController.java
+                  - IssueFeedbackController.java
+                  - IssueStateController.java
+                - IssueAttributeController.java
                 - IssueTypeController.java
+                - NotificationController.java
+                - RepotringController.java
                 - RestExceptionHandler.java
                 - TokenController.java
                 - UsersController.java
-                - WebClientController.java
             - dto
               - AuthInfo.java
-              - FileInfo.java
-              - webSocket
+              - core
+                - AdditionalAttributeDto.java
+                - AdditionalAttributeTypeDto.java
+                - AttachedFileDto.java
+                - BasicReportRowDto.java
+                - ClientDto.java
+                - DepartmentFeedbackDto.java
+                - EmployeeDto.java
+                - FileInfo.java
+                - GoodDto.java
+                - IssueAttributeDto.java
+                - IssueDto.java
+                - IssueTypeDto.java
+                - NotificationDto.java
+                - SubjectDto.java
+                - UsersDto.java
+                - VehicleDto.java
+              - im
+                - ChatDto.java
+                - MessageContentDto.java
+                - MessageDto.java
+              - ws
                 - SocketMsg.java
             - entity
-              - AdditionalAttribute.java
-              - AdditionalAttributeType.java
-              - AdUser.java
-              - AdUserDetails.java
-              - AttachedFile.java
-              - BasicReportRow.java
-              - Client.java
-              - DepartmentFeedback.java
-              - Employee.java
+              - core
+                - AdditionalAttribute.java
+                - AdditionalAttributeType.java
+                - AdUser.java
+                - AdUserDetails.java
+                - AttachedFile.java
+                - BasicReportRow.java
+                - Client.java
+                - DepartmentFeedback.java
+                - Employee.java
+                - Good.java
+                - Issue.java
+                - IssueAttribute.java
+                - IssueType.java
+                - Notification.java
+                - Subject.java
+                - Users.java
+                - Vehicle.java
               - enums
                 - IssueStatus.java
                 - NotificationPolicy.java
@@ -48,22 +89,14 @@
                 - Roles.java
               - es
                 - IssueDocument.java
-              - Good.java
               - im
                 - Chat.java
                 - Message.java
                 - MessageContent.java
                 - MessageStatus.java
                 - SuppressedChat.java
-              - Issue.java
-              - IssueAttribute.java
-              - IssueType.java
-              - Notification.java
-              - Subject.java
-              - Users.java
               - utility
                 - EmailNotification.java
-              - Vehicle.java
             - exceptions
               - ChatNotFoundException.java
               - EmployeeNotFoundException.java
@@ -79,12 +112,21 @@
               - IssueEntityNotificationListener.java
               - NotificationEntityListener.java
             - repository
-              - AdditionalAttributeRepository.java
-              - AdditionalAttributeTypeRepository.java
-              - AttachedFileRepository.java
-              - ClientRepository.java
-              - DepartmentFeedbackRepository.java
-              - EmployeeRepository.java
+              - core
+                - AdditionalAttributeRepository.java
+                - AdditionalAttributeTypeRepository.java
+                - AttachedFileRepository.java
+                - ClientRepository.java
+                - CombinedRepository.java
+                - DepartmentFeedbackRepository.java
+                - EmployeeRepository.java
+                - IssueAttributeRepository.java
+                - IssueRepository.java
+                - IssueTypeRepository.java
+                - MessageStatusRepository.java
+                - NotificationRepository.java
+                - SubjectRepository.java
+                - UserRepository.java
               - es
                 - IssueDocumentRepository.java
               - im
@@ -92,50 +134,47 @@
                 - MessageContentRepository.java
                 - MessageRepository.java
                 - SuppressedChatRepository.java
-              - IssueAttributeRepository.java
-              - IssueRepository.java
-              - IssueTypeRepository.java
               - ldap
                 - AdUserRepository.java
-              - MessageStatusRepository.java
-              - NotificationRepository.java
-              - SubjectRepository.java
-              - UserRepository.java
             - service
-              - AdditionalAttributeService.java
-              - AdditionalAttributeTypeService.java
-              - ClientService.java
-              - GoodService.java
+              - AbstractCrudService.java
+              - CrudService.java
               - impl
-                - AdditionalAttributeServiceImpl.java
-                - AdditionalAttributeTypeServiceImpl.java
-                - AdUserDetailsContextMapper.java
-                - ClientServiceImpl.java
-                - ImServiceImpl.java
-                - IssueAttributeServiceImpl.java
-                - IssueDocumentServiceImpl.java
-                - IssueServiceImpl.java
-                - IssueTypeServiceImpl.java
-                - ScheduledTasksServiceImpl.java
-                - SubjectServiceImpl.java
-                - UserServiceImpl.java
-                - UserServiceImplNoSec.java
-              - IssueAttributeService.java
-              - IssueService.java
-              - IssueTypeService.java
-              - notifications
-                - EmailNotificationService.java
-                - impl
-                  - EmailNotificationServiceImpl.java
-                - NotificationService.java
-              - s3
-                - MinioService.java
-              - UsersService.java
-              - VehicleService.java
-              - webclient
-                - impl
-                  - WebClientServiceImpl.java
-                - WebClientService.java
+                - core
+                  - AdditionalAttributeService.java
+                  - AdditionalAttributeTypeService.java
+                  - ClientService.java
+                  - DepartmentFeedbackService.java
+                  - DtoMapper.java
+                  - EmployeeService.java
+                  - issue
+                    - IssueEmployeeService.java
+                    - IssueFeedbackService.java
+                    - IssueService.java
+                    - IssueStateService.java
+                  - IssueAttributeService.java
+                  - IssueDocumentService.java
+                  - IssueTypeService.java
+                  - NotificationService.java
+                  - ReportingService.java
+                  - SubjectService.java
+                  - TokenService.java
+                  - UserService.java
+                - external
+                  - EmailNotificationService.java
+                  - MinioService.java
+                - im
+                  - ChatService.java
+                  - MessageService.java
+                  - MessageStatusService.java
+                  - SuppressedChatService.java
+                - ldap
+                  - AdUserAuthoritiesPopulator.java
+                  - AdUserDetailsContextMapper.java
+                  - AdUserService.java
+                - ScheduledTasksService.java
+            - utils
+              - JwtUtils.java
     - resources
       - application-prod.yml
       - application.yml

@@ -8,9 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.ldap.userdetails.LdapUserDetailsMapper;
 import org.springframework.stereotype.Service;
 
-import mb.pso.issuesystem.entity.AdUserDetails;
+import mb.pso.issuesystem.entity.core.AdUserDetails;
 
-//[x] REFACTOR
+
 @Service
 public class AdUserDetailsContextMapper extends LdapUserDetailsMapper {
 

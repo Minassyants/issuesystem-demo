@@ -10,10 +10,10 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.Setting;
 
 import jakarta.persistence.Id;
-import mb.pso.issuesystem.entity.Issue;
+import mb.pso.issuesystem.entity.core.Issue;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 
-//[x] REFACTOR
+
 /**
  * Represents an Elasticsearch document for indexing and searching issue data.
  * <p>

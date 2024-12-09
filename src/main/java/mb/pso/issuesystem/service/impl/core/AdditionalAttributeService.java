@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.springframework.data.domain.Example;
 
-import mb.pso.issuesystem.entity.AdditionalAttribute;
+import mb.pso.issuesystem.entity.core.AdditionalAttribute;
 import mb.pso.issuesystem.repository.core.AdditionalAttributeRepository;
 import mb.pso.issuesystem.repository.core.CombinedRepository;
 import mb.pso.issuesystem.service.AbstractCrudService;
 
-//[x] REFACTOR
+
 public class AdditionalAttributeService extends AbstractCrudService<AdditionalAttribute, Integer> {
 
     private final AdditionalAttributeRepository repository;

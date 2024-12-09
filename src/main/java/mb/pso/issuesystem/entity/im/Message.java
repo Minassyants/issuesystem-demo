@@ -17,9 +17,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import mb.pso.issuesystem.entity.Employee;
+import mb.pso.issuesystem.entity.core.Employee;
 
-//[x] REFACTOR
+
 /**
  * Represents a message in the chat.
  * <p>

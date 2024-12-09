@@ -3,8 +3,8 @@ package mb.pso.issuesystem.service.impl.im;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import mb.pso.issuesystem.entity.Employee;
-import mb.pso.issuesystem.entity.Notification;
+import mb.pso.issuesystem.entity.core.Employee;
+import mb.pso.issuesystem.entity.core.Notification;
 import mb.pso.issuesystem.entity.enums.NotificationPolicy;
 import mb.pso.issuesystem.entity.enums.NotificationType;
 import mb.pso.issuesystem.entity.im.Chat;
@@ -15,7 +15,7 @@ import mb.pso.issuesystem.service.AbstractCrudService;
 import mb.pso.issuesystem.service.impl.core.EmployeeService;
 import mb.pso.issuesystem.service.impl.core.NotificationService;
 
-//[x] REFACTOR
+
 /**
  * Service class for managing chats.
  * Extends {@link AbstractCrudService} to provide basic CRUD operations

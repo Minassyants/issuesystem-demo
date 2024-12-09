@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 
 import com.querydsl.core.types.Predicate;
 
-import mb.pso.issuesystem.entity.AdUser;
-import mb.pso.issuesystem.entity.QAdUser;
+import mb.pso.issuesystem.entity.core.QAdUser;
+import mb.pso.issuesystem.entity.core.AdUser;
 import mb.pso.issuesystem.repository.ldap.AdUserRepository;
 
-//[ ] REFACTOR
+
 @Service
 public class AdUserService {
 

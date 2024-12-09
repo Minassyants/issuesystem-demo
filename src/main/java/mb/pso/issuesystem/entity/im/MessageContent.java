@@ -10,10 +10,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import mb.pso.issuesystem.entity.AttachedFile;
-import mb.pso.issuesystem.entity.DepartmentFeedback;
+import mb.pso.issuesystem.entity.core.AttachedFile;
+import mb.pso.issuesystem.entity.core.DepartmentFeedback;
 
-//[x] REFACTOR
+
 /**
  * Represents content of the message.
  * <p>

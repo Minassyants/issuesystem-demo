@@ -20,12 +20,12 @@ import io.minio.StatObjectArgs;
 import io.minio.StatObjectResponse;
 import io.minio.http.Method;
 import mb.pso.issuesystem.config.properties.MinioProperties;
-import mb.pso.issuesystem.dto.FileInfo;
-import mb.pso.issuesystem.entity.AttachedFile;
-import mb.pso.issuesystem.entity.Issue;
+import mb.pso.issuesystem.dto.core.FileInfo;
+import mb.pso.issuesystem.entity.core.AttachedFile;
+import mb.pso.issuesystem.entity.core.Issue;
 import mb.pso.issuesystem.repository.core.AttachedFileRepository;
 
-//[x] REFACTOR
+
 @Service
 public class MinioService {
 

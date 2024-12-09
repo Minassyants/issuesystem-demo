@@ -13,11 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.querydsl.core.BooleanBuilder;
 
-import mb.pso.issuesystem.entity.AttachedFile;
-import mb.pso.issuesystem.entity.Issue;
-import mb.pso.issuesystem.entity.IssueAttribute;
 import mb.pso.issuesystem.entity.QIssue;
-import mb.pso.issuesystem.entity.Subject;
+import mb.pso.issuesystem.entity.core.AttachedFile;
+import mb.pso.issuesystem.entity.core.Issue;
+import mb.pso.issuesystem.entity.core.IssueAttribute;
+import mb.pso.issuesystem.entity.core.Subject;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 import mb.pso.issuesystem.entity.im.Chat;
 import mb.pso.issuesystem.repository.core.CombinedRepository;
@@ -30,7 +30,7 @@ import mb.pso.issuesystem.service.impl.core.SubjectService;
 import mb.pso.issuesystem.service.impl.external.MinioService;
 import mb.pso.issuesystem.utils.JwtUtils;
 
-//[x] REFACTOR
+
 @Service
 public class IssueService extends AbstractCrudService<Issue, Integer> {
 

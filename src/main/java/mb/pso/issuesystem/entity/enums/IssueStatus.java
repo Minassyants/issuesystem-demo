@@ -1,6 +1,6 @@
 package mb.pso.issuesystem.entity.enums;
 
-//[x] REFACTOR
+
 /**
  * Represents the status of an issue within the system.
  * <p>

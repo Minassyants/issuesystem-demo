@@ -5,10 +5,10 @@ import java.util.Collection;
 
 import org.springframework.stereotype.Service;
 
-import mb.pso.issuesystem.entity.BasicReportRow;
+import mb.pso.issuesystem.entity.core.BasicReportRow;
 import mb.pso.issuesystem.repository.core.IssueRepository;
 
-//[ ] REFACTOR
+
 @Service
 public class ReportingService {
 

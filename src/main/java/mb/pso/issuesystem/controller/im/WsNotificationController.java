@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 
 import mb.pso.issuesystem.service.impl.core.NotificationService;
 
-//[x] REFACTOR
+
 @Controller
 public class WsNotificationController {
 

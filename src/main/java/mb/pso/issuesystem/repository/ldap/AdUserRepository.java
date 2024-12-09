@@ -7,9 +7,9 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import com.querydsl.core.types.Predicate;
 
-import mb.pso.issuesystem.entity.AdUser;
+import mb.pso.issuesystem.entity.core.AdUser;
 
-//[x] REFACTOR
+
 public interface AdUserRepository extends LdapRepository<AdUser>, QuerydslPredicateExecutor<AdUser> {
 
     List<AdUser> findAll(Predicate predicate);

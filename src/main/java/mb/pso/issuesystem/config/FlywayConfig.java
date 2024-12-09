@@ -4,7 +4,7 @@ import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-//[x] REFACTOR
+
 @Configuration
 public class FlywayConfig {
 

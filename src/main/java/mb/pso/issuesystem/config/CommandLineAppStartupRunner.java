@@ -10,10 +10,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
 import mb.pso.issuesystem.config.properties.AdminUserProperties;
-import mb.pso.issuesystem.entity.Employee;
-import mb.pso.issuesystem.entity.IssueAttribute;
-import mb.pso.issuesystem.entity.IssueType;
-import mb.pso.issuesystem.entity.Users;
+import mb.pso.issuesystem.entity.core.Employee;
+import mb.pso.issuesystem.entity.core.IssueAttribute;
+import mb.pso.issuesystem.entity.core.IssueType;
+import mb.pso.issuesystem.entity.core.Users;
 import mb.pso.issuesystem.entity.enums.Roles;
 import mb.pso.issuesystem.repository.core.EmployeeRepository;
 import mb.pso.issuesystem.repository.core.IssueAttributeRepository;
@@ -22,7 +22,7 @@ import mb.pso.issuesystem.repository.core.IssueTypeRepository;
 import mb.pso.issuesystem.repository.core.UserRepository;
 import mb.pso.issuesystem.repository.es.IssueDocumentRepository;
 
-//[x] REFACTOR
+
 @Component
 public class CommandLineAppStartupRunner implements CommandLineRunner {
 

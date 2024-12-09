@@ -2,7 +2,7 @@ package mb.pso.issuesystem.repository.core;
 
 import org.springframework.stereotype.Repository;
 
-import mb.pso.issuesystem.entity.DepartmentFeedback;
+import mb.pso.issuesystem.entity.core.DepartmentFeedback;
 
 //[X] REFACTOR
 @Repository

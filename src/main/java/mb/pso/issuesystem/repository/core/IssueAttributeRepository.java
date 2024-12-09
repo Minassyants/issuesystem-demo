@@ -6,9 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.types.Predicate;
 
-import mb.pso.issuesystem.entity.IssueAttribute;
+import mb.pso.issuesystem.entity.core.IssueAttribute;
 
-//[x] REFACTOR
+
 @Repository
 public interface IssueAttributeRepository extends CombinedRepository<IssueAttribute, Integer> {
 

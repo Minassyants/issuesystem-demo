@@ -7,11 +7,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import mb.pso.issuesystem.dto.IssueAttributeDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import mb.pso.issuesystem.dto.core.IssueAttributeDto;
 import mb.pso.issuesystem.service.impl.core.DtoMapper;
 import mb.pso.issuesystem.service.impl.core.IssueAttributeService;
 
-//[ ] REFACTOR
+
+@Tag(name = "Issue Attributes", description = "Operations related to issue attributes")
 @RestController
 @RequestMapping("/issue-attributes")
 public class IssueAttributeController {
@@ -24,6 +27,7 @@ public class IssueAttributeController {
         this.mapper = mapper;
     }
 
+    @Operation(summary = "Get available issue attributes", description = "Retrieve a list of available attributes for issues")
     @GetMapping("/available")
     public ResponseEntity<List<IssueAttributeDto>> getAvailableIssueAttributes() {
         return ResponseEntity

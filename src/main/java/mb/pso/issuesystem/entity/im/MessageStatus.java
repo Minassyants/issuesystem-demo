@@ -8,9 +8,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import mb.pso.issuesystem.entity.Employee;
+import mb.pso.issuesystem.entity.core.Employee;
 
-//[x] REFACTOR
+
 /**
  * Represents the status of a message for a specific employee.
  * <p>

@@ -6,9 +6,11 @@ import org.springframework.data.domain.Example;
 
 import com.querydsl.core.types.Predicate;
 
-//[ ] REFACTOR
+
 public interface CrudService<T, ID> {
     T create(T entity);
+
+    Iterable<T> saveAll(Iterable<T> collection);
 
     T update(T entity);
 
@@ -19,6 +21,8 @@ public interface CrudService<T, ID> {
     Optional<T> get(ID id);
 
     Optional<T> get(Example<T> example);
+
+    Optional<T> get(Predicate predicate);
 
     T getOrThrow(ID id);
 

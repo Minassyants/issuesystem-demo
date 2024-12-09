@@ -1,6 +1,6 @@
 package mb.pso.issuesystem.entity.enums;
 
-//[x] REFACTOR
+
 /**
  * Defines the types of notifications that can be sent within the system.
  * <p>

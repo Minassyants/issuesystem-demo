@@ -8,7 +8,7 @@ import com.querydsl.core.types.Predicate;
 
 import mb.pso.issuesystem.repository.core.CombinedRepository;
 
-//[ ] REFACTOR
+
 /**
  * Abstract service for basic CRUD operations.
  * 
@@ -38,6 +38,12 @@ public abstract class AbstractCrudService<T, ID> implements CrudService<T, ID> {
             throw new IllegalArgumentException("Cannot create entity with an existing ID");
         }
         return getRepository().save(entity);
+    }
+
+    @Override
+    public Iterable<T> saveAll(Iterable<T> collection) {
+
+        return getRepository().saveAll(collection);
     }
 
     /**
@@ -76,6 +82,12 @@ public abstract class AbstractCrudService<T, ID> implements CrudService<T, ID> {
     @Override
     public Optional<T> get(Example<T> example) {
         return getRepository().findOne(example);
+    }
+
+    @Override
+    public Optional<T> get(Predicate predicate) {
+
+        return getRepository().findOne(predicate);
     }
 
     @Override

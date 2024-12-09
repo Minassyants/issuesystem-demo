@@ -4,9 +4,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import mb.pso.issuesystem.entity.AdUser;
-import mb.pso.issuesystem.entity.Employee;
-import mb.pso.issuesystem.entity.Issue;
+import mb.pso.issuesystem.entity.core.AdUser;
+import mb.pso.issuesystem.entity.core.Employee;
+import mb.pso.issuesystem.entity.core.Issue;
 import mb.pso.issuesystem.entity.enums.IssueStatus;
 import mb.pso.issuesystem.exceptions.IllegalActionException;
 import mb.pso.issuesystem.repository.core.CombinedRepository;
@@ -15,7 +15,7 @@ import mb.pso.issuesystem.service.AbstractCrudService;
 import mb.pso.issuesystem.service.impl.core.EmployeeService;
 import mb.pso.issuesystem.service.impl.ldap.AdUserService;
 
-//[ ] REFACTOR
+
 @Service
 public class IssueStateService extends AbstractCrudService<Issue, Integer> {
     private final IssueRepository repository;
