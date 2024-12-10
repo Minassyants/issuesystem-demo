@@ -75,9 +75,9 @@ public class SecurityConfiguration {
     SecurityFilterChain BasicfilterChain(HttpSecurity http, AdUserDetailsContextMapper adUserDetailsContextMapper,
             AdUserAuthoritiesPopulator adUserAuthoritiesPopulator)
             throws Exception {
-        http.securityMatcher("/token", "/api-docs/**", "/swagger-ui/**", "/**")
+        http.securityMatcher("/token", "/apidocs/**", "/swagger-ui/**")
                 .authorizeHttpRequests(
-                        t -> t.requestMatchers("/token", "/api-docs/**", "/swagger-ui/**", "/**").permitAll())
+                        t -> t.requestMatchers("/token", "/api-docs/**", "/swagger-ui/**").permitAll())
                 .csrf(t -> t.disable())
                 .httpBasic(withDefaults())
                 .authenticationManager(
