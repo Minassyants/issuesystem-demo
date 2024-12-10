@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class WebConfig {
     private final String allowerdOriginPatterns;
 
@@ -21,8 +21,10 @@ public class WebConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOriginPatterns(allowerdOriginPatterns.split(","))
-                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedOrigins("*")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
                         .allowedHeaders("*")
+                        .exposedHeaders("*")
                         .allowCredentials(true);
             }
         };
