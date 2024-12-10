@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
 import mb.pso.issuesystem.dto.im.ChatDto;
 import mb.pso.issuesystem.dto.im.MessageDto;
@@ -22,7 +23,7 @@ import mb.pso.issuesystem.service.impl.core.DtoMapper;
 import mb.pso.issuesystem.service.impl.im.ChatService;
 import mb.pso.issuesystem.service.impl.im.MessageService;
 
-
+@Tag(name = "Chat", description = "Operations related to chats")
 @RestController
 @RequestMapping("/chats")
 public class ChatController {
