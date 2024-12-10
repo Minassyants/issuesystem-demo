@@ -43,6 +43,8 @@ spring:
             max-file-size: 100MB
             max-request-size: 100MB
                         
+
+
 server:
         port: 8080
         tomcat:
@@ -75,7 +77,7 @@ app:
             - ADMIN
             - USER
     cors:
-        allowed-origins: "*"
+        allowed-origin-patterns: "*"
 
 elasticsearch:
   host: 192.168.50.18

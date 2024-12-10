@@ -53,8 +53,8 @@ public class MessageStatusService extends AbstractCrudService<MessageStatus, Int
 
         return repository.findOne(predicate)
                 .orElseThrow(() -> new IllegalArgumentException(
-                        String.format("Message status for message ID %d and employee %s not found", messageId,
-                                displayName)));
+                "Message status for message ID %d and employee %s not found".formatted(messageId,
+                        displayName)));
     }
 
     /**

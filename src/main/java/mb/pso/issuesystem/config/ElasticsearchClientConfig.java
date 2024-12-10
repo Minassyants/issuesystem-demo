@@ -17,7 +17,7 @@ public class ElasticsearchClientConfig extends ElasticsearchConfiguration {
 
     @Override
     public ClientConfiguration clientConfiguration() {
-        String connectionString = String.format("%s:%d", host, port);
+        String connectionString = "%s:%d".formatted(host, port);
         return ClientConfiguration.builder()
                 .connectedTo(connectionString)
                 .build();

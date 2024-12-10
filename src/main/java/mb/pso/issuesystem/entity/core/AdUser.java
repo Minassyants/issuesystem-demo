@@ -7,7 +7,6 @@ import org.springframework.ldap.odm.annotations.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 /**
  * Represents an Active Directory user.
  * 
@@ -15,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * Directory.
  * Includes only basic details such as name, email, etc.
  */
-@Entry(objectClasses = { "user", "top" }, base = "OU=Kazakhstan,OU=Remote Users,DC=ukravto,DC=loc")
+@Entry(objectClasses = { "user", "top" })
 public final class AdUser {
 
     /**

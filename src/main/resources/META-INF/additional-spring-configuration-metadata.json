@@ -106,7 +106,7 @@
       "description": "Index for elasticsearch instance"
     },
     {
-      "name": "app.cors.allowed-origins",
+      "name": "app.cors.allowed-origin-patterns",
       "type": "java.lang.String",
       "description": "Allowed origins (CORS)"
     },

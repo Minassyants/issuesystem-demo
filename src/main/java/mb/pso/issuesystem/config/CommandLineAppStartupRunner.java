@@ -22,7 +22,6 @@ import mb.pso.issuesystem.repository.core.IssueTypeRepository;
 import mb.pso.issuesystem.repository.core.UserRepository;
 import mb.pso.issuesystem.repository.es.IssueDocumentRepository;
 
-
 @Component
 public class CommandLineAppStartupRunner implements CommandLineRunner {
 
@@ -97,6 +96,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         }, issueAttributeRepository);
     }
 
+    // TODO Переделать на пользователя в настройках
     private void setupAdminEmployee() {
         Employee adminEmployee = new Employee();
         adminEmployee.setDisplayName("admin");

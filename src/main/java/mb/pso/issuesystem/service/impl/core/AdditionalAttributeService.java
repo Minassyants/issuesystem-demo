@@ -3,13 +3,14 @@ package mb.pso.issuesystem.service.impl.core;
 import java.util.List;
 
 import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Service;
 
 import mb.pso.issuesystem.entity.core.AdditionalAttribute;
 import mb.pso.issuesystem.repository.core.AdditionalAttributeRepository;
 import mb.pso.issuesystem.repository.core.CombinedRepository;
 import mb.pso.issuesystem.service.AbstractCrudService;
 
-
+@Service
 public class AdditionalAttributeService extends AbstractCrudService<AdditionalAttribute, Integer> {
 
     private final AdditionalAttributeRepository repository;

@@ -44,7 +44,6 @@ import mb.pso.issuesystem.service.impl.core.UserService;
 import mb.pso.issuesystem.service.impl.ldap.AdUserAuthoritiesPopulator;
 import mb.pso.issuesystem.service.impl.ldap.AdUserDetailsContextMapper;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -76,8 +75,9 @@ public class SecurityConfiguration {
     SecurityFilterChain BasicfilterChain(HttpSecurity http, AdUserDetailsContextMapper adUserDetailsContextMapper,
             AdUserAuthoritiesPopulator adUserAuthoritiesPopulator)
             throws Exception {
-        http.securityMatcher("/token")
-                .authorizeHttpRequests(t -> t.requestMatchers("/token").permitAll())
+        http.securityMatcher("/token", "/api-docs/**", "/swagger-ui/**", "/**")
+                .authorizeHttpRequests(
+                        t -> t.requestMatchers("/token", "/api-docs/**", "/swagger-ui/**", "/**").permitAll())
                 .csrf(t -> t.disable())
                 .httpBasic(withDefaults())
                 .authenticationManager(

@@ -15,7 +15,6 @@ import mb.pso.issuesystem.service.impl.im.MessageService;
 import mb.pso.issuesystem.service.impl.im.SuppressedChatService;
 import mb.pso.issuesystem.utils.JwtUtils;
 
-
 @Controller
 public class WsChatController {
 
@@ -70,7 +69,7 @@ public class WsChatController {
      */
     private void sendToChatTopic(Integer chatId, SocketMsg.MsgType msgType, Object payload) {
         messagingTemplate.convertAndSend(
-                String.format("/topic/chat/%d", chatId),
+                "/topic/chat/%d".formatted(chatId),
                 new SocketMsg(msgType, payload));
     }
 

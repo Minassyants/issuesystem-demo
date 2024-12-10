@@ -31,7 +31,7 @@ public class UserService extends AbstractCrudService<Users, Integer> implements 
         exUser.setUsername(username);
 
         Optional<Users> _user = repository.findOne(Example.of(exUser));
-        if (!_user.isPresent()) {
+        if (_user.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }
         Users user = _user.get();

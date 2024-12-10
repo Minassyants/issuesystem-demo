@@ -67,7 +67,7 @@ public class IssueDocumentService {
         if (subject != null) {
             issueDocumentBuilder
                     .subjectDescription(subject.getDescription())
-                    .subjectVin(subject instanceof Vehicle ? ((Vehicle) subject).getVin() : null)
+                    .subjectVin(subject instanceof Vehicle v ? v.getVin() : null)
                     .subjectType(subject instanceof Vehicle ? "vehicle" : "good");
         }
         if (issueAttributes != null) {

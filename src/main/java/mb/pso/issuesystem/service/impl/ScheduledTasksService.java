@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.types.Predicate;
 
-import mb.pso.issuesystem.entity.QNotification;
+import mb.pso.issuesystem.entity.core.QNotification;
 import mb.pso.issuesystem.entity.core.Employee;
 import mb.pso.issuesystem.entity.core.Notification;
 import mb.pso.issuesystem.entity.enums.NotificationPolicy;
@@ -45,7 +45,7 @@ public class ScheduledTasksService {
         this.messageStatusService = messageStatusService;
     }
 
-    @Scheduled(fixedDelay = 280000)
+    @Scheduled(fixedDelay = 280000,initialDelay = 10000)
     @Transactional
     public void sendEmployeeAddedToChat() {
         QNotification notification = QNotification.notification;
@@ -59,7 +59,7 @@ public class ScheduledTasksService {
         }
     }
 
-    @Scheduled(fixedDelay = 300000)
+    @Scheduled(fixedDelay = 300000,initialDelay = 10000)
     @Transactional
     public void sendNewIssueNotification() {
 
@@ -76,7 +76,7 @@ public class ScheduledTasksService {
 
     }
 
-    @Scheduled(fixedDelay = 150000)
+    @Scheduled(fixedDelay = 150000,initialDelay = 10000)
     @Transactional
     public void sendNewMessageNotification() {
         QNotification notification = QNotification.notification;
@@ -91,7 +91,7 @@ public class ScheduledTasksService {
         }
     }
 
-    @Scheduled(fixedDelay = 120000)
+    @Scheduled(fixedDelay = 120000,initialDelay = 10000)
     @Transactional
     public void createNewMessageNotifications() {
         List<Notification> newNotifications = new ArrayList<>();

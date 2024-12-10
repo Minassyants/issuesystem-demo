@@ -2,15 +2,17 @@ package mb.pso.issuesystem.service.impl.core;
 
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.querydsl.core.types.Predicate;
 
-import mb.pso.issuesystem.entity.QClient;
+import mb.pso.issuesystem.entity.core.QClient;
 import mb.pso.issuesystem.entity.core.Client;
 import mb.pso.issuesystem.repository.core.ClientRepository;
 import mb.pso.issuesystem.repository.core.CombinedRepository;
 import mb.pso.issuesystem.service.AbstractCrudService;
 
-
+@Service
 public class ClientService extends AbstractCrudService<Client, Integer> {
 
     private final ClientRepository repository;

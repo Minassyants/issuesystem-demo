@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.querydsl.core.BooleanBuilder;
 
-import mb.pso.issuesystem.entity.QIssue;
+import mb.pso.issuesystem.entity.core.QIssue;
 import mb.pso.issuesystem.entity.core.AttachedFile;
 import mb.pso.issuesystem.entity.core.Issue;
 import mb.pso.issuesystem.entity.core.IssueAttribute;

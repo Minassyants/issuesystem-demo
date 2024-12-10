@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.querydsl.core.types.Predicate;
 
-import mb.pso.issuesystem.entity.QIssueType;
+import mb.pso.issuesystem.entity.core.QIssueType;
 import mb.pso.issuesystem.entity.core.IssueType;
 import mb.pso.issuesystem.repository.core.CombinedRepository;
 import mb.pso.issuesystem.repository.core.IssueTypeRepository;

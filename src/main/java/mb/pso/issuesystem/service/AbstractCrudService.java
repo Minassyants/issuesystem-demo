@@ -96,7 +96,7 @@ public abstract class AbstractCrudService<T, ID> implements CrudService<T, ID> {
         return getRepository()
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(
-                        String.format("%s: entity with ID %d not found", getRepository().getClass().toString(), id)));
+                "%s: entity with ID %d not found".formatted(getRepository().getClass().toString(), id)));
     }
 
     @Override

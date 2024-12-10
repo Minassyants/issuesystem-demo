@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.types.Predicate;
 
-import mb.pso.issuesystem.entity.QNotification;
+import mb.pso.issuesystem.entity.core.QNotification;
 import mb.pso.issuesystem.entity.core.Employee;
 import mb.pso.issuesystem.entity.core.Notification;
 import mb.pso.issuesystem.exceptions.NotificationNotFoundException;
@@ -42,7 +42,7 @@ public class NotificationService extends AbstractCrudService<Notification, Integ
     public void markAsRead(Integer id) {
         Notification notification = repository.findById(id)
                 .orElseThrow(() -> new NotificationNotFoundException(
-                        String.format("Notification witd id `%d` not found", id)));
+                "Notification witd id `%d` not found".formatted(id)));
         notification.setIsRead(true);
         repository.save(notification);
     }

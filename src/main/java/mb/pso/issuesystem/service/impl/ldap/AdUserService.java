@@ -23,7 +23,7 @@ public class AdUserService {
     public AdUser getByDisplayNameOrThrow(String displayName) {
         Predicate predicate = QAdUser.adUser.displayName.eq(displayName);
         return repository.findOne(predicate).orElseThrow(() -> new IllegalArgumentException(
-                String.format("User `%s` not found in Active Directory", displayName)));
+                "User `%s` not found in Active Directory".formatted(displayName)));
 
     }
 

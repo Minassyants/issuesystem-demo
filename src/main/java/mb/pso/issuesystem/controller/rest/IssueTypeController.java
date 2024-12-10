@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import mb.pso.issuesystem.dto.core.IssueTypeDto;
-import mb.pso.issuesystem.entity.QIssueType;
+import mb.pso.issuesystem.entity.core.QIssueType;
 import mb.pso.issuesystem.entity.core.IssueType;
 import mb.pso.issuesystem.service.impl.core.DtoMapper;
 import mb.pso.issuesystem.service.impl.core.IssueTypeService;

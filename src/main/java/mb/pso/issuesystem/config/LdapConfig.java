@@ -10,7 +10,7 @@ import org.springframework.ldap.core.support.LdapContextSource;
 
 
 @Configuration
-@EnableLdapRepositories("mb.pso.issuesystem.repository.*")
+@EnableLdapRepositories("mb.pso.issuesystem.repository.ldap.*")
 public class LdapConfig {
 
   @Value("${ldap.url}")
